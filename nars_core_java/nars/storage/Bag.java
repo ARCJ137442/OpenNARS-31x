@@ -388,7 +388,7 @@ public abstract class Bag<E extends Item> implements Iterable<E> {
 
     /**
      * Collect Bag content into a String for display
-     * 
+     *
      * @return A String representation of the content
      */
     @Override

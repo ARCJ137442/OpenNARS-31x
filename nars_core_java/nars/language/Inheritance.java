@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -35,7 +35,7 @@ public class Inheritance extends Statement {
 
     /**
      * Constructor with partial values, called by make
-     * 
+     *
      * @param n   The name of the term
      * @param arg The component list of the term
      */
@@ -45,7 +45,7 @@ public class Inheritance extends Statement {
 
     /**
      * Constructor with full values, called by clone
-     * 
+     *
      * @param n    The name of the term
      * @param cs   Component list
      * @param open Open variable list
@@ -57,7 +57,7 @@ public class Inheritance extends Statement {
 
     /**
      * Clone an object
-     * 
+     *
      * @return A new object, to be casted into a SetExt
      */
     public Inheritance clone() {
@@ -67,7 +67,7 @@ public class Inheritance extends Statement {
     /**
      * Try to make a new compound from two components. Called by the inference
      * rules.
-     * 
+     *
      * @param subject   The first compoment
      * @param predicate The second compoment
      * @param memory    Reference to the memory
@@ -88,7 +88,7 @@ public class Inheritance extends Statement {
 
     /**
      * Get the operator of the term.
-     * 
+     *
      * @return the operator of the term
      */
     public String operator() {

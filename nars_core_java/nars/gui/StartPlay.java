@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -32,16 +32,16 @@ import nars.storage.ConceptBag;
 /**
  *
  * @author Peter
- * 
+ *
  *         This class is a collection of methods moved from Concept.java,
  *         Memory.java and
  *         Bag.java. These methods are needed for proper GUI functionality.
  *         Idea is to completely separate GUI from reasoner and remove any
  *         dependability
  *         from one another
- * 
+ *
  *         Note: taskBuffersStartPlay method was commented out previously !!!
- * 
+ *
  */
 final class StartPlay {
 
@@ -55,7 +55,7 @@ final class StartPlay {
      * separate GUI and inference, so this method takes as argument a
      * {@link BagObserver} and calls
      * {@link ConceptBag#addBagObserver(BagObserver, String)} ;
-     * 
+     *
      * see design for {@link Bag} and {@link nars.gui.BagWindow}
      * in {@link Bag#addBagObserver(BagObserver, String)}
      *

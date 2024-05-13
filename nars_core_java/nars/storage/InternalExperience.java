@@ -45,7 +45,7 @@ public class InternalExperience extends EventBuffer {
     /**
      * If the task which is taken out is an operation, directly generate the
      * operation
-     * 
+     *
      * @param temporalInduction
      * @param allowOverlap
      * @return

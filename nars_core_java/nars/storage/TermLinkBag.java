@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -33,7 +33,7 @@ public class TermLinkBag extends Bag<TermLink> {
 
     /**
      * Constructor
-     * 
+     *
      * @param memory The reference of memory
      */
     public TermLinkBag(Memory memory) {
@@ -42,7 +42,7 @@ public class TermLinkBag extends Bag<TermLink> {
 
     /**
      * Get the (constant) capacity of TermLinkBag
-     * 
+     *
      * @return The capacity of TermLinkBag
      */
     protected int capacity() {
@@ -51,7 +51,7 @@ public class TermLinkBag extends Bag<TermLink> {
 
     /**
      * Get the (adjustable) forget rate of TermLinkBag
-     * 
+     *
      * @return The forget rate of TermLinkBag
      */
     protected float forgetRate() {
@@ -60,7 +60,7 @@ public class TermLinkBag extends Bag<TermLink> {
 
     /**
      * Replace default to prevent repeated inference, by checking TaskLink
-     * 
+     *
      * @param taskLink The selected TaskLink
      * @param time     The current time
      * @return The selected TermLink

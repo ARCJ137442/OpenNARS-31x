@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2021 The OpenNARS authors.
@@ -170,7 +170,7 @@ public class Memory {
 
     /**
      * Actually means that there are no new Tasks
-     * 
+     *
      * @return
      */
     public boolean noResult() {
@@ -192,7 +192,7 @@ public class Memory {
 
     /**
      * Get an existing Concept for a given Term.
-     * 
+     *
      * @param term The Term naming a concept
      * @return a Concept or null
      */
@@ -595,7 +595,7 @@ public class Memory {
 
     /**
      * Task execution called only from Operator.java
-     * 
+     *
      * @param time
      * @param operation
      * @param truth
@@ -645,7 +645,7 @@ public class Memory {
 
     /**
      * Returns priority of currently selected concept
-     * 
+     *
      * @param c type Concept
      * @return
      */
@@ -656,7 +656,7 @@ public class Memory {
     /**
      * Returns Truth Value (aka Desire Value) of highest priority desire task
      * from currently selected concept
-     * 
+     *
      * @param c type Concept
      * @return
      */
@@ -667,7 +667,7 @@ public class Memory {
     /**
      * Returns Truth Value of highest CONFIDENCE belief sentence
      * from currently selected concept
-     * 
+     *
      * @param c type Concept
      * @return
      */

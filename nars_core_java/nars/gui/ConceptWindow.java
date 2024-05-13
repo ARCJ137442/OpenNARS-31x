@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -124,7 +124,7 @@ public class ConceptWindow extends NarsFrame implements ActionListener, EntityOb
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see nars.gui.EntityObserver#post(java.lang.String)
      */
     @Override

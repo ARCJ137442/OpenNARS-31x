@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -57,10 +57,10 @@ public class RuleTables {
 
         /*
          * if(task != null && belief != null){
-         * 
+         *
          * System.out.println("task: " + task.getName());
          * System.out.println("belief: " + belief.getContent().getName());
-         * 
+         *
          * }
          */
 

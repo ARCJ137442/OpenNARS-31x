@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -352,7 +352,7 @@ public class Sentence implements Cloneable {
      * Project a sentence to another target time, if the time to be projected is
      * eternal
      * then the sentence will change from event to eternity
-     * 
+     *
      * @param targetTime
      * @param currentTime
      * @param memory
@@ -372,7 +372,7 @@ public class Sentence implements Cloneable {
 
     /**
      * Project truth value, project a truth value according to a given target event
-     * 
+     *
      * @param targetTime
      * @param currentTime
      * @param memory
@@ -403,7 +403,7 @@ public class Sentence implements Cloneable {
 
     /**
      * Returns projected confidence from creationTime to currentTime
-     * 
+     *
      * @param currentTime
      * @return
      */

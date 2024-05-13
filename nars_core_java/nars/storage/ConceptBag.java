@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -37,7 +37,7 @@ public class ConceptBag extends Bag<Concept> {
 
     /**
      * Constructor
-     * 
+     *
      * @param memory The reference of memory
      */
     public ConceptBag(Memory memory) {
@@ -47,7 +47,7 @@ public class ConceptBag extends Bag<Concept> {
     /**
      * Constructor that allows forgetting rate be proportional to average priority
      * of the bag
-     * 
+     *
      * @param memory The reference of memory
      */
     public ConceptBag(Memory memory, boolean averagePriorityForgetting) {
@@ -58,7 +58,7 @@ public class ConceptBag extends Bag<Concept> {
     /**
      *
      * Get the (constant) capacity of ConceptBag
-     * 
+     *
      * @return The capacity of ConceptBag
      */
     @Override
@@ -68,7 +68,7 @@ public class ConceptBag extends Bag<Concept> {
 
     /**
      * Get the (adjustable) forget rate of ConceptBag
-     * 
+     *
      * @return The forget rate of ConceptBag
      */
     @Override

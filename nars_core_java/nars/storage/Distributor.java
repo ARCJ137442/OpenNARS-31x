@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -36,7 +36,7 @@ class Distributor {
     /**
      * For any number N < range, there is N+1 copies of it in the array, distributed
      * as evenly as possible
-     * 
+     *
      * @param range Range of valid numbers
      */
     public Distributor(int range) {
@@ -59,7 +59,7 @@ class Distributor {
 
     /**
      * Get the next number according to the given index
-     * 
+     *
      * @param index The current index
      * @return the random value
      */
@@ -69,7 +69,7 @@ class Distributor {
 
     /**
      * Advance the index
-     * 
+     *
      * @param index The current index
      * @return the next index
      */

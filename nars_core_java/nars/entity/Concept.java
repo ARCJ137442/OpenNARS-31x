@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -213,7 +213,7 @@ public final class Concept extends Item {
     /**
      * Use implication relation to generate anticipation within concept
      * Called from Concept.processJudgment() and LocalRules.java
-     * 
+     *
      * @param term
      */
     public void generateAnticipations(Sentence sentence) {
@@ -265,7 +265,7 @@ public final class Concept extends Item {
     /**
      * Form hypothesis and generate goal preconditions
      * Called from Concept.processJudgment() and LocalRules.java
-     * 
+     *
      * @param task
      */
     public void generateGoalPreconditions(Sentence sentence) {
@@ -312,7 +312,7 @@ public final class Concept extends Item {
      * To answer a question by existing beliefs
      *
      * @param task The task to be processed
-     * 
+     *
      * @return Whether to continue the processing of the task
      */
     public float processQuestion(Task task) {
@@ -348,7 +348,7 @@ public final class Concept extends Item {
 
     /**
      * For procedural learning, goal processing and
-     * 
+     *
      * @param task
      */
     private void processGoal(Task task) {
@@ -455,7 +455,7 @@ public final class Concept extends Item {
 
     /**
      * Select the existing goal with the highest confidence from the desire list
-     * 
+     *
      * @return
      */
     private Task selectOldGoal() {
@@ -587,7 +587,7 @@ public final class Concept extends Item {
     /**
      * Traverse belief table and find the highest quality belief using
      * LocalRules.solutionQuality. Called from Concept.java and EventBuffer.java
-     * 
+     *
      * @param query
      * @param list
      * @return
@@ -647,7 +647,7 @@ public final class Concept extends Item {
     /**
      * Use for adding the task into the corresponding list, used for adding
      * goals into desire list
-     * 
+     *
      * @param task
      * @param the      goal which requires to add to the list
      * @param list     the desire list
@@ -699,7 +699,7 @@ public final class Concept extends Item {
 
     /**
      * Adding concept to the anticipation list
-     * 
+     *
      * @param concept the concept of the pre-condtion
      * @param list    which concepts are added to
      * @return if the concept is added successfully
@@ -854,7 +854,7 @@ public final class Concept extends Item {
 
     /**
      * Return the associated term, called from Memory only
-     * 
+     *
      * @return The associated term
      */
     public Term getTerm() {
@@ -863,7 +863,7 @@ public final class Concept extends Item {
 
     /**
      * Return a string representation of the concept, called in ConceptBag only
-     * 
+     *
      * @return The concept name, with taskBudget in the full version
      */
     @Override
@@ -877,7 +877,7 @@ public final class Concept extends Item {
 
     /**
      * called from {@link NARSBatch}
-     * 
+     *
      * @return A string representation of the concept
      */
     @Override
@@ -922,7 +922,7 @@ public final class Concept extends Item {
     /**
      * Recalculate the quality of the concept [to be refined to show
      * extension/intension balance]
-     * 
+     *
      * @return The quality value
      */
     @Override

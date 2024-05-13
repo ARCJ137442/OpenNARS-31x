@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -37,7 +37,7 @@ public class ShortFloat implements Cloneable {
 
     /**
      * Constructor
-     * 
+     *
      * @param v The initial value
      */
     public ShortFloat(short v) {
@@ -46,7 +46,7 @@ public class ShortFloat implements Cloneable {
 
     /**
      * Constructor
-     * 
+     *
      * @param v The initial value in float
      */
     public ShortFloat(float v) {
@@ -55,7 +55,7 @@ public class ShortFloat implements Cloneable {
 
     /**
      * To access the value as float
-     * 
+     *
      * @return The current value in float
      */
     public float getValue() {
@@ -64,7 +64,7 @@ public class ShortFloat implements Cloneable {
 
     /**
      * To access the value as short
-     * 
+     *
      * @return The current value in short
      */
     private short getShortValue() {
@@ -73,7 +73,7 @@ public class ShortFloat implements Cloneable {
 
     /**
      * Set new value, rounded, with validity checking
-     * 
+     *
      * @param v The new value
      */
     public final void setValue(float v) {
@@ -87,7 +87,7 @@ public class ShortFloat implements Cloneable {
 
     /**
      * Compare two ShortFloat values
-     * 
+     *
      * @param that The other value to be compared
      * @return Whether the two have the same value
      */
@@ -98,7 +98,7 @@ public class ShortFloat implements Cloneable {
 
     /**
      * The hash code of the ShortFloat
-     * 
+     *
      * @return The hash code
      */
     @Override
@@ -108,7 +108,7 @@ public class ShortFloat implements Cloneable {
 
     /**
      * To create an identical copy of the ShortFloat
-     * 
+     *
      * @return A cloned ShortFloat
      */
     @Override
@@ -118,7 +118,7 @@ public class ShortFloat implements Cloneable {
 
     /**
      * Convert the value into a String
-     * 
+     *
      * @return The String representation, with 4 digits accuracy
      */
     @Override
@@ -136,7 +136,7 @@ public class ShortFloat implements Cloneable {
 
     /**
      * Round the value into a short String
-     * 
+     *
      * @return The String representation, with 2 digits accuracy
      */
     public String toStringBrief() {

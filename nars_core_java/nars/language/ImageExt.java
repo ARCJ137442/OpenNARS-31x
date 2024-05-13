@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -42,7 +42,7 @@ public class ImageExt extends CompoundTerm {
 
     /**
      * Constructor with partial values, called by make
-     * 
+     *
      * @param n     The name of the term
      * @param arg   The component list of the term
      * @param index The index of relation in the component list
@@ -54,7 +54,7 @@ public class ImageExt extends CompoundTerm {
 
     /**
      * Constructor with full values, called by clone
-     * 
+     *
      * @param n          The name of the term
      * @param cs         Component list
      * @param open       Open variable list
@@ -68,7 +68,7 @@ public class ImageExt extends CompoundTerm {
 
     /**
      * Clone an object
-     * 
+     *
      * @return A new object, to be casted into an ImageExt
      */
     public ImageExt clone() {
@@ -77,7 +77,7 @@ public class ImageExt extends CompoundTerm {
 
     /**
      * Try to make a new ImageExt. Called by StringParser.
-     * 
+     *
      * @return the Term generated from the arguments
      * @param argList The list of components
      * @param memory  Reference to the memory
@@ -103,7 +103,7 @@ public class ImageExt extends CompoundTerm {
     /**
      * Try to make an Image from a Product and a relation. Called by the inference
      * rules.
-     * 
+     *
      * @param product  The product
      * @param relation The relation
      * @param index    The index of the place-holder
@@ -131,7 +131,7 @@ public class ImageExt extends CompoundTerm {
     /**
      * Try to make an Image from an existing Image and a component. Called by the
      * inference rules.
-     * 
+     *
      * @param oldImage  The existing Image
      * @param component The component to be added into the component list
      * @param index     The index of the place-holder in the new Image
@@ -149,7 +149,7 @@ public class ImageExt extends CompoundTerm {
     /**
      * Try to make a new compound from a set of components. Called by the public
      * make methods.
-     * 
+     *
      * @param argument The argument list
      * @param index    The index of the place-holder in the new Image
      * @return the Term generated from the arguments
@@ -162,7 +162,7 @@ public class ImageExt extends CompoundTerm {
 
     /**
      * get the index of the relation in the component list
-     * 
+     *
      * @return the index of relation
      */
     public short getRelationIndex() {
@@ -171,7 +171,7 @@ public class ImageExt extends CompoundTerm {
 
     /**
      * Get the relation term in the Image
-     * 
+     *
      * @return The term representing a relation
      */
     public Term getRelation() {
@@ -180,7 +180,7 @@ public class ImageExt extends CompoundTerm {
 
     /**
      * Get the other term in the Image
-     * 
+     *
      * @return The term related
      */
     public Term getTheOtherComponent() {
@@ -193,7 +193,7 @@ public class ImageExt extends CompoundTerm {
     /**
      * override the default in making the name of the current term from existing
      * fields
-     * 
+     *
      * @return the name of the term
      */
     @Override
@@ -203,7 +203,7 @@ public class ImageExt extends CompoundTerm {
 
     /**
      * get the operator of the term.
-     * 
+     *
      * @return the operator of the term
      */
     public String operator() {

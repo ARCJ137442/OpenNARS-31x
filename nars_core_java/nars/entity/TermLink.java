@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -70,7 +70,7 @@ public class TermLink extends Item {
      * Constructor for TermLink template
      * <p>
      * called in CompoundTerm.prepareComponentLinks only
-     * 
+     *
      * @param t       Target Term
      * @param p       Link type
      * @param indices Component indices in compound, may be 1 to 4
@@ -95,7 +95,7 @@ public class TermLink extends Item {
 
     /**
      * called from TaskLink
-     * 
+     *
      * @param s The key of the TaskLink
      * @param v The budget value of the TaskLink
      */
@@ -107,7 +107,7 @@ public class TermLink extends Item {
      * Constructor to make actual TermLink from a template
      * <p>
      * called in Concept.buildTermLinks only
-     * 
+     *
      * @param t        Target Term
      * @param template TermLink template previously prepared
      * @param v        Budget value of the link
@@ -149,7 +149,7 @@ public class TermLink extends Item {
 
     /**
      * Get the target of the link
-     * 
+     *
      * @return The Term pointed by the link
      */
     public Term getTarget() {
@@ -158,7 +158,7 @@ public class TermLink extends Item {
 
     /**
      * Get the link type
-     * 
+     *
      * @return Type of the link
      */
     public short getType() {
@@ -167,7 +167,7 @@ public class TermLink extends Item {
 
     /**
      * Get all the indices
-     * 
+     *
      * @return The index array
      */
     public short[] getIndices() {
@@ -176,7 +176,7 @@ public class TermLink extends Item {
 
     /**
      * Get one index by level
-     * 
+     *
      * @param i The index level
      * @return The index value
      */

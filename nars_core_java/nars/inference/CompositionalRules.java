@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -236,7 +236,7 @@ public final class CompositionalRules {
     /**
      * {<(S|P) ==> M>, <P ==> M>} |- <S ==> M>
      * 拆解复合词项
-     * 
+     *
      * @param implication     The implication term to be decomposed
      * @param componentCommon The part of the implication to be removed
      * @param term1           The other term in the contentInd

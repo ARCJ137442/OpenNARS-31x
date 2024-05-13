@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -33,7 +33,7 @@ public class NovelTaskBag extends Bag<Task> {
 
     /**
      * Constructor
-     * 
+     *
      * @param memory The reference of memory
      */
     public NovelTaskBag(Memory memory) {
@@ -42,7 +42,7 @@ public class NovelTaskBag extends Bag<Task> {
 
     /**
      * Get the (constant) capacity of NovelTaskBag
-     * 
+     *
      * @return The capacity of NovelTaskBag
      */
     protected int capacity() {
@@ -51,7 +51,7 @@ public class NovelTaskBag extends Bag<Task> {
 
     /**
      * Get the (constant) forget rate in NovelTaskBag
-     * 
+     *
      * @return The forget rate in NovelTaskBag
      */
     protected float forgetRate() {

@@ -181,7 +181,7 @@ public class NAR {
 
     /**
      * Adds task to main memory
-     * 
+     *
      * @param task
      */
     private void inputNarseseTask(Task task) {
@@ -228,7 +228,7 @@ public class NAR {
 
     /**
      * determines the end of {@link NARSBatch} program
-     * 
+     *
      * @return
      */
     public boolean isFinishedInputs() {

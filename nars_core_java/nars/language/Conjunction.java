@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -196,7 +196,7 @@ public class Conjunction extends CompoundTerm {
 
     /**
      * 如果词项t为一个conjucntion，判断t是否与给定的order为同一个时序
-     * 
+     *
      * @param t
      * @param order
      * @return

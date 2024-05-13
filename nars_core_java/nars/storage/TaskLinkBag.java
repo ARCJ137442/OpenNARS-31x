@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -33,7 +33,7 @@ public class TaskLinkBag extends Bag<TaskLink> {
 
     /**
      * Constructor
-     * 
+     *
      * @param memory The reference of memory
      */
     public TaskLinkBag(Memory memory) {
@@ -42,7 +42,7 @@ public class TaskLinkBag extends Bag<TaskLink> {
 
     /**
      * Get the (constant) capacity of TaskLinkBag
-     * 
+     *
      * @return The capacity of TaskLinkBag
      */
     @Override
@@ -52,7 +52,7 @@ public class TaskLinkBag extends Bag<TaskLink> {
 
     /**
      * Get the (adjustable) forget rate of TaskLinkBag
-     * 
+     *
      * @return The forget rate of TaskLinkBag
      */
     @Override

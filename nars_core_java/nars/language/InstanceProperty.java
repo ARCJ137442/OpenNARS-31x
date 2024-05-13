@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -37,7 +37,7 @@ public abstract class InstanceProperty extends Statement {
      * rules.
      * <p>
      * A {-] B becomes {A} --> [B]
-     * 
+     *
      * @param subject   The first component
      * @param predicate The second component
      * @param memory    Reference to the memory

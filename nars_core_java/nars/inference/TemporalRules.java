@@ -135,7 +135,7 @@ public class TemporalRules {
     /**
      * whether temporal induction can generate a task by avoiding producing wrong
      * terms; only one temporal operator is allowed
-     * 
+     *
      * @param t
      * @return
      */
@@ -145,7 +145,7 @@ public class TemporalRules {
 
     /**
      * whether a term can be used in temoralInduction(,,)
-     * 
+     *
      * @param t
      */
     protected static boolean termForTemporalInduction(final Term t) {
@@ -284,7 +284,7 @@ public class TemporalRules {
      * if (relative) event B after (stationary) event A then order=forward;
      * event B before then order=backward
      * occur at the same time, re
-     * 
+     *
      * @param a
      * @param b
      * @param durationCycles

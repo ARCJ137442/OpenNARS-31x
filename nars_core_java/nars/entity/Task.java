@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -274,7 +274,7 @@ public class Task extends Item {
      * the bigger the contradiction and more resources needs to be spent.
      * Only called from processBuffer() from Memory.java when a task is
      * pre-processed
-     * 
+     *
      * @param c
      * @return
      */

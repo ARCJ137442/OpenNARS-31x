@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -115,7 +115,7 @@ public class TaskLink extends TermLink {
      * }
      * }
      * }
-     * 
+     *
      * next = i % Parameters.TERM_LINK_RECORD_LENGTH;
      * recordedLinks[next] = linkKey; // add knowledge reference to recordedLinks
      * recordingTime[next] = currentTime;

@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -117,13 +117,13 @@ public abstract class CompoundTerm extends Term {
 
     /*
      * protected CompoundTerm(ArrayList<Term> components, int temporalOrder){
-     * 
+     *
      * this.components = components;
      * this.temporalOrder = temporalOrder;
      * calcComplexity();
      * name = makeName();
      * isConstant = !Variable.containVar(name);
-     * 
+     *
      * }
      */
 

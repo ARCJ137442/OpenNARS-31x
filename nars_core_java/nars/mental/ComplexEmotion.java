@@ -21,10 +21,10 @@ public class ComplexEmotion {
 
         /*
          * if(c != null && !c.getDesires().isEmpty()){
-         * 
+         *
          * if(task.getSentence().getTruth().getExpectation() >= 0.5 &&
          * c.getDesires().get(0).getSentence().getTruth().getExpectation() < 0.5)
-         * 
+         *
          * }
          */
 

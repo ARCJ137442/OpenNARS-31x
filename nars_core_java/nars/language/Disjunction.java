@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -35,7 +35,7 @@ public class Disjunction extends CompoundTerm {
 
     /**
      * Constructor with partial values, called by make
-     * 
+     *
      * @param n   The name of the term
      * @param arg The component list of the term
      */
@@ -45,7 +45,7 @@ public class Disjunction extends CompoundTerm {
 
     /**
      * Constructor with full values, called by clone
-     * 
+     *
      * @param n    The name of the term
      * @param cs   Component list
      * @param open Open variable list
@@ -57,7 +57,7 @@ public class Disjunction extends CompoundTerm {
 
     /**
      * Clone an object
-     * 
+     *
      * @return A new object
      */
     @Override
@@ -68,7 +68,7 @@ public class Disjunction extends CompoundTerm {
     /**
      * Try to make a new Disjunction from two components. Called by the inference
      * rules.
-     * 
+     *
      * @param term1  The first component
      * @param term2  The first component
      * @param memory Reference to the memory
@@ -97,7 +97,7 @@ public class Disjunction extends CompoundTerm {
 
     /**
      * Try to make a new IntersectionExt. Called by StringParser.
-     * 
+     *
      * @param argList a list of Term as components
      * @param memory  Reference to the memory
      * @return the Term generated from the arguments
@@ -110,7 +110,7 @@ public class Disjunction extends CompoundTerm {
     /**
      * Try to make a new Disjunction from a set of components. Called by the public
      * make methods.
-     * 
+     *
      * @param set    a set of Term as components
      * @param memory Reference to the memory
      * @return the Term generated from the arguments
@@ -127,7 +127,7 @@ public class Disjunction extends CompoundTerm {
 
     /**
      * Get the operator of the term.
-     * 
+     *
      * @return the operator of the term
      */
     @Override
@@ -137,7 +137,7 @@ public class Disjunction extends CompoundTerm {
 
     /**
      * Disjunction is commutative.
-     * 
+     *
      * @return true for commutative
      */
     @Override

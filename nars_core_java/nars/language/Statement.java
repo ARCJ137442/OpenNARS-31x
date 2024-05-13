@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -278,7 +278,7 @@ public abstract class Statement extends CompoundTerm {
      * reflexive relation
      * 检查一个词项是否与另一个相同，或者被包含到另外一个词项中，除非在一个反身的关系中
      * <p>
-     * 
+     *
      * @param t1 The first term
      * @param t2 The second term
      * @return Whether they cannot be related in a statement

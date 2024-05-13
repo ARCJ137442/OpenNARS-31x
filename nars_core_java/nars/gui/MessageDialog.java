@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -38,7 +38,7 @@ public class MessageDialog extends JDialog implements ActionListener, WindowList
 
     /**
      * Constructor
-     * 
+     *
      * @param parent  The parent Frame
      * @param message The text to be displayed
      */
@@ -64,7 +64,7 @@ public class MessageDialog extends JDialog implements ActionListener, WindowList
 
     /**
      * Handling button click
-     * 
+     *
      * @param e The ActionEvent
      */
     public void actionPerformed(ActionEvent e) {

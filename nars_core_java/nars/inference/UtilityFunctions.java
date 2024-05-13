@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -32,7 +32,7 @@ public class UtilityFunctions {
 
     /**
      * A function where the output is conjunctively determined by the inputs
-     * 
+     *
      * @param arr The inputs, each in [0, 1]
      * @return The output that is no larger than each input
      */
@@ -46,7 +46,7 @@ public class UtilityFunctions {
 
     /**
      * A function where the output is disjunctively determined by the inputs
-     * 
+     *
      * @param arr The inputs, each in [0, 1]
      * @return The output that is no smaller than each input
      */
@@ -60,7 +60,7 @@ public class UtilityFunctions {
 
     /**
      * A function where the output is the arithmetic average the inputs
-     * 
+     *
      * @param arr The inputs, each in [0, 1]
      * @return The arithmetic average the inputs
      */
@@ -74,7 +74,7 @@ public class UtilityFunctions {
 
     /**
      * A function where the output is the geometric average the inputs
-     * 
+     *
      * @param arr The inputs, each in [0, 1]
      * @return The geometric average the inputs
      */
@@ -88,7 +88,7 @@ public class UtilityFunctions {
 
     /**
      * A function to convert weight to confidence
-     * 
+     *
      * @param w Weight of evidence, a non-negative real number
      * @return The corresponding confidence, in [0, 1)
      */
@@ -98,7 +98,7 @@ public class UtilityFunctions {
 
     /**
      * A function to convert confidence to weight
-     * 
+     *
      * @param c confidence, in [0, 1)
      * @return The corresponding weight of evidence, a non-negative real number
      */

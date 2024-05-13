@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -38,7 +38,7 @@ public class Implication extends Statement {
 
     /**
      * Constructor with partial values, called by make
-     * 
+     *
      * @param arg The component list of the term
      */
     protected Implication(ArrayList<Term> arg) {
@@ -47,7 +47,7 @@ public class Implication extends Statement {
 
     /**
      * Constructor with full values, called by clone
-     * 
+     *
      * @param n   The name of the term
      * @param cs  Component list
      * @param con Whether it is a constant term
@@ -65,7 +65,7 @@ public class Implication extends Statement {
 
     /**
      * Clone an object
-     * 
+     *
      * @return A new object
      */
     @Override
@@ -75,7 +75,7 @@ public class Implication extends Statement {
 
     /**
      * Try to make a new compound from two components.Called by the inference rules.
-     * 
+     *
      * @param subject       The first component
      * @param predicate     The second component
      * @param temporalOrder
@@ -134,7 +134,7 @@ public class Implication extends Statement {
 
     /**
      * Get the operator of the term.
-     * 
+     *
      * @return the operator of the term
      */
     @Override

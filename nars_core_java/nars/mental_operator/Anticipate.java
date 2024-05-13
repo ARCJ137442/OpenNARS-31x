@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2018 The OpenNARS authors.
@@ -75,19 +75,19 @@ public class Anticipate extends Operator {
          * st=t.sentence.stamp.clone();
          * st.setOccurrenceTime(time.time());
          * }
-         * 
+         *
          * final Sentence s=new Sentence(
          * op,
          * Symbols.JUDGMENT_MARK,
          * truth,
          * st);
-         * 
+         *
          * final BudgetValue budgetForNewTask = new BudgetValue(
          * memory.narParameters.DEFAULT_JUDGMENT_PRIORITY*ANTICIPATION_PRIORITY_MUL,
          * memory.narParameters.DEFAULT_JUDGMENT_DURABILITY*ANTICIPATION_DURABILITY_MUL,
          * BudgetFunctions.truthToQuality(truth), memory.narParameters);
          * final Task newTask = new Task(s, budgetForNewTask, Task.EnumType.INPUT);
-         * 
+         *
          * memory.addNewTask(newTask, "Internal");
          * }
          */

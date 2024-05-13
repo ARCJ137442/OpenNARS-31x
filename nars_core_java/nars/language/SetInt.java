@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -36,7 +36,7 @@ public class SetInt extends CompoundTerm {
 
     /**
      * Constructor with partial values, called by make
-     * 
+     *
      * @param n   The name of the term
      * @param arg The component list of the term
      */
@@ -46,7 +46,7 @@ public class SetInt extends CompoundTerm {
 
     /**
      * constructor with full values, called by clone
-     * 
+     *
      * @param n    The name of the term
      * @param cs   Component list
      * @param open Open variable list
@@ -58,7 +58,7 @@ public class SetInt extends CompoundTerm {
 
     /**
      * Clone a SetInt
-     * 
+     *
      * @return A new object, to be casted into a SetInt
      */
     public SetInt clone() {
@@ -67,7 +67,7 @@ public class SetInt extends CompoundTerm {
 
     /**
      * Try to make a new set from one component. Called by the inference rules.
-     * 
+     *
      * @param t      The compoment
      * @param memory Reference to the memeory
      * @return A compound generated or a term it reduced to
@@ -80,7 +80,7 @@ public class SetInt extends CompoundTerm {
 
     /**
      * Try to make a new SetExt. Called by StringParser.
-     * 
+     *
      * @return the Term generated from the arguments
      * @param argList The list of components
      * @param memory  Reference to the memeory
@@ -93,7 +93,7 @@ public class SetInt extends CompoundTerm {
     /**
      * Try to make a new compound from a set of components. Called by the public
      * make methods.
-     * 
+     *
      * @param set    a set of Term as compoments
      * @param memory Reference to the memeory
      * @return the Term generated from the arguments
@@ -110,7 +110,7 @@ public class SetInt extends CompoundTerm {
 
     /**
      * Get the operator of the term.
-     * 
+     *
      * @return the operator of the term
      */
     public String operator() {
@@ -119,7 +119,7 @@ public class SetInt extends CompoundTerm {
 
     /**
      * Check if the compound is communitative.
-     * 
+     *
      * @return true for communitative
      */
     @Override
@@ -129,7 +129,7 @@ public class SetInt extends CompoundTerm {
 
     /**
      * Make a String representation of the set, override the default.
-     * 
+     *
      * @return true for communitative
      */
     @Override

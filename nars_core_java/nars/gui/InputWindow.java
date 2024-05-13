@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -57,7 +57,7 @@ public class InputWindow extends NarsFrame implements ActionListener, InputChann
 
     /**
      * Constructor
-     * 
+     *
      * @param reasoner The reasoner
      * @param title    The title of the window
      */
@@ -114,7 +114,7 @@ public class InputWindow extends NarsFrame implements ActionListener, InputChann
 
     /**
      * Handling button click
-     * 
+     *
      * @param e The ActionEvent
      */
     public void actionPerformed(ActionEvent e) {
@@ -142,7 +142,7 @@ public class InputWindow extends NarsFrame implements ActionListener, InputChann
     /**
      * Accept text input in a cycle, which can be multiple lines
      * TODO some duplicated code with {@link ExperienceReader#nextInput()}
-     * 
+     *
      * @return Whether to check this channel again
      */
     public boolean nextInput() {

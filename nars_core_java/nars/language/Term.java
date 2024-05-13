@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -148,7 +148,7 @@ public class Term implements Cloneable, Comparable<Term> {
      * Gets simplicity of the term based on the number of atomic components
      * Single atomic term has max simplicity of 1. Power was chosen as -0.5 and
      * subject for research
-     * 
+     *
      * @return
      */
     public double getSimplicity() {
@@ -157,7 +157,7 @@ public class Term implements Cloneable, Comparable<Term> {
 
     /**
      * Orders among terms: variable < atomic < compound
-     * 
+     *
      * @param that The Term to be compared with the current Term
      * @return The same as compareTo as defined on Strings
      */

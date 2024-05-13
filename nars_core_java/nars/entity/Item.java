@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -42,7 +42,7 @@ public abstract class Item {
 
     /**
      * Constructor with default budget
-     * 
+     *
      * @param key The key value
      */
     protected Item(String key) {
@@ -52,7 +52,7 @@ public abstract class Item {
 
     /**
      * Constructor with initial budget
-     * 
+     *
      * @param key    The key value
      * @param budget The initial budget
      */
@@ -63,7 +63,7 @@ public abstract class Item {
 
     /**
      * Constructor with initial budget
-     * 
+     *
      * @param budget The initial budget
      */
     protected void setBudget(BudgetValue budget) {
@@ -72,7 +72,7 @@ public abstract class Item {
 
     /**
      * Get the current key
-     * 
+     *
      * @return Current key value
      */
     public String getKey() {
@@ -81,7 +81,7 @@ public abstract class Item {
 
     /**
      * Get BudgetValue
-     * 
+     *
      * @return Current BudgetValue
      */
     public BudgetValue getBudget() {
@@ -90,7 +90,7 @@ public abstract class Item {
 
     /**
      * Get priority value
-     * 
+     *
      * @return Current priority value
      */
     public float getPriority() {
@@ -99,7 +99,7 @@ public abstract class Item {
 
     /**
      * Set priority value
-     * 
+     *
      * @param v Set a new priority value
      */
     public void setPriority(float v) {
@@ -108,7 +108,7 @@ public abstract class Item {
 
     /**
      * Increase priority value
-     * 
+     *
      * @param v The amount of increase
      */
     public void incPriority(float v) {
@@ -117,7 +117,7 @@ public abstract class Item {
 
     /**
      * Decrease priority value
-     * 
+     *
      * @param v The amount of decrease
      */
     public void decPriority(float v) {
@@ -126,7 +126,7 @@ public abstract class Item {
 
     /**
      * Get durability value
-     * 
+     *
      * @return Current durability value
      */
     public float getDurability() {
@@ -135,7 +135,7 @@ public abstract class Item {
 
     /**
      * Set durability value
-     * 
+     *
      * @param v The new durability value
      */
     public void setDurability(float v) {
@@ -144,7 +144,7 @@ public abstract class Item {
 
     /**
      * Increase durability value
-     * 
+     *
      * @param v The amount of increase
      */
     public void incDurability(float v) {
@@ -153,7 +153,7 @@ public abstract class Item {
 
     /**
      * Decrease durability value
-     * 
+     *
      * @param v The amount of decrease
      */
     public void decDurability(float v) {
@@ -162,7 +162,7 @@ public abstract class Item {
 
     /**
      * Get quality value
-     * 
+     *
      * @return The quality value
      */
     public float getQuality() {
@@ -171,7 +171,7 @@ public abstract class Item {
 
     /**
      * Set quality value
-     * 
+     *
      * @param v The new quality value
      */
     public void setQuality(float v) {
@@ -180,7 +180,7 @@ public abstract class Item {
 
     /**
      * Merge with another Item with identical key
-     * 
+     *
      * @param that The Item to be merged
      */
     public void merge(Item that) {
@@ -189,7 +189,7 @@ public abstract class Item {
 
     /**
      * Return a String representation of the Item
-     * 
+     *
      * @return The String representation of the full content
      */
     @Override
@@ -199,7 +199,7 @@ public abstract class Item {
 
     /**
      * Return a String representation of the Item after simplification
-     * 
+     *
      * @return A simplified String representation of the content
      */
     public String toStringBrief() {

@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2021 The OpenNARS authors.
@@ -30,7 +30,7 @@ import nars.storage.NullBagObserver;
 /**
  * Class was moved from Concept.java to be a standalone class for future
  * implementation
- * 
+ *
  * @author Peter
  */
 public class NullEntityObserver implements EntityObserver {

@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -84,7 +84,7 @@ public class main implements Runnable {
     /**
      * The entry point of the standalone application.
      * Create an instance of the class
-     * 
+     *
      * @param args optional argument used : one input file, possibly followed by
      *             --silence <integer>
      */

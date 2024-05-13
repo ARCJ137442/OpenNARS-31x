@@ -14,7 +14,7 @@ import nars.storage.Memory;
 
 /**
  * 操作符
- * 
+ *
  * @author Xiang
  */
 public abstract class Operator extends Term {
@@ -34,7 +34,7 @@ public abstract class Operator extends Term {
 
     /**
      * 每个operator都需要的方法，尤其是对应的操作
-     * 
+     *
      * @param operation 操作
      * @param args
      * @param memory
@@ -45,7 +45,7 @@ public abstract class Operator extends Term {
 
     /**
      * 施行操作的标准方式，实施operator中定义的实行方法，并且解决feedback任务作为input
-     * 
+     *
      * @param operation the operator to be executed
      * @param args      the arguments to be taken byt he operator
      * @param memory    the reference to the memory
@@ -83,7 +83,7 @@ public abstract class Operator extends Term {
 
     /**
      * 调用
-     * 
+     *
      * @param op
      * @param memory
      * @param time

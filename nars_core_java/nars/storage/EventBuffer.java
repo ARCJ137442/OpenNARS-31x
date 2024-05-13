@@ -51,7 +51,7 @@ public abstract class EventBuffer extends Buffer<Task> {
     /**
      * capacity of the expectationList, means how many expectation
      * the system can expect at most
-     * 
+     *
      * @return
      */
     protected abstract int anticipationCapacity();
@@ -62,7 +62,7 @@ public abstract class EventBuffer extends Buffer<Task> {
      * the expectation of the expected task, also, the occurrence time less than
      * expected occurrence time,
      * add to the fulfilledAnticipation list
-     * 
+     *
      * @param task
      */
     public void processAnticipation(Task task) {
@@ -94,7 +94,7 @@ public abstract class EventBuffer extends Buffer<Task> {
     /**
      * Preprocessing the input, temporal induction happens here, instead of
      * observation
-     * 
+     *
      * @param task
      * @param allowOverlap
      */
@@ -126,7 +126,7 @@ public abstract class EventBuffer extends Buffer<Task> {
      * Event inference, when a new event come into the buffer, first see if
      * it fulfill the standard for temporal induction, if so, do the temporal
      * induction
-     * 
+     *
      * @param newEvent
      * @param allowOverlap if overlap of evidence is allow in this buffer
      * @return
@@ -281,7 +281,7 @@ public abstract class EventBuffer extends Buffer<Task> {
     /**
      * find the insert position in the sequence list, the list sort by the
      * occurrence time
-     * 
+     *
      * @param task
      * @return
      */
@@ -307,7 +307,7 @@ public abstract class EventBuffer extends Buffer<Task> {
 
     /**
      * Insert an task into the sequence list
-     * 
+     *
      * @param task Task to be inserted
      * @param time
      * @return
@@ -392,7 +392,7 @@ public abstract class EventBuffer extends Buffer<Task> {
 
     /**
      * generate the expectation
-     * 
+     *
      * @param task
      */
     public void generateExpectation(Task task) {
@@ -602,7 +602,7 @@ public abstract class EventBuffer extends Buffer<Task> {
 
     /**
      * Add to the expectation list
-     * 
+     *
      * @param expectation
      * @return
      */
@@ -665,7 +665,7 @@ public abstract class EventBuffer extends Buffer<Task> {
 
     /**
      * check duplicates in the list
-     * 
+     *
      * @param task
      * @param list
      * @return
@@ -685,7 +685,7 @@ public abstract class EventBuffer extends Buffer<Task> {
 
     /**
      * Similar to the insert into sequence list, but sort by priority
-     * 
+     *
      * @param task
      * @param list
      * @param capacity
@@ -727,7 +727,7 @@ public abstract class EventBuffer extends Buffer<Task> {
 
     /**
      * Finding the insert index for inserting into the priority list
-     * 
+     *
      * @param task
      * @return
      */
@@ -783,7 +783,7 @@ public abstract class EventBuffer extends Buffer<Task> {
 
     /**
      * Take out
-     * 
+     *
      * @return
      */
     @Override
@@ -811,7 +811,7 @@ public abstract class EventBuffer extends Buffer<Task> {
 
     /**
      * Only does the take out, the temporal induction move to the insertion
-     * 
+     *
      * @param temporalInduction
      * @param allowOverlap
      * @return

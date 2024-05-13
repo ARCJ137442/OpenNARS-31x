@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -46,7 +46,7 @@ public class ParameterWindow extends NarsFrame implements ActionListener, Adjust
 
     /**
      * Constructor
-     * 
+     *
      * @param title Parameter name
      * @param dft   The default value of the parameter
      * @param value
@@ -94,7 +94,7 @@ public class ParameterWindow extends NarsFrame implements ActionListener, Adjust
 
     /**
      * Get the value of the parameter
-     * 
+     *
      * @return The current value
      */
     public int value() {
@@ -103,7 +103,7 @@ public class ParameterWindow extends NarsFrame implements ActionListener, Adjust
 
     /**
      * Handling button click
-     * 
+     *
      * @param e The ActionEvent
      */
     public void actionPerformed(ActionEvent e) {
@@ -133,7 +133,7 @@ public class ParameterWindow extends NarsFrame implements ActionListener, Adjust
 
     /**
      * Handling scrollbar movement
-     * 
+     *
      * @param e The AdjustmentEvent
      */
     public void adjustmentValueChanged(AdjustmentEvent e) {

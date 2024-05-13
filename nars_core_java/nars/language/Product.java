@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -35,7 +35,7 @@ public class Product extends CompoundTerm {
 
     /**
      * Constructor with partial values, called by make
-     * 
+     *
      * @param n   The name of the term
      * @param arg The component list of the term
      */
@@ -45,7 +45,7 @@ public class Product extends CompoundTerm {
 
     /**
      * Constructor with full values, called by clone
-     * 
+     *
      * @param n          The name of the term
      * @param cs         Component list
      * @param open       Open variable list
@@ -57,7 +57,7 @@ public class Product extends CompoundTerm {
 
     /**
      * Clone a Product
-     * 
+     *
      * @return A new object, to be casted into an ImageExt
      */
     public Product clone() {
@@ -66,7 +66,7 @@ public class Product extends CompoundTerm {
 
     /**
      * Try to make a new compound. Called by StringParser.
-     * 
+     *
      * @return the Term generated from the arguments
      * @param argument The list of components
      * @param memory   Reference to the memeory
@@ -80,7 +80,7 @@ public class Product extends CompoundTerm {
     /**
      * Try to make a Product from an ImageExt/ImageInt and a component. Called by
      * the inference rules.
-     * 
+     *
      * @param image     The existing Image
      * @param component The component to be added into the component list
      * @param index     The index of the place-holder in the new Image -- optional
@@ -96,7 +96,7 @@ public class Product extends CompoundTerm {
 
     /**
      * Get the operator of the term.
-     * 
+     *
      * @return the operator of the term
      */
     @Override
