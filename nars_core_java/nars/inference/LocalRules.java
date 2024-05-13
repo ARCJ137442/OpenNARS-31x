@@ -167,7 +167,7 @@ public class LocalRules {
         //System.out.println("Task: " + task.getName());
         
         if (task.isInput() && task.getSentence().isQuestion()) {    // moved from Sentence
-            System.out.println("2");
+            // System.out.println("2");
             memory.report(belief, false, true);
         }
         BudgetValue budget = BudgetFunctions.solutionEval(problem, belief, task, memory);

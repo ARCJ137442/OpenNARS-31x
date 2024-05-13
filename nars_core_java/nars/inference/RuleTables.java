@@ -329,7 +329,7 @@ public class RuleTables {
                     t2 = s1.getPredicate();
                     //System.out.println("30");
                     if (Variable.unify(Symbols.VAR_QUERY, t1, t2, s1, s2)) {
-                        System.out.println("31");
+                        // System.out.println("31");
                         LocalRules.matchReverse(memory);
                     } else {
                         //System.out.println("32");
