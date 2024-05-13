@@ -403,4 +403,8 @@ public class Sentence implements Cloneable {
     public double projectedConfidence(long currentTime){
         return this.truth.getConfidence() * Math.pow((currentTime - this.stamp.getCreationTime()), Parameters.PROJECTION_DECAY);
     }
+
+    public void setTruth(TruthValue new_truth) {
+        this.truth = new_truth;
+    }
 }

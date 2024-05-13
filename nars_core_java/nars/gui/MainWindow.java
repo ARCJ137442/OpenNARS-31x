@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -292,7 +292,7 @@ public class MainWindow extends NarsFrame implements ActionListener, OutputChann
         } else if (obj instanceof JMenuItem) {
             String label = e.getActionCommand();
             if (label.equals("Load Experience")) {
-                experienceReader = new ExperienceReader(reasoner);
+                ExperienceReader experienceReader = new ExperienceReader(reasoner);
                 experienceReader.openLoadFile();
             } else if (label.equals("Save Experience")) {
                 if (savingExp) {

@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -45,6 +45,8 @@ public class NAR_GUI extends NAR {
      * Input experience from a window
      */
     private InputWindow inputWindow;
+    private InputWindow inputWindow2;
+
 
     /**
      * Start the initial windows and memory. Called from NARS only.
@@ -55,8 +57,10 @@ public class NAR_GUI extends NAR {
         super();
         this.name = name;
         inputWindow = new InputWindow(this, name);
+        inputWindow2 = new InputWindow(this, name);
         mainWindow = new MainWindow(this, name);
-        inputChannels.add(inputWindow);
+//        inputChannels.add(inputWindow);
+//        inputChannels.add(inputWindow2);
         outputChannels.add(mainWindow);
         mainWindow.setVisible(true);
     }

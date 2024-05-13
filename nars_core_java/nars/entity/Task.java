@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -24,34 +24,43 @@
 package nars.entity;
 
 import java.util.ArrayList;
+
 import nars.language.Term;
 
 /**
  * A task to be processed, consists of a Sentence and a BudgetValue
  */
-public class Task extends Item{
+public class Task extends Item {
 
-    /** The sentence of the Task */
+    /**
+     * The sentence of the Task
+     */
     private Sentence sentence;
-    /** Task from which the Task is derived, or null if input */
+    /**
+     * Task from which the Task is derived, or null if input
+     */
     private Task parentTask;
-    /** Belief from which the Task is derived, or null if derived from a theorem */
+    /**
+     * Belief from which the Task is derived, or null if derived from a theorem
+     */
     private Sentence parentBelief;
-    /** For Question and Goal: best solution found so far */
+    /**
+     * For Question and Goal: best solution found so far
+     */
     private Sentence bestSolution;
-    
+
     private ArrayList<Sentence> previousBestSolution;
-    
+
     private boolean processed = false;
-    
+
     private boolean putBack = false;
-    
+
     private boolean isInput = true;
-    
+
     private boolean wasInBuffer;
-    
+
     private boolean generatedAnticipation = false;
-    
+
     private boolean temporalInduction = false;
 
     /**
@@ -68,13 +77,13 @@ public class Task extends Item{
         key = sentence.toKey();
         previousBestSolution = new ArrayList();
     }
-    
+
     /**
      * Constructor for a derived task
      *
-     * @param s The sentence
-     * @param b The budget
-     * @param parentTask The task from which this new task is derived
+     * @param s            The sentence
+     * @param b            The budget
+     * @param parentTask   The task from which this new task is derived
      * @param parentBelief The belief from which this new task is derived
      */
     public Task(Sentence s, BudgetValue b, Task parentTask, Sentence parentBelief) {
@@ -88,11 +97,11 @@ public class Task extends Item{
     /**
      * Constructor for an activated task
      *
-     * @param s The sentence
-     * @param b The budget
-     * @param parentTask The task from which this new task is derived
+     * @param s            The sentence
+     * @param b            The budget
+     * @param parentTask   The task from which this new task is derived
      * @param parentBelief The belief from which this new task is derived
-     * @param solution The belief to be used in future inference
+     * @param solution     The belief to be used in future inference
      */
     public Task(Sentence s, BudgetValue b, Task parentTask, Sentence parentBelief, Sentence solution) {
         this(s, b, parentTask, parentBelief);
@@ -100,38 +109,38 @@ public class Task extends Item{
         this.bestSolution = solution;
         previousBestSolution = new ArrayList();
     }
-    
-    public boolean isPutBack(){
+
+    public boolean isPutBack() {
         return putBack;
     }
-    
-    public void switchPutBack(){
+
+    public void switchPutBack() {
         putBack = !putBack;
     }
-    
-    public boolean getGeneratedAnticipation(){
+
+    public boolean getGeneratedAnticipation() {
         return generatedAnticipation;
     }
-    
-    public void setGeneratedAnticipation(boolean generatedAnticipation){  
+
+    public void setGeneratedAnticipation(boolean generatedAnticipation) {
         this.generatedAnticipation = generatedAnticipation;
     }
-    
-    public boolean observable(){
+
+    public boolean observable() {
         return isInput |= sentence.getObservable();
     }
 
-    public boolean fulfilled(){
-        if(bestSolution == null)
+    public boolean fulfilled() {
+        if (bestSolution == null)
             return false;
         return sentence.getTruth().getExpectation() - bestSolution.getTruth().getExpectation() <= 0;
     }
-    
-    public boolean wasInBuffer(){
+
+    public boolean wasInBuffer() {
         return wasInBuffer;
     }
-    
-    public void setWasInBuffer(boolean wasInBuffer){
+
+    public void setWasInBuffer(boolean wasInBuffer) {
         this.wasInBuffer = wasInBuffer;
     }
 
@@ -168,24 +177,24 @@ public class Task extends Item{
      * @return Whether the Task is derived from another task
      */
     public boolean isInput() {
-        if(parentTask != null)
+        if (parentTask != null)
             isInput = false;
         return isInput || temporalInduction;
     }
-    
-    public void addBestSolution(Sentence solution){
+
+    public void addBestSolution(Sentence solution) {
         previousBestSolution.add(solution);
     }
-    
-    public boolean getTemporalInduction(){
+
+    public boolean getTemporalInduction() {
         return temporalInduction;
     }
-    
-    public void setTemporalInduction(boolean temporalInduction){
+
+    public void setTemporalInduction(boolean temporalInduction) {
         this.temporalInduction = temporalInduction;
     }
-    
-    public void setIsInput(boolean isInput){
+
+    public void setIsInput(boolean isInput) {
         this.isInput = isInput;
     }
 
@@ -197,6 +206,7 @@ public class Task extends Item{
 //    public boolean isStructural() {
 //        return (parentBelief == null) && (parentTask != null);
 //    }
+
     /**
      * Merge one Task into another
      *
@@ -210,12 +220,12 @@ public class Task extends Item{
             that.merge(this);
         }
     }
-    
-    public boolean getProcessed(){
+
+    public boolean getProcessed() {
         return processed;
     }
-    
-    public void setProcessed(boolean processed){
+
+    public void setProcessed(boolean processed) {
         this.processed = processed;
     }
 
@@ -246,16 +256,16 @@ public class Task extends Item{
     public Sentence getParentBelief() {
         return parentBelief;
     }
-    
-    public Stamp getStamp(){
+
+    public Stamp getStamp() {
         return sentence.getStamp();
     }
-    
-    public boolean isEternal(){
+
+    public boolean isEternal() {
         return getStamp().getOccurrenceTime() == Stamp.ETERNAL;
     }
-    
-    public String getName(){
+
+    public String getName() {
         return sentence.getContent().getName();
     }
 
@@ -267,27 +277,28 @@ public class Task extends Item{
     public Task getParentTask() {
         return parentTask;
     }
-    
+
     /**
      * Returns Achieving level of a task. Idea is if a contradicting belief exists
-     * then spend more resources on it, thus the less the achieving level, 
+     * then spend more resources on it, thus the less the achieving level,
      * the bigger the contradiction and more resources needs to be spent.
      * Only called from processBuffer() from Memory.java when a task is pre-processed
+     *
      * @param c
-     * @return 
+     * @return
      */
-    public double getAchievingLevel(Concept c){
-        if (this.sentence.isJudgment() || this.sentence.isGoal()){
+    public double getAchievingLevel(Concept c) {
+        if (this.sentence.isJudgment() || this.sentence.isGoal()) {
             Sentence MatchBelief = c.getBeliefs().get(0);
-            if (MatchBelief != null){
+            if (MatchBelief != null) {
                 return 1 - Math.abs(this.sentence.getTruth().getExpectation() - MatchBelief.getTruth().getExpectation());
             }
-        }else if(this.sentence.isQuestion() || this.sentence.isQuest()){
-            if (this.sentence != null){   
+        } else if (this.sentence.isQuestion() || this.sentence.isQuest()) {
+            if (this.sentence != null) {
                 return 1 - Math.abs(this.sentence.getTruth().getExpectation() - this.bestSolution.getTruth().getExpectation());
             }
         }
-        return Math.abs(this.sentence.getTruth().getExpectation()-0.5);
+        return Math.abs(this.sentence.getTruth().getExpectation() - 0.5);
     }
 
     /**
@@ -310,5 +321,9 @@ public class Task extends Item{
             s.append("  \n solution: ").append(bestSolution.toStringBrief());
         }
         return s.toString();
+    }
+
+    public void setBudget(BudgetValue new_budget) {
+        this.budget = new_budget;
     }
 }

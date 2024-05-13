@@ -280,9 +280,9 @@ public abstract class CompoundTerm extends Term {
             if (op.equals(Symbols.CONJUNCTION_SEQUENCE)){
                 return Conjunction.make(arg, TemporalRules.ORDER_FORWARD, memory);
             }
-            /*if(op.equals(Symbols.CONJUNCTION_PARALLEL)){
+            if(op.equals(Symbols.CONJUNCTION_PARALLEL)){
                 return Conjunction.make(arg, TemporalRules.ORDER_CONCURRENT, memory);
-            }*/
+            }
         }
         return null;
     }

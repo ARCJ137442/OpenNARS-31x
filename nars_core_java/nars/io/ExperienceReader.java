@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2019 The OpenNARS authors.
@@ -81,7 +81,7 @@ public class ExperienceReader implements InputChannel {
         } catch (IOException ex) {
             System.out.println("i/o error: " + ex.getMessage());
         }
-        reasoner.addInputChannel(this);
+//        reasoner.addInputChannel(this);
     }
 
     /**
@@ -93,12 +93,12 @@ public class ExperienceReader implements InputChannel {
         } catch (IOException ex) {
             System.out.println("i/o error: " + ex.getMessage());
         }
-        reasoner.removeInputChannel(this);
+//        reasoner.removeInputChannel(this);
     }
 
     public void setBufferedReader(BufferedReader inExp) {
         this.inExp = inExp;
-        reasoner.addInputChannel(this);
+//        reasoner.addInputChannel(this);
     }
 
     /**

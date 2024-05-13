@@ -146,9 +146,7 @@ public class TruthValue implements Cloneable { // implements Cloneable {
      *
      * @return The expectation value
      */
-    public float getExpectation() {
-        return (float) (confidence.getValue() * (frequency.getValue() - 0.5) + 0.5);
-    }
+    public float getExpectation() {return (float) (confidence.getValue() * (frequency.getValue() - 0.5) + 0.5);}
 
     /**
      * Calculate the absolute difference of the expectation value and that of a

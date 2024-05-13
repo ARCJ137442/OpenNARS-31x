@@ -245,7 +245,10 @@ public abstract class Statement extends CompoundTerm {
      * @return Whether The Statement is invalid
      */
     public static boolean invalidStatement(Term subject, Term predicate) {
-        if (subject == null || predicate == null || subject.equals(predicate)) {
+//        if (subject == null || predicate == null || subject.equals(predicate)) {
+//            return true;
+//        }
+        if (subject == null || predicate == null) {
             return true;
         }
         if (invalidReflexive(subject, predicate)) {

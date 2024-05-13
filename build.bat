@@ -7,7 +7,7 @@ mkdir classes
 
 @REM * 2024-04-19 11:25:38 构建参考：https://www.baeldung.com/javac-compile-classes-directory/
 @REM ↓使用 /A:-D 忽略目录 | 参考自 `dir --help`
-dir /b /s /A:-D *.java > sources.txt
+@REM dir /b /s /A:-D *.java > sources.txt
 @REM ↑这是所有Java代码，可能编译顺序不能保证，但实际上无需顾虑顺序（编译器会自动做依赖分析）
 javac -d classes @sources.txt -Xstdout compile.log
 

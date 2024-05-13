@@ -161,7 +161,6 @@ public final class Concept extends Item {
      * To accept a new judgment as isBelief, and check for revisions and
      * solutions
      *
-     * @param judg The judgment to be accepted
      * @param task The task to be processed
      * @return Whether to continue the processing of the task
      */
@@ -211,7 +210,6 @@ public final class Concept extends Item {
      /**
      * Use implication relation to generate anticipation within concept
      * Called from Concept.processJudgment() and LocalRules.java
-     * @param term 
      */
     public void generateAnticipations(Sentence sentence){
                
@@ -260,7 +258,6 @@ public final class Concept extends Item {
     /**
      * Form hypothesis and generate goal preconditions
      * Called from Concept.processJudgment() and LocalRules.java
-     * @param task 
      */
     public void generateGoalPreconditions(Sentence sentence){
         
@@ -431,7 +428,7 @@ public final class Concept extends Item {
             return;
         }
 
-        reactionToGoal();
+//        reactionToGoal();
         addToTable(task, desires, Parameters.MAXIMUM_GOAL_LENGTH);                      
         //reactionToGoal();
     }
@@ -465,99 +462,99 @@ public final class Concept extends Item {
     /**
      * If there is a goal is unfulfilled, then what system need to do to fulfill the goal
      */
-    public void reactionToGoal(){
-        
-        if(!desires.isEmpty()){
-
-            /*if(desires.get(0).fulfilled()){
-                return;
-            }*/
-            
-            // best operation, if there are several operations to reach the goal
-            Concept bestop = null;
-            
-            Term precondition = null;
-            
-            //memory.generalInfoReport(executable_preconditions.toString());
-            
-            if(!executable_preconditions.isEmpty()){
-                // go over the executable preconditions list
-                for (Concept c : executable_preconditions) {
-                    
-                    if(c != null && c.getTerm() instanceof Implication)   
-                        precondition = ((Implication)c.getTerm()).getSubject();  
-                    
-                    if(precondition == null)
-                        return;
-                    
-                    // if precondition is conjunction
-                    if(precondition instanceof Conjunction){
-                        
-                        // if the sequence lis tin the overall buffer is not null
-                        if(memory.getOveralExperience().getSequenceList().size() >= 1){                                                    
-                            
-                            boolean happening = false;
-                            
-                            // check if the precondition is happening 
-                            for(int i = memory.getOveralExperience().getSequenceList().size() - 1; i >= 0; i--){
-                                
-                                if(((Conjunction)precondition).getComponents().get(0).getName().equals(memory.getOveralExperience().getSequenceList().get(i).getName())){
-                                    happening = true;
-                                    break;
-                                }
-                                
-                            }
-                            
-                            if(!happening)
-                                continue;
-                                
-                            // if best operation is null assign the current operation to it
-                            if(bestop == null)
-                                bestop = c;
-                            // if not null, check if the current relation gives better solution
-                            else if(c.getBeliefs().get(0).getTruth().getExpectation() > bestop.getBeliefs().get(0).getTruth().getExpectation())
-                                bestop = c;
-                            
-                        }
-                        
-                    }
-                    
-                }
-                
-                if(bestop == null)
-                    return;
-
-                TruthValue truth = null;
-                if(bestop.getBeliefs() != null)
-                    truth = TruthFunctions.deduction(desires.get(0).getSentence().getTruth(), bestop.getBeliefs().get(0).getTruth());
-                        
-                if(truth != null ){
-                    float priority = Parameters.DEFAULT_SUBGOAL_PRIORITY;
-                    float durability = Parameters.DEFAULT_EVENT_DURABILITY;
-                    float quality = BudgetFunctions.truthToQuality(truth);
-                        
-                    BudgetValue budget = new BudgetValue(priority, durability, quality);
-                    Stamp stamp = new Stamp(memory.getTime());
-                    
-                    Sentence sentence = null;
-                    
-                    precondition = ((Implication)bestop.getTerm()).getSubject();
-                    
-                    if(precondition instanceof Conjunction)
-                        sentence = new Sentence(((Conjunction)precondition).getComponents().get(1), Symbols.GOAL_MARK, truth, stamp);
-                    
-                    if(sentence == null)
-                        return;
-                    
-                    Task task = new Task(sentence, budget);
-                    memory.report(task.getSentence(), false, false);
-                    memory.getReasoner().getInternalBuffer().putInSequenceList(task, memory.getTime());
-                }
-                
-            }
-            
-        }
-    }
+//    public void reactionToGoal(){
+//
+//        if(!desires.isEmpty()){
+//
+//            /*if(desires.get(0).fulfilled()){
+//                return;
+//            }*/
+//
+//            // best operation, if there are several operations to reach the goal
+//            Concept bestop = null;
+//
+//            Term precondition = null;
+//
+//            //memory.generalInfoReport(executable_preconditions.toString());
+//
+//            if(!executable_preconditions.isEmpty()){
+//                // go over the executable preconditions list
+//                for (Concept c : executable_preconditions) {
+//
+//                    if(c != null && c.getTerm() instanceof Implication)
+//                        precondition = ((Implication)c.getTerm()).getSubject();
+//
+//                    if(precondition == null)
+//                        return;
+//
+//                    // if precondition is conjunction
+//                    if(precondition instanceof Conjunction){
+//
+//                        // if the sequence list in the overall buffer is not null
+//                        if(memory.getOveralExperience().getSequenceList().size() >= 1){
+//
+//                            boolean happening = false;
+//
+//                            // check if the precondition is happening
+//                            for(int i = memory.getOveralExperience().getSequenceList().size() - 1; i >= 0; i--){
+//
+//                                if(((Conjunction)precondition).getComponents().get(0).getName().equals(memory.getOveralExperience().getSequenceList().get(i).getName())){
+//                                    happening = true;
+//                                    break;
+//                                }
+//
+//                            }
+//
+//                            if(!happening)
+//                                continue;
+//
+//                            // if best operation is null assign the current operation to it
+//                            if(bestop == null)
+//                                bestop = c;
+//                            // if not null, check if the current relation gives better solution
+//                            else if(c.getBeliefs().get(0).getTruth().getExpectation() > bestop.getBeliefs().get(0).getTruth().getExpectation())
+//                                bestop = c;
+//
+//                        }
+//
+//                    }
+//
+//                }
+//
+//                if(bestop == null)
+//                    return;
+//
+//                TruthValue truth = null;
+//                if(bestop.getBeliefs() != null)
+//                    truth = TruthFunctions.deduction(desires.get(0).getSentence().getTruth(), bestop.getBeliefs().get(0).getTruth());
+//
+//                if(truth != null ){
+//                    float priority = Parameters.DEFAULT_SUBGOAL_PRIORITY;
+//                    float durability = Parameters.DEFAULT_EVENT_DURABILITY;
+//                    float quality = BudgetFunctions.truthToQuality(truth);
+//
+//                    BudgetValue budget = new BudgetValue(priority, durability, quality);
+//                    Stamp stamp = new Stamp(memory.getTime());
+//
+//                    Sentence sentence = null;
+//
+//                    precondition = ((Implication)bestop.getTerm()).getSubject();
+//
+//                    if(precondition instanceof Conjunction)
+//                        sentence = new Sentence(((Conjunction)precondition).getComponents().get(1), Symbols.GOAL_MARK, truth, stamp);
+//
+//                    if(sentence == null)
+//                        return;
+//
+//                    Task task = new Task(sentence, budget);
+//                    memory.report(task.getSentence(), false, false);
+//                    memory.getReasoner().getInternalBuffer().putInSequenceList(task, memory.getTime());
+//                }
+//
+//            }
+//
+//        }
+//    }
     
     /**
      * Traverse belief table and find the highest quality belief using
@@ -624,7 +621,6 @@ public final class Concept extends Item {
      * Use for adding the task into the corresponding list, used for adding 
      * goals into desire list
      * @param task
-     * @param the goal which requires to add to the list
      * @param list the desire list
      * @param capacity of the desire list
      * @return true if added successfully
@@ -737,7 +733,6 @@ public final class Concept extends Item {
      * The only method that calls the TaskLink constructor.
      *
      * @param task The task to be linked
-     * @param content The content of the task
      */
     private void linkToTask(Task task) {
         BudgetValue taskBudget = task.getBudget();
@@ -1003,11 +998,11 @@ public final class Concept extends Item {
     
     /**
      * Main Loop
-     * An atomic step in a concept, only called in {@link Memory#processConcept}
+     * An atomic step in a concept, only called in
      */
     public void fire() {
         
-        reactionToGoal();          
+//        reactionToGoal();
         
         TaskLink currentTaskLink = taskLinks.takeOut();
         if (currentTaskLink == null) {

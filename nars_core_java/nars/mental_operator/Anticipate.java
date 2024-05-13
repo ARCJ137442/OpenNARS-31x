@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2018 The OpenNARS authors.
@@ -24,8 +24,6 @@
 package nars.mental_operator;
 
 
-
-import java.util.*;
 import nars.entity.BudgetValue;
 import nars.entity.Task;
 import nars.entity.TruthValue;
@@ -34,34 +32,39 @@ import nars.language.Operator;
 import nars.language.Term;
 import nars.storage.Memory;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 /**
  * Operator that creates a judgment with a given statement
  */
 public class Anticipate extends Operator {
 
     //public final Map<Prediction,LinkedHashSet<Term>> anticipations = new LinkedHashMap();
-            
+
     private transient Set<Term> newTasks = new LinkedHashSet();
- 
+
     private TruthValue expiredTruth = null;
     private BudgetValue expiredBudget = null;
-    
-     //internal experience has less durability?
-    public float ANTICIPATION_DURABILITY_MUL=0.1f; //0.1
+
+    //internal experience has less durability?
+    public float ANTICIPATION_DURABILITY_MUL = 0.1f; //0.1
     //internal experience has less priority?
-    public float ANTICIPATION_PRIORITY_MUL=0.1f; //0.1
+    public float ANTICIPATION_PRIORITY_MUL = 0.1f; //0.1
 
 
     public Anticipate() {
-        super("^anticipate");        
+        super("^anticipate");
     }
+
     public Anticipate(float ANTICIPATION_DURABILITY_MUL, float ANTICIPATION_PRIORITY_MUL) {
         this();
         this.ANTICIPATION_DURABILITY_MUL = ANTICIPATION_DURABILITY_MUL;
         this.ANTICIPATION_PRIORITY_MUL = ANTICIPATION_PRIORITY_MUL;
     }
 
-        public void anticipationFeedback(final Term content, final Task t, final Memory memory, final long time) {
+    public void anticipationFeedback(final Term content, final Task t, final Memory memory, final long time) {
         /*if(anticipationOperator) {
             final Operation op=(Operation) Operation.make(Product.make(Term.SELF,content), this);
             final TruthValue truth=new TruthValue(1.0f,memory.narParameters.DEFAULT_JUDGMENT_CONFIDENCE, memory.narParameters);

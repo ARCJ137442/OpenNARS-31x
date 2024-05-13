@@ -245,7 +245,7 @@ public class TemporalRules {
         return newTask;        
     }
     
-    /*public static int order(final long timeDiff, final double durationCycles) {
+    public static int order(final long timeDiff, final double durationCycles) {
         final double halfDuration = durationCycles/2;
         if (timeDiff > halfDuration) {
             return ORDER_FORWARD;
@@ -254,18 +254,17 @@ public class TemporalRules {
         } else {
             return ORDER_CONCURRENT;
         }
-    }*/
-    
-    public static int order(final long timeDiff, final double durationCycles){
-        
-        if(timeDiff > 0)
-            return ORDER_FORWARD;
-        else if(timeDiff < 0)
-            return ORDER_BACKWARD;
-        else
-            return ORDER_CONCURRENT;
-        
     }
+    
+//    public static int order(final long timeDiff, final double durationCycles){
+//
+//        if(timeDiff > 0)
+//            return ORDER_FORWARD;
+//        else if(timeDiff < 0)
+//            return ORDER_BACKWARD;
+//        else
+//            return ORDER_CONCURRENT;
+//    }
     
     /** if (relative) event B after (stationary) event A then order=forward;
      *                event B before       then order=backward
