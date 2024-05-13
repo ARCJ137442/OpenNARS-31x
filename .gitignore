@@ -1,0 +1,9 @@
+/dist/
+/nbproject/private/
+
+# 编译时文件
+/classes/
+*.jar
+sources.txt
+manifest.txt
+compile.log
