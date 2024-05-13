@@ -37,9 +37,9 @@ public class Shell {
                     if (line != null) {
                         synchronized(inputString) {
                             inputString = line;
-                            if("".equals(line)) {
-                                inputString = "1";
-                            }
+                            // if("".equals(line)) {
+                            //     inputString = "1";
+                            // }
                         }
                     }
 
@@ -61,7 +61,7 @@ public class Shell {
         @Override
         public void nextOutput(ArrayList<String> arg0) {
             for(String s : arg0){
-                if(!s.matches("[0-9]+")) {System.out.println(s);}
+                if(!s.strip().matches("[0-9]+")) {System.out.println(s);}
             }
         }
         @Override
