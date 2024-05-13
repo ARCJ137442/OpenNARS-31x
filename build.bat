@@ -1,17 +1,38 @@
+@echo off
 REM Very simple build script
 
-DEL classes
+@REM 重置临时目录
+rm -rf classes
 mkdir classes
-javac -d classes -Xlint:unchecked nars_gui\src\main\java\*\*\*.java nars_core_java\src\main\java\*\*\*.java nars_core_java\*\*\*\*.java
-echo 'Main-Class: nars.main.NARS' > manifest.txt
-jar cvfm NARS.jar manifest.txt -C classes . 
+
+@REM * 2024-04-19 11:25:38 构建参考：https://www.baeldung.com/javac-compile-classes-directory/
+@REM ↓使用 /A:-D 忽略目录 | 参考自 `dir --help`
+dir /b /s /A:-D *.java > sources.txt
+@REM ↑这是所有Java代码，可能编译顺序不能保证，但实际上无需顾虑顺序（编译器会自动做依赖分析）
+javac -d classes @sources.txt -Xstdout compile.log
+
+@REM ==后续其它构建代码==
+@REM 1 构建NARS代码（classes）到jar文件（GUI）
+echo Main-Class: nars.gui.main > manifest.txt
+jar -cvfm opennars-31x-gui.jar manifest.txt -C classes .
 DEL manifest.txt
 
-echo 'You can now launch:'
-echo 'java -jar NARS.jar'
+@REM 2 构建NARS代码（classes）到jar文件（Shell）
+echo Main-Class: nars.main.Shell > manifest.txt
+jar -cvfm opennars-31x-shell.jar manifest.txt -C classes .
+DEL manifest.txt
+
+@REM 2 构建NARS代码（classes）到jar文件（Batch）
+echo Main-Class: nars.main.NARSBatch > manifest.txt
+jar -cvfm opennars-31x-batch.jar manifest.txt -C classes .
+DEL manifest.txt
+
+@REM 后续信息
+echo You can now launch:
+echo java -jar opennars-31x-gui.jar
 echo or
-echo 'java -jar NARS.jar nars-dist/Examples/Example-NAL1-in.txt --silence 90'
+echo java -jar opennars-31x-gui.jar nars-dist/Examples/Example-NAL1-edited.txt --silence 90
 echo or
-echo 'java -cp NARS.jar nars.main_nogui.NARSBatch  nars-dist/Examples/Example-NAL1-in.txt'
+echo java -jar opennars-31x-shell.jar
 echo or
-echo 'java -cp "*" nars.main_nogui.Shell'
+echo java -jar opennars-31x-batch.jar nars-dist/Examples/Example-NAL1-edited.txt
