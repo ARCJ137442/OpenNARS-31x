@@ -79,7 +79,7 @@ public class ExperienceReader implements InputChannel {
         try {
             inExp = new BufferedReader(new FileReader(filePath));
         } catch (IOException ex) {
-            System.out.println("i/o error: " + ex.getMessage());
+            System.out.println("ERROR: i/o error: " + ex.getMessage());
         }
         reasoner.addInputChannel(this);
     }
@@ -91,7 +91,7 @@ public class ExperienceReader implements InputChannel {
         try {
             inExp.close();
         } catch (IOException ex) {
-            System.out.println("i/o error: " + ex.getMessage());
+            System.out.println("ERROR: i/o error: " + ex.getMessage());
         }
         reasoner.removeInputChannel(this);
     }
@@ -127,7 +127,7 @@ public class ExperienceReader implements InputChannel {
                     return false;
                 }
             } catch (IOException ex) {
-                System.out.println("i/o error: " + ex.getMessage());
+                System.out.println("ERROR: i/o error: " + ex.getMessage());
             }
             line = line.trim();
             // read NARS language or an integer

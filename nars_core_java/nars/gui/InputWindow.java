@@ -175,7 +175,8 @@ public class InputWindow extends NarsFrame implements ActionListener, InputChann
                     // System.out.println("Line: " + line);
                     reasoner.textInputLine(line);
                 } catch (NullPointerException e1) {
-                    System.out.println("InputWindow.nextInput() - NullPointerException: please correct the input");
+                    System.out
+                            .println("INFO: InputWindow.nextInput() - NullPointerException: please correct the input");
                     // throw new RuntimeException( "Uncorrect line: please correct the input", e1 );
                     ready = false;
                     return false;

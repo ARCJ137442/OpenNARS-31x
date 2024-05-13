@@ -80,7 +80,7 @@ public class InferenceRecorder implements IInferenceRecorder {
         try {
             logFile = new PrintWriter(new FileWriter(directoryName + fileName));
         } catch (IOException ex) {
-            System.out.println("i/o error: " + ex.getMessage());
+            System.out.println("ERROR: i/o error: " + ex.getMessage());
         }
         window.switchBackground();
         window.setVisible(true);

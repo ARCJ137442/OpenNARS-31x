@@ -496,7 +496,7 @@ public final class Concept extends Item {
              */
 
             // best operation, if there are several operations to reach the goal
-            Concept bestop = null;
+            Concept bestOp = null;
 
             Term precondition = null;
 
@@ -537,12 +537,12 @@ public final class Concept extends Item {
                             continue;
 
                         // if best operation is null assign the current operation to it
-                        if (bestop == null)
-                            bestop = c;
+                        if (bestOp == null)
+                            bestOp = c;
                         // if not null, check if the current relation gives better solution
-                        else if (c.getBeliefs().get(0).getTruth().getExpectation() > bestop.getBeliefs().get(0)
+                        else if (c.getBeliefs().get(0).getTruth().getExpectation() > bestOp.getBeliefs().get(0)
                                 .getTruth().getExpectation())
-                            bestop = c;
+                            bestOp = c;
 
                     }
 
@@ -550,13 +550,13 @@ public final class Concept extends Item {
 
             }
 
-            if (bestop == null)
+            if (bestOp == null)
                 return;
 
             TruthValue truth = null;
-            if (bestop.getBeliefs() != null)
+            if (bestOp.getBeliefs() != null)
                 truth = TruthFunctions.deduction(desires.get(0).getSentence().getTruth(),
-                        bestop.getBeliefs().get(0).getTruth());
+                        bestOp.getBeliefs().get(0).getTruth());
 
             if (truth != null) {
                 float priority = Parameters.DEFAULT_SUBGOAL_PRIORITY;
@@ -568,7 +568,7 @@ public final class Concept extends Item {
 
                 Sentence sentence = null;
 
-                precondition = ((Implication) bestop.getTerm()).getSubject();
+                precondition = ((Implication) bestOp.getTerm()).getSubject();
 
                 if (precondition instanceof Conjunction)
                     sentence = new Sentence(((Conjunction) precondition).getComponents().get(1), Symbols.GOAL_MARK,

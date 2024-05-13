@@ -59,7 +59,7 @@ public abstract class Operator extends Term {
         try {
             feedback = execute(operation, args, memory, time);
         } catch (Exception ex) {
-            System.out.println("No feedback is available");
+            System.out.println("ERROR: No feedback is available");
             return false;
         }
 

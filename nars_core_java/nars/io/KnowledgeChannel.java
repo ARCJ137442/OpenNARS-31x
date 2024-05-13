@@ -22,13 +22,13 @@ public class KnowledgeChannel implements InputChannel {
     }
 
     public void openKnowledgeChannel() {
-        System.out.println("Open the Knowledge Channel");
+        System.out.println("INFO: Open the Knowledge Channel");
         reasoner.addInputChannel(this);
     }
 
     @Override
     public boolean nextInput() {
-        System.out.println("Next Knowledge Input");
+        System.out.println("INFO: Next Knowledge Input");
         return false;
     }
 

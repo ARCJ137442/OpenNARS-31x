@@ -21,6 +21,7 @@ import nars.language.Statement;
 import nars.language.Term;
 import nars.main.Parameters;
 import nars.storage.Memory;
+import nars.storage.Memory.ReportType;
 
 /**
  *
@@ -222,7 +223,7 @@ public class TemporalRules {
 
         if (newTask != null) {
             // memory.generalInfoReport("New Implication: " + newTask.getName());
-            System.out.println(" OUT: " + newTask.toString());
+            memory.report(newTask.getSentence(), ReportType.OUT);
             memory.immediateProcess(newTask);
         }
 

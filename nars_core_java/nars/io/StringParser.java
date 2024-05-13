@@ -436,7 +436,7 @@ public abstract class StringParser extends Symbols {
                 // System.out.println(o.getClass().toString());
                 return o;
             }
-            System.out.println("Invalid Compound or Operation");
+            System.out.println("ERROR: Invalid Compound or Operation");
             return null;
         }
         ArrayList<Term> arg = parseArguments(s.substring(firstSeparator + 1) + ARGUMENT_SEPARATOR, memory);

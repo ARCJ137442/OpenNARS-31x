@@ -24,14 +24,14 @@ public class NarseseChannel implements InputChannel {
     }
 
     public void openNarsese() {
-        System.out.println("Open the Narsese Channel");
+        System.out.println("INFO: Open the Narsese Channel");
 
         reasoner.addInputChannel(this);
     }
 
     @Override
     public boolean nextInput() {
-        System.out.println("Next Narsese Input");
+        System.out.println("INFO: Next Narsese Input");
         return false;
     }
 

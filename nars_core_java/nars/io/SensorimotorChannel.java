@@ -24,13 +24,13 @@ public class SensorimotorChannel implements InputChannel {
     }
 
     public void openSensorimotor() {
-        System.out.println("Open the Sensorimotor Channel");
+        System.out.println("INFO: Open the Sensorimotor Channel");
         reasoner.addInputChannel(this);
     }
 
     @Override
     public boolean nextInput() {
-        System.out.println("Next Sensori Input");
+        System.out.println("INFO: Next Sensorimotor Input");
         return false;
     }
 
