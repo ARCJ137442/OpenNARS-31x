@@ -43,6 +43,7 @@ import nars.main.Parameters;
 import nars.storage.Memory;
 import nars.storage.TaskLinkBag;
 import nars.storage.TermLinkBag;
+import nars.storage.Memory.ReportType;
 
 /**
  * A concept contains information associated with a term, including directly and
@@ -501,84 +502,84 @@ public final class Concept extends Item {
 
             // memory.generalInfoReport(executable_preconditions.toString());
 
-            if (!executable_preconditions.isEmpty()) {
-                // go over the executable preconditions list
-                for (Concept c : executable_preconditions) {
+            if (executable_preconditions.isEmpty()) {
+                return;
+            }
+            // go over the executable preconditions list
+            for (Concept c : executable_preconditions) {
 
-                    if (c != null && c.getTerm() instanceof Implication)
-                        precondition = ((Implication) c.getTerm()).getSubject();
+                if (c != null && c.getTerm() instanceof Implication)
+                    precondition = ((Implication) c.getTerm()).getSubject();
 
-                    if (precondition == null)
-                        return;
+                if (precondition == null)
+                    return;
 
-                    // if precondition is conjunction
-                    if (precondition instanceof Conjunction) {
+                // if precondition is conjunction
+                if (precondition instanceof Conjunction) {
 
-                        // if the sequence lis tin the overall buffer is not null
-                        if (memory.getOveralExperience().getSequenceList().size() >= 1) {
+                    // if the sequence lis tin the overall buffer is not null
+                    if (memory.getOveralExperience().getSequenceList().size() >= 1) {
 
-                            boolean happening = false;
+                        boolean happening = false;
 
-                            // check if the precondition is happening
-                            for (int i = memory.getOveralExperience().getSequenceList().size() - 1; i >= 0; i--) {
+                        // check if the precondition is happening
+                        for (int i = memory.getOveralExperience().getSequenceList().size() - 1; i >= 0; i--) {
 
-                                if (((Conjunction) precondition).getComponents().get(0).getName()
-                                        .equals(memory.getOveralExperience().getSequenceList().get(i).getName())) {
-                                    happening = true;
-                                    break;
-                                }
-
+                            if (((Conjunction) precondition).getComponents().get(0).getName()
+                                    .equals(memory.getOveralExperience().getSequenceList().get(i).getName())) {
+                                happening = true;
+                                break;
                             }
 
-                            if (!happening)
-                                continue;
-
-                            // if best operation is null assign the current operation to it
-                            if (bestop == null)
-                                bestop = c;
-                            // if not null, check if the current relation gives better solution
-                            else if (c.getBeliefs().get(0).getTruth().getExpectation() > bestop.getBeliefs().get(0)
-                                    .getTruth().getExpectation())
-                                bestop = c;
-
                         }
+
+                        if (!happening)
+                            continue;
+
+                        // if best operation is null assign the current operation to it
+                        if (bestop == null)
+                            bestop = c;
+                        // if not null, check if the current relation gives better solution
+                        else if (c.getBeliefs().get(0).getTruth().getExpectation() > bestop.getBeliefs().get(0)
+                                .getTruth().getExpectation())
+                            bestop = c;
 
                     }
 
                 }
 
-                if (bestop == null)
+            }
+
+            if (bestop == null)
+                return;
+
+            TruthValue truth = null;
+            if (bestop.getBeliefs() != null)
+                truth = TruthFunctions.deduction(desires.get(0).getSentence().getTruth(),
+                        bestop.getBeliefs().get(0).getTruth());
+
+            if (truth != null) {
+                float priority = Parameters.DEFAULT_SUBGOAL_PRIORITY;
+                float durability = Parameters.DEFAULT_EVENT_DURABILITY;
+                float quality = BudgetFunctions.truthToQuality(truth);
+
+                BudgetValue budget = new BudgetValue(priority, durability, quality);
+                Stamp stamp = new Stamp(memory.getTime());
+
+                Sentence sentence = null;
+
+                precondition = ((Implication) bestop.getTerm()).getSubject();
+
+                if (precondition instanceof Conjunction)
+                    sentence = new Sentence(((Conjunction) precondition).getComponents().get(1), Symbols.GOAL_MARK,
+                            truth, stamp);
+
+                if (sentence == null)
                     return;
 
-                TruthValue truth = null;
-                if (bestop.getBeliefs() != null)
-                    truth = TruthFunctions.deduction(desires.get(0).getSentence().getTruth(),
-                            bestop.getBeliefs().get(0).getTruth());
-
-                if (truth != null) {
-                    float priority = Parameters.DEFAULT_SUBGOAL_PRIORITY;
-                    float durability = Parameters.DEFAULT_EVENT_DURABILITY;
-                    float quality = BudgetFunctions.truthToQuality(truth);
-
-                    BudgetValue budget = new BudgetValue(priority, durability, quality);
-                    Stamp stamp = new Stamp(memory.getTime());
-
-                    Sentence sentence = null;
-
-                    precondition = ((Implication) bestop.getTerm()).getSubject();
-
-                    if (precondition instanceof Conjunction)
-                        sentence = new Sentence(((Conjunction) precondition).getComponents().get(1), Symbols.GOAL_MARK,
-                                truth, stamp);
-
-                    if (sentence == null)
-                        return;
-
-                    Task task = new Task(sentence, budget);
-                    memory.report(task.getSentence(), false, false);
-                    memory.getReasoner().getInternalBuffer().putInSequenceList(task, memory.getTime());
-                }
-
+                Task task = new Task(sentence, budget);
+                memory.report(task.getSentence(), ReportType.EXE);
+                memory.getReasoner().getInternalBuffer().putInSequenceList(task, memory.getTime());
             }
 
         }

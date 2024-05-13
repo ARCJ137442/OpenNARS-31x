@@ -24,6 +24,7 @@
 package nars.inference;
 
 import nars.storage.Memory;
+import nars.storage.Memory.ReportType;
 import nars.entity.*;
 import nars.language.*;
 import nars.io.Symbols;
@@ -171,7 +172,7 @@ public class LocalRules {
 
         if (task.isInput() && task.getSentence().isQuestion()) { // moved from Sentence
             // System.out.println("2");
-            memory.report(belief, false, true);
+            memory.report(belief, ReportType.ANSWER);
         }
         BudgetValue budget = BudgetFunctions.solutionEval(problem, belief, task, memory);
         if ((budget != null) && budget.aboveThreshold()) {

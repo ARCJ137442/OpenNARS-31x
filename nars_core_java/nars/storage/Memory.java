@@ -60,6 +60,44 @@ import nars.mental.Emotion;
 public class Memory {
 
     /**
+     * The type of report.
+     * * 🚩【2024-04-19 12:44:36】增加了多种输出方式
+     */
+    public enum ReportType {
+        /** 输入 */
+        IN,
+        /** 输出 */
+        OUT,
+        /** 回答 */
+        ANSWER,
+        /** 执行 */
+        EXE;
+
+        /**
+         * 将报告类型转换为字符串
+         * * 📝Java在枚举的开头用一个语句定义所有枚举项
+         *
+         * @param type 报告类型
+         * @return 字符串（仅名称）
+         */
+        @Override
+        public String toString() {
+            switch (this) {
+                case IN:
+                    return "IN";
+                case OUT:
+                    return "OUT";
+                case ANSWER:
+                    return "ANSWER";
+                case EXE:
+                    return "EXE";
+                default: // * 穷举后不会发生
+                    return "OTHER";
+            }
+        }
+    }
+
+    /**
      * Backward pointer to the reasoner
      */
     private final NAR reasoner;
@@ -300,7 +338,7 @@ public class Memory {
             float minSilent = reasoner.getSilenceValue().get() / 100.0f;
             if (s > minSilent) { // only report significant derived Tasks
                 // generalInfoReport("4");
-                report(task.getSentence(), false, false);
+                report(task.getSentence(), ReportType.OUT);
             }
         }
         reasoner.getInternalBuffer().putInSequenceList(task, getTime());
@@ -321,7 +359,7 @@ public class Memory {
             // System.out.println(task.getSentence().getContent().getName());
             if (budget > minSilent) { // only report significant derived Tasks
                 // generalInfoReport("5");
-                report(task.getSentence(), false, false);
+                report(task.getSentence(), ReportType.OUT);
             }
 
             // generalInfoReport(task.getSentence().toString());
@@ -514,13 +552,12 @@ public class Memory {
      * {@link NAR#doTick()} - TODO fragile mechanism)
      *
      * @param sentence the sentence to be displayed
-     * @param input    whether the task is input
-     * @param answer
+     * @param type     the type of report
      */
-    public void report(Sentence sentence, boolean input, boolean answer) {
+    public void report(Sentence sentence, ReportType type) {
         if (NAR.DEBUG) {
             System.out.println("// report( clock " + reasoner.getTime()
-                    + ", input " + input
+                    + ", type " + type
                     + ", timer " + reasoner.getTimer()
                     + ", Sentence " + sentence
                     + ", exportStrings " + exportStrings);
@@ -541,17 +578,8 @@ public class Memory {
 
         boolean execution = sentence.getContent() instanceof Operation;
 
-        String s;
-        if (input) {
-            s = "  IN: ";
-        } else if (execution) {
-            s = "EXE: ";
-        } else {
-            if (answer)
-                s = "Answer: ";
-            else
-                s = " OUT: ";
-        }
+        String s = type.toString() + ": ";
+
         // System.out.println(sentence.toStringBrief());
         // System.out.println("occurrence Time: " +
         // sentence.getStamp().getOccurrenceTime());
@@ -561,7 +589,7 @@ public class Memory {
                 s += sentence.toStringBrief(tense) + " Eternal";
             } else {
 
-                if (execution && !input)
+                if (execution && type != ReportType.IN)
                     s += ((Operation) sentence.getContent()).getPredicate().getName();
                 else
                     s += sentence.toStringBrief(tense);

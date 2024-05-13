@@ -11,11 +11,12 @@ import nars.io.Symbols;
 import nars.storage.InternalExperience;
 import nars.storage.Memory;
 import nars.storage.OveralExperience;
+import nars.storage.Memory.ReportType;
 
 public class NAR {
 
     /** global DEBUG print switch */
-    public static final boolean DEBUG = false;
+    public static boolean DEBUG = false;
     /** The name of the reasoner */
     protected String name;
     /** The memory of the reasoner */
@@ -187,7 +188,7 @@ public class NAR {
     private void inputNarseseTask(Task task) {
         if (task.getBudget().aboveThreshold()) {
             memory.getRecorder().append("!!! Perceived: " + task + "\n");
-            memory.report(task.getSentence(), true, false);
+            memory.report(task.getSentence(), ReportType.IN);
             task.getBudget().incPriority((float) 0.1);
             globalBuffer.preProcessing(task, true);
             // globalBuffer.putInSequenceList(task, memory.getTime());
