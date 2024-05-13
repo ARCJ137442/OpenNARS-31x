@@ -16,10 +16,10 @@ import nars.storage.Memory;
  *
  * @author liyiy
  */
-public class Fire extends Operator{
-    
+public class Fire extends Operator {
+
     public Fire() {
-        super("^fire");        
+        super("^fire");
     }
 
     public void escapeFeedback(final Term content, final Task t, final Memory memory, final long time) {
@@ -28,7 +28,8 @@ public class Fire extends Operator{
 
     @Override
     protected ArrayList<Task> execute(Operation operation, ArrayList<Term> args, Memory memory, long time) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
+                                                                       // Tools | Templates.
     }
-    
+
 }

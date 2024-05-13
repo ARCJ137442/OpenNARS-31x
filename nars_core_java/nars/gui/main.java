@@ -30,12 +30,12 @@ import nars.main.NARSBatch;
 import nars.main.NAR;
 
 /**
- * The main class of OpenNARS with support of a GUI. 
- * Alternatively it may start with shell only by invoking Shell.java. 
+ * The main class of OpenNARS with support of a GUI.
+ * Alternatively it may start with shell only by invoking Shell.java.
  * Manage the internal working thread. Communicate with NAR_GUI only.
  */
 public class main implements Runnable {
-    
+
     /** The internal working thread of the system. */
     Thread narsThread = null;
     /** The reasoner */
@@ -80,12 +80,13 @@ public class main implements Runnable {
             }
         }
     }
-    
+
     /**
      * The entry point of the standalone application.
      * Create an instance of the class
+     * 
      * @param args optional argument used : one input file, possibly followed by
-     * --silence <integer>
+     *             --silence <integer>
      */
     public static void main(String args[]) {
         NARSBatch.setStandAlone(true);

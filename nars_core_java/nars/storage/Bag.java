@@ -40,7 +40,7 @@ import nars.main.Parameters;
  *
  * @param <E> The type of the Item in the Bag
  */
-public abstract class Bag<E extends Item> implements Iterable<E>{
+public abstract class Bag<E extends Item> implements Iterable<E> {
 
     /**
      * priority levels
@@ -57,7 +57,7 @@ public abstract class Bag<E extends Item> implements Iterable<E>{
     /**
      * hashtable load factor
      */
-    private static final float LOAD_FACTOR = Parameters.LOAD_FACTOR;       //
+    private static final float LOAD_FACTOR = Parameters.LOAD_FACTOR; //
     /**
      * shared DISTRIBUTOR that produce the probability distribution
      */
@@ -94,9 +94,9 @@ public abstract class Bag<E extends Item> implements Iterable<E>{
      * reference to memory
      */
     protected Memory memory;
-    
+
     private BagObserver<E> bagObserver = new NullBagObserver<>();
-    
+
     /**
      * The display level; initialized at lowest
      */
@@ -194,12 +194,12 @@ public abstract class Bag<E extends Item> implements Iterable<E>{
     public boolean putIn(E newItem) {
         String newKey = newItem.getKey();
         E oldItem = nameTable.put(newKey, newItem);
-        if (oldItem != null) {                  // merge duplications
+        if (oldItem != null) { // merge duplications
             outOfBase(oldItem);
             newItem.merge(oldItem);
         }
-        E overflowItem = intoBase(newItem);  // put the (new or merged) item into itemTable
-        if (overflowItem != null) {             // remove overflow
+        E overflowItem = intoBase(newItem); // put the (new or merged) item into itemTable
+        if (overflowItem != null) { // remove overflow
             String overflowKey = overflowItem.getKey();
             nameTable.remove(overflowKey);
             return (overflowItem != newItem);
@@ -234,23 +234,23 @@ public abstract class Bag<E extends Item> implements Iterable<E>{
         if (emptyLevel(currentLevel) || (currentCounter == 0)) { // done with the current level
             currentLevel = DISTRIBUTOR.pick(levelIndex);
             levelIndex = DISTRIBUTOR.next(levelIndex);
-            while (emptyLevel(currentLevel)) {          // look for a non-empty level
+            while (emptyLevel(currentLevel)) { // look for a non-empty level
                 currentLevel = DISTRIBUTOR.pick(levelIndex);
                 levelIndex = DISTRIBUTOR.next(levelIndex);
             }
             if (currentLevel < THRESHOLD) { // for dormant levels, take one item
                 currentCounter = 1;
-            } else {                  // for active levels, take all current items
+            } else { // for active levels, take all current items
                 currentCounter = itemTable.get(currentLevel).size();
             }
         }
         E selected = takeOutFirst(currentLevel); // take out the first item in the level
         int belongingLevel = getLevel(selected);
-        if(currentLevel != belongingLevel){
+        if (currentLevel != belongingLevel) {
             intoBase(selected);
             return takeOut();
         }
-        
+
         currentCounter--;
         nameTable.remove(selected.getKey());
         refresh();
@@ -265,15 +265,15 @@ public abstract class Bag<E extends Item> implements Iterable<E>{
      */
     public E pickOut(String key) {
         E picked = nameTable.get(key);
-        
+
         if (picked != null) {
             outOfBase(picked);
             nameTable.remove(key);
         }
-        
+
         return picked;
     }
-    
+
     /**
      * Remove an item from itemTable, then adjust mass
      *
@@ -305,7 +305,7 @@ public abstract class Bag<E extends Item> implements Iterable<E>{
     private int getLevel(E item) {
         float fl = item.getPriority() * TOTAL_LEVEL;
         int level = (int) Math.ceil(fl) - 1;
-        return (level < 0) ? 0 : level;     // cannot be -1
+        return (level < 0) ? 0 : level; // cannot be -1
     }
 
     /**
@@ -317,21 +317,21 @@ public abstract class Bag<E extends Item> implements Iterable<E>{
     private E intoBase(E newItem) {
         E oldItem = null;
         int inLevel = getLevel(newItem);
-        if (size() > capacity) {      // the bag is full
+        if (size() > capacity) { // the bag is full
             int outLevel = 0;
             while (emptyLevel(outLevel)) {
                 outLevel++;
             }
-            if (outLevel > inLevel) {           // ignore the item and exit
+            if (outLevel > inLevel) { // ignore the item and exit
                 return newItem;
-            } else {                            // remove an old item in the lowest non-empty level
+            } else { // remove an old item in the lowest non-empty level
                 oldItem = takeOutFirst(outLevel);
             }
         }
-        itemTable.get(inLevel).add(newItem);        // FIFO
-        mass += (inLevel + 1);                  // increase total mass
-        refresh();                              // refresh the window
-        return oldItem;		// TODO return null is a bad smell
+        itemTable.get(inLevel).add(newItem); // FIFO
+        mass += (inLevel + 1); // increase total mass
+        refresh(); // refresh the window
+        return oldItem; // TODO return null is a bad smell
     }
 
     /**
@@ -354,7 +354,7 @@ public abstract class Bag<E extends Item> implements Iterable<E>{
      * implements interface {@link BagObserver};
      *
      * @param bagObserver BagObserver to set
-     * @param title The title of the window
+     * @param title       The title of the window
      */
     public void addBagObserver(BagObserver<E> bagObserver, String title) {
         this.bagObserver = bagObserver;
@@ -388,6 +388,7 @@ public abstract class Bag<E extends Item> implements Iterable<E>{
 
     /**
      * Collect Bag content into a String for display
+     * 
      * @return A String representation of the content
      */
     @Override
@@ -443,19 +444,19 @@ public abstract class Bag<E extends Item> implements Iterable<E>{
     public void setShowLevel(int showLevel) {
         this.showLevel = showLevel;
     }
-    
+
     public ArrayList<LinkedList<E>> getItemTable() {
         return itemTable;
     }
-    
-    public HashMap<String, E> getNameTable(){
+
+    public HashMap<String, E> getNameTable() {
         return nameTable;
     }
-    
-    public boolean isEmpty(){
+
+    public boolean isEmpty() {
         return nameTable.isEmpty();
     }
-    
+
     @Override
     public Iterator<E> iterator() {
         return nameTable.values().iterator();

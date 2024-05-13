@@ -23,8 +23,6 @@
  */
 package nars.mental_operator;
 
-
-
 import java.util.*;
 import nars.entity.BudgetValue;
 import nars.entity.Task;
@@ -39,58 +37,65 @@ import nars.storage.Memory;
  */
 public class Anticipate extends Operator {
 
-    //public final Map<Prediction,LinkedHashSet<Term>> anticipations = new LinkedHashMap();
-            
+    // public final Map<Prediction,LinkedHashSet<Term>> anticipations = new
+    // LinkedHashMap();
+
     private transient Set<Term> newTasks = new LinkedHashSet();
- 
+
     private TruthValue expiredTruth = null;
     private BudgetValue expiredBudget = null;
-    
-     //internal experience has less durability?
-    public float ANTICIPATION_DURABILITY_MUL=0.1f; //0.1
-    //internal experience has less priority?
-    public float ANTICIPATION_PRIORITY_MUL=0.1f; //0.1
 
+    // internal experience has less durability?
+    public float ANTICIPATION_DURABILITY_MUL = 0.1f; // 0.1
+    // internal experience has less priority?
+    public float ANTICIPATION_PRIORITY_MUL = 0.1f; // 0.1
 
     public Anticipate() {
-        super("^anticipate");        
+        super("^anticipate");
     }
+
     public Anticipate(float ANTICIPATION_DURABILITY_MUL, float ANTICIPATION_PRIORITY_MUL) {
         this();
         this.ANTICIPATION_DURABILITY_MUL = ANTICIPATION_DURABILITY_MUL;
         this.ANTICIPATION_PRIORITY_MUL = ANTICIPATION_PRIORITY_MUL;
     }
 
-        public void anticipationFeedback(final Term content, final Task t, final Memory memory, final long time) {
-        /*if(anticipationOperator) {
-            final Operation op=(Operation) Operation.make(Product.make(Term.SELF,content), this);
-            final TruthValue truth=new TruthValue(1.0f,memory.narParameters.DEFAULT_JUDGMENT_CONFIDENCE, memory.narParameters);
-            final Stamp st;
-            if(t==null) {
-                st=new Stamp(time, memory);
-            } else {
-                st=t.sentence.stamp.clone();
-                st.setOccurrenceTime(time.time());
-            }
-
-            final Sentence s=new Sentence(
-                    op,
-                    Symbols.JUDGMENT_MARK,
-                    truth,
-                    st);
-
-            final BudgetValue budgetForNewTask = new BudgetValue(
-                memory.narParameters.DEFAULT_JUDGMENT_PRIORITY*ANTICIPATION_PRIORITY_MUL,
-                memory.narParameters.DEFAULT_JUDGMENT_DURABILITY*ANTICIPATION_DURABILITY_MUL,
-                BudgetFunctions.truthToQuality(truth), memory.narParameters);
-            final Task newTask = new Task(s, budgetForNewTask, Task.EnumType.INPUT);
-
-            memory.addNewTask(newTask, "Internal");
-        }*/
+    public void anticipationFeedback(final Term content, final Task t, final Memory memory, final long time) {
+        /*
+         * if(anticipationOperator) {
+         * final Operation op=(Operation)
+         * Operation.make(Product.make(Term.SELF,content), this);
+         * final TruthValue truth=new
+         * TruthValue(1.0f,memory.narParameters.DEFAULT_JUDGMENT_CONFIDENCE,
+         * memory.narParameters);
+         * final Stamp st;
+         * if(t==null) {
+         * st=new Stamp(time, memory);
+         * } else {
+         * st=t.sentence.stamp.clone();
+         * st.setOccurrenceTime(time.time());
+         * }
+         * 
+         * final Sentence s=new Sentence(
+         * op,
+         * Symbols.JUDGMENT_MARK,
+         * truth,
+         * st);
+         * 
+         * final BudgetValue budgetForNewTask = new BudgetValue(
+         * memory.narParameters.DEFAULT_JUDGMENT_PRIORITY*ANTICIPATION_PRIORITY_MUL,
+         * memory.narParameters.DEFAULT_JUDGMENT_DURABILITY*ANTICIPATION_DURABILITY_MUL,
+         * BudgetFunctions.truthToQuality(truth), memory.narParameters);
+         * final Task newTask = new Task(s, budgetForNewTask, Task.EnumType.INPUT);
+         * 
+         * memory.addNewTask(newTask, "Internal");
+         * }
+         */
     }
 
     @Override
     protected ArrayList<Task> execute(Operation operation, ArrayList<Term> args, Memory memory, long time) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
+                                                                       // Tools | Templates.
     }
 }

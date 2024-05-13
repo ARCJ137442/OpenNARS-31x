@@ -51,7 +51,7 @@ public class TruthValue implements Cloneable { // implements Cloneable {
      * Whether the truth value is derived from a definition
      */
     private boolean isAnalytic = false;
-    
+
     private boolean eternal;
 
     /**
@@ -65,8 +65,8 @@ public class TruthValue implements Cloneable { // implements Cloneable {
         confidence = (c < 1) ? new ShortFloat(c) : new ShortFloat(0.9999f);
         eternal = true;
     }
-    
-    public TruthValue(float f, float c, boolean b, boolean eternal){
+
+    public TruthValue(float f, float c, boolean b, boolean eternal) {
         frequency = new ShortFloat(f);
         confidence = (c < 1) ? new ShortFloat(c) : new ShortFloat(0.9999f);
         isAnalytic = b;
@@ -132,12 +132,12 @@ public class TruthValue implements Cloneable { // implements Cloneable {
     public void setAnalytic() {
         isAnalytic = true;
     }
-    
-    public boolean isEternal(){
+
+    public boolean isEternal() {
         return eternal;
     }
-    
-    public void setEternal(boolean eternal){
+
+    public void setEternal(boolean eternal) {
         this.eternal = eternal;
     }
 
@@ -160,16 +160,16 @@ public class TruthValue implements Cloneable { // implements Cloneable {
     public float getExpDifAbs(TruthValue t) {
         return Math.abs(getExpectation() - t.getExpectation());
     }
-    
-    public float getIgnorance(){
-        return (float)(1-confidence.getValue());
+
+    public float getIgnorance() {
+        return (float) (1 - confidence.getValue());
     }
-    
-    public float getSharpness(){
-        return (float)(2 * Math.abs(getExpectation() - 0.5)); // Change for 3.1.2
-        //return (float)(2 * Math.pow(Math.abs(getExpectation() - 0.5), 4));
+
+    public float getSharpness() {
+        return (float) (2 * Math.abs(getExpectation() - 0.5)); // Change for 3.1.2
+        // return (float)(2 * Math.pow(Math.abs(getExpectation() - 0.5), 4));
     }
-    
+
     /**
      * Check if the truth value is negative
      *
@@ -178,12 +178,12 @@ public class TruthValue implements Cloneable { // implements Cloneable {
     public boolean isNegative() {
         return getFrequency() < 0.5;
     }
-    
-    public float getIgnornce(){
+
+    public float getIgnornce() {
         return (float) (1.0 - confidence.getValue());
     }
-    
-    public TruthValue setConfidence(float c){
+
+    public TruthValue setConfidence(float c) {
         float max_confidence = 1.0f - Parameters.TRUTH_EPSILON;
         this.confidence = new ShortFloat((c < max_confidence ? c : max_confidence));
         return this;

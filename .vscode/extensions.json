@@ -2,6 +2,7 @@
     "recommendations": [
         "wmanth.jar-viewer",
         "vscjava.vscode-java-debug",
-        "redhat.java"
+        "redhat.java",
+        "xiaohuohumax.format-files-by-ignores"
     ]
 }

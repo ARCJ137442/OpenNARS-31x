@@ -127,9 +127,12 @@ public class MainWindow extends NarsFrame implements ActionListener, OutputChann
         experienceWriter = new ExperienceWriter(reasoner);
         inputWindow = reasoner.getInputWindow();
         conceptWin = new TermWindow(memory);
-        forgetTW = new ParameterWindow("Task Forgetting Rate", Parameters.TASK_LINK_FORGETTING_CYCLE, memory.getTaskForgettingRate());
-        forgetBW = new ParameterWindow("Belief Forgetting Rate", Parameters.TERM_LINK_FORGETTING_CYCLE, memory.getBeliefForgettingRate());
-        forgetCW = new ParameterWindow("Concept Forgetting Rate", Parameters.CONCEPT_FORGETTING_CYCLE, memory.getConceptForgettingRate());
+        forgetTW = new ParameterWindow("Task Forgetting Rate", Parameters.TASK_LINK_FORGETTING_CYCLE,
+                memory.getTaskForgettingRate());
+        forgetBW = new ParameterWindow("Belief Forgetting Rate", Parameters.TERM_LINK_FORGETTING_CYCLE,
+                memory.getBeliefForgettingRate());
+        forgetCW = new ParameterWindow("Concept Forgetting Rate", Parameters.CONCEPT_FORGETTING_CYCLE,
+                memory.getConceptForgettingRate());
         silentW = new ParameterWindow("Report Silence Level", Parameters.SILENT_LEVEL, reasoner.getSilenceValue());
 
         record = new InferenceRecorder();
@@ -315,9 +318,9 @@ public class MainWindow extends NarsFrame implements ActionListener, OutputChann
                 memory.getExportStrings().add("*****RESET*****");
             } else if (label.equals("Concepts")) {
                 /* see design for Bag and {@link BagWindow} in {@link Bag#startPlay(String)} */
-		StartPlay.conceptsStartPlay(new BagWindow<Concept>(), memory.getConcepts(), "Active Concepts");
+                StartPlay.conceptsStartPlay(new BagWindow<Concept>(), memory.getConcepts(), "Active Concepts");
             } else if (label.equals("Buffered Tasks")) {
-		StartPlay.taskBuffersStartPlay(new BagWindow<Task>(), memory.getConcepts(), "Buffered Tasks");
+                StartPlay.taskBuffersStartPlay(new BagWindow<Task>(), memory.getConcepts(), "Buffered Tasks");
             } else if (label.equals("Concept Content")) {
                 conceptWin.setVisible(true);
             } else if (label.equals("Inference Log")) {
@@ -363,17 +366,19 @@ public class MainWindow extends NarsFrame implements ActionListener, OutputChann
      */
     @Override
     public void nextOutput(final ArrayList<String> lines) {
-    	if (!lines.isEmpty()) {
-			String text = "";
-			for (Object line : lines) {
-				text += line + "\n";
-			}
-			final String text2 = text;
-			SwingUtilities.invokeLater( new Runnable() {
-    			@Override public void run() {
-    				ioText.append(text2);
-    			}});
-    	}
+        if (!lines.isEmpty()) {
+            String text = "";
+            for (Object line : lines) {
+                text += line + "\n";
+            }
+            final String text2 = text;
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    ioText.append(text2);
+                }
+            });
+        }
     }
 
     /**

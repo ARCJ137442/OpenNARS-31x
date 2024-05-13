@@ -56,9 +56,9 @@ public class TaskLink extends TermLink {
      * <p>
      * only called in Memory.continuedProcess
      *
-     * @param t The target Task
+     * @param t        The target Task
      * @param template The TermLink template
-     * @param v The budget
+     * @param v        The budget
      */
     public TaskLink(Task t, TermLink template, BudgetValue v) {
         super("", v);
@@ -73,7 +73,7 @@ public class TaskLink extends TermLink {
         recordedLinks = new String[Parameters.TERM_LINK_RECORD_LENGTH];
         recordingTime = new long[Parameters.TERM_LINK_RECORD_LENGTH];
         counter = 0;
-        setKey();   // as defined in TermLink
+        setKey(); // as defined in TermLink
         key += t.getKey();
     }
 
@@ -92,38 +92,40 @@ public class TaskLink extends TermLink {
      * <p>
      * called in TermLinkBag only
      *
-     * @param termLink The TermLink to be checked
+     * @param termLink    The TermLink to be checked
      * @param currentTime The current time
      * @return Whether they are novel to each other
      */
-    /*public boolean novel(TermLink termLink, long currentTime) {
-        Term bTerm = termLink.getTarget();
-        if (bTerm.equals(targetTask.getSentence().getContent())) {
-            return false;
-        }
-        String linkKey = termLink.getKey();
-        int next, i;
-        for (i = 0; i < counter; i++) {
-            next = i % Parameters.TERM_LINK_RECORD_LENGTH;
-            if (linkKey.equals(recordedLinks[next])) {
-                if (currentTime < recordingTime[next] + Parameters.TERM_LINK_RECORD_LENGTH) {
-                    return false;
-                } else {
-                    recordingTime[next] = currentTime;
-                    return true;
-                }
-            }
-        }
-        
-        next = i % Parameters.TERM_LINK_RECORD_LENGTH;
-        recordedLinks[next] = linkKey;       // add knowledge reference to recordedLinks
-        recordingTime[next] = currentTime;
-        if (counter < Parameters.TERM_LINK_RECORD_LENGTH) { // keep a constant length
-            counter++;
-        }
-        return true;
-    }*/
-    
+    /*
+     * public boolean novel(TermLink termLink, long currentTime) {
+     * Term bTerm = termLink.getTarget();
+     * if (bTerm.equals(targetTask.getSentence().getContent())) {
+     * return false;
+     * }
+     * String linkKey = termLink.getKey();
+     * int next, i;
+     * for (i = 0; i < counter; i++) {
+     * next = i % Parameters.TERM_LINK_RECORD_LENGTH;
+     * if (linkKey.equals(recordedLinks[next])) {
+     * if (currentTime < recordingTime[next] + Parameters.TERM_LINK_RECORD_LENGTH) {
+     * return false;
+     * } else {
+     * recordingTime[next] = currentTime;
+     * return true;
+     * }
+     * }
+     * }
+     * 
+     * next = i % Parameters.TERM_LINK_RECORD_LENGTH;
+     * recordedLinks[next] = linkKey; // add knowledge reference to recordedLinks
+     * recordingTime[next] = currentTime;
+     * if (counter < Parameters.TERM_LINK_RECORD_LENGTH) { // keep a constant length
+     * counter++;
+     * }
+     * return true;
+     * }
+     */
+
     public boolean novel(TermLink termLink, long currentTime) {
         Term bTerm = termLink.getTarget();
         if (bTerm.equals(targetTask.getSentence().getContent())) {
@@ -142,34 +144,34 @@ public class TaskLink extends TermLink {
                 }
             }
         }
-        
+
         if (counter < Parameters.TERM_LINK_RECORD_LENGTH) { // keep a constant length
             next = i % Parameters.TERM_LINK_RECORD_LENGTH;
-            recordedLinks[next] = linkKey;       // add knowledge reference to recordedLinks
+            recordedLinks[next] = linkKey; // add knowledge reference to recordedLinks
             recordingTime[next] = currentTime;
             counter++;
-        }else{        
+        } else {
             int inde = forgetIndex(recordingTime);
             recordedLinks[inde] = linkKey;
             recordingTime[inde] = currentTime;
         }
         return true;
     }
-    
-    public int forgetIndex(long[] times){
-        
+
+    public int forgetIndex(long[] times) {
+
         int inde = 0;
         long earliest = times[0];
-        
+
         for (int i = 1; i < times.length; i++) {
-            
-            if(times[i] < earliest){
+
+            if (times[i] < earliest) {
                 earliest = times[i];
                 inde = i;
             }
-            
+
         }
-        
+
         return inde;
     }
 

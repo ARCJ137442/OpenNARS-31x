@@ -47,25 +47,25 @@ public class LocalRules {
      * <p>
      * called in RuleTables.reason
      *
-     * @param task The task
+     * @param task   The task
      * @param belief The belief
      * @param memory Reference to the memory
      */
     public static void match(Task task, Sentence belief, Memory memory) {
         Sentence sentence = (Sentence) task.getSentence().clone();
-        //System.out.println("sentence: " + sentence.toString());
+        // System.out.println("sentence: " + sentence.toString());
         if (sentence.isJudgment()) {
-            //System.out.println("!!!");
+            // System.out.println("!!!");
             if (revisible(sentence, belief)) {
                 revision(sentence, belief, true, memory);
             }
-        }else{
-            if(TemporalRules.matchingOrder(sentence, belief)){
+        } else {
+            if (TemporalRules.matchingOrder(sentence, belief)) {
                 if (Variable.unify(Symbols.VAR_QUERY, sentence.getContent(), (Term) belief.getContent().clone())) {
                     trySolution(belief, task, memory);
                 }
             }
-        } 
+        }
     }
 
     /**
@@ -75,15 +75,16 @@ public class LocalRules {
      * @param s2 The second sentence
      * @return If revision is possible between the two sentences
      */
-    public static boolean revisible(Sentence s1, Sentence s2) {        
-        
-        if(!s1.isEternal() && !s2.isEternal() && Math.abs(s1.getOccurrenceTime() - s2.getOccurrenceTime()) > Parameters.REVISION_MAX_OCCURRENCE_DISTANCE){
+    public static boolean revisible(Sentence s1, Sentence s2) {
+
+        if (!s1.isEternal() && !s2.isEternal() && Math
+                .abs(s1.getOccurrenceTime() - s2.getOccurrenceTime()) > Parameters.REVISION_MAX_OCCURRENCE_DISTANCE) {
             return false;
         }
-        
-        return (s1.getContent().equals(s2.getContent()) && s1.getRevisible() 
+
+        return (s1.getContent().equals(s2.getContent()) && s1.getRevisible()
                 && !Stamp.baseOverlap(s1.getStamp(), s2.getStamp()));
-        
+
     }
 
     /**
@@ -91,62 +92,64 @@ public class LocalRules {
      * <p>
      * called from Concept.reviseTable and match
      *
-     * @param newBelief The new belief in task
-     * @param oldBelief The previous belief with the same content
+     * @param newBelief       The new belief in task
+     * @param oldBelief       The previous belief with the same content
      * @param feedbackToLinks Whether to send feedback to the links
-     * @param memory Reference to the memory
+     * @param memory          Reference to the memory
      */
-    public static void revision(Sentence newBelief, Sentence oldBelief, boolean feedbackToLinks, Memory memory) {                 
-        
+    public static void revision(Sentence newBelief, Sentence oldBelief, boolean feedbackToLinks, Memory memory) {
+
         TruthValue newTruth = newBelief.getTruth();
         TruthValue oldTruth = oldBelief.getTruth();
 
         float factor = 1;
-        
-        if(newBelief.isEternal() && !oldBelief.isEternal())
+
+        if (newBelief.isEternal() && !oldBelief.isEternal())
             oldTruth = TruthFunctions.eternalize(oldTruth);
         else if (!newBelief.isEternal() && oldBelief.isEternal())
             newTruth = TruthFunctions.eternalize(newTruth);
-        else if(newBelief.getOccurrenceTime() != Stamp.ETERNAL && oldBelief.getOccurrenceTime() != Stamp.ETERNAL)
-            factor = TruthFunctions.temporalProjection(oldBelief.getOccurrenceTime(), newBelief.getOccurrenceTime(), memory.getTime());
-     
+        else if (newBelief.getOccurrenceTime() != Stamp.ETERNAL && oldBelief.getOccurrenceTime() != Stamp.ETERNAL)
+            factor = TruthFunctions.temporalProjection(oldBelief.getOccurrenceTime(), newBelief.getOccurrenceTime(),
+                    memory.getTime());
+
         oldTruth = oldTruth.setConfidence(factor * oldTruth.getConfidence());
         TruthValue truth = TruthFunctions.revision(newTruth, oldTruth);
         BudgetValue budget = BudgetFunctions.revise(newTruth, oldTruth, truth, feedbackToLinks, memory);
-            
+
         long newInterval = 0;
-        if(newBelief.getContent() instanceof Statement && oldBelief.getContent() instanceof Statement)
-            newInterval = (((Statement)newBelief.getContent()).getInterval() + ((Statement)oldBelief.getContent()).getInterval())/2;
-            
+        if (newBelief.getContent() instanceof Statement && oldBelief.getContent() instanceof Statement)
+            newInterval = (((Statement) newBelief.getContent()).getInterval()
+                    + ((Statement) oldBelief.getContent()).getInterval()) / 2;
+
         Term content = newBelief.getContent();
-        
-        if(content instanceof Implication)
-            ((Implication) content).setInterval(newInterval);                 
+
+        if (content instanceof Implication)
+            ((Implication) content).setInterval(newInterval);
 
         Stamp deriveStamp = memory.getNewStamp().clone();
         memory.resetOccurrenceTime();
-        
+
         if (content != null) {
             Sentence newSentence = new Sentence(content, newBelief.getPunctuation(), truth, deriveStamp);
             Concept c = memory.getConcept(content);
-            
-            if(newBelief.getPunctuation() == Symbols.JUDGMENT_MARK){
+
+            if (newBelief.getPunctuation() == Symbols.JUDGMENT_MARK) {
                 c.addToTable(newSentence, c.getBeliefs(), Parameters.MAXIMUM_BELIEF_LENGTH);
                 c.generateAnticipations(newSentence);
-                c.generateGoalPreconditions(newSentence);                       
-                
-            }else if(newBelief.getPunctuation() == Symbols.GOAL_MARK){
-                Task newTask = new Task(newSentence, budget, memory.currentTask, memory.currentBelief);               
+                c.generateGoalPreconditions(newSentence);
+
+            } else if (newBelief.getPunctuation() == Symbols.GOAL_MARK) {
+                Task newTask = new Task(newSentence, budget, memory.currentTask, memory.currentBelief);
                 c.addToTable(newTask, c.getDesires(), Parameters.MAXIMUM_GOAL_LENGTH);
             }
         }
     }
-    
+
     /**
      * Check if a Sentence provide a better answer to a Question or Goal
      *
      * @param belief The proposed answer
-     * @param task The task to be processed
+     * @param task   The task to be processed
      * @param memory Reference to the memory
      */
     public static void trySolution(Sentence belief, Task task, Memory memory) {
@@ -157,16 +160,16 @@ public class LocalRules {
         if (oldBest != null) {
             float oldQ = solutionQuality(problem, oldBest, memory);
             if (oldQ >= newQ) {
-                if(problem.isGoal() && memory.getEmotion() != null)
+                if (problem.isGoal() && memory.getEmotion() != null)
                     memory.getEmotion().adjustSatisfation(oldQ, newQ, memory);
                 return;
             }
         }
-        task.setBestSolution(belief);   
-        
-        //System.out.println("Task: " + task.getName());
-        
-        if (task.isInput() && task.getSentence().isQuestion()) {    // moved from Sentence
+        task.setBestSolution(belief);
+
+        // System.out.println("Task: " + task.getName());
+
+        if (task.isInput() && task.getSentence().isQuestion()) { // moved from Sentence
             // System.out.println("2");
             memory.report(belief, false, true);
         }
@@ -179,7 +182,7 @@ public class LocalRules {
     /**
      * Evaluate the quality of the judgment as a solution to a problem
      *
-     * @param problem A goal or question
+     * @param problem  A goal or question
      * @param solution The solution to be evaluated
      * @return The quality of the judgment as the solution
      */
@@ -191,21 +194,21 @@ public class LocalRules {
         // 如果问题与答案的标识符不同
         // 并且答案带有疑问变量
         // 或者问题与答案的时序不match
-        if((problem.getPunctuation() != solution.getPunctuation() && solution.getContent().hasVarQuery()) ||
+        if ((problem.getPunctuation() != solution.getPunctuation() && solution.getContent().hasVarQuery()) ||
                 !TemporalRules.matchingOrder(problem.getTemporalOrder(), solution.getTemporalOrder()))
             return 0.0f;
         // 答案的真值
         TruthValue truth = solution.getTruth();
         // 如果问题与答案不在同一时间，答案按照问题时间做时间投影
-        if(problem.getOccurrenceTime() != solution.getOccurrenceTime()){
+        if (problem.getOccurrenceTime() != solution.getOccurrenceTime()) {
             truth = solution.projectionTruth(problem.getOccurrenceTime(), memory.getTime(), memory);
-            //solution.getStamp().setOccurrenceTime(problem.getOccurrenceTime());
+            // solution.getStamp().setOccurrenceTime(problem.getOccurrenceTime());
         }
         // 如果问题本身包含问句，这是问what问题，返回真值的期望
         // 如果回答是不是的问题，或者problem不是一个问题，那么返回信心
-        if (problem.containQueryVar()) {    // "what" question or goal
+        if (problem.containQueryVar()) { // "what" question or goal
             return truth.getExpectation() / solution.getContent().getComplexity();
-        } else {                                   // "yes/no" question
+        } else { // "yes/no" question
             return truth.getConfidence();
         }
     }
@@ -220,9 +223,10 @@ public class LocalRules {
         Task task = memory.currentTask;
         Sentence belief = memory.currentBelief;
         Sentence sentence = task.getSentence();
-        //System.out.println("Sentence: " + sentence.getContent().getName());
-        
-        if(TemporalRules.matchingOrder(sentence.getTemporalOrder(), TemporalRules.reverseOrder(belief.getTemporalOrder()))){
+        // System.out.println("Sentence: " + sentence.getContent().getName());
+
+        if (TemporalRules.matchingOrder(sentence.getTemporalOrder(),
+                TemporalRules.reverseOrder(belief.getTemporalOrder()))) {
             if (sentence.isJudgment()) {
                 inferToSym((Sentence) sentence, belief, memory);
             } else {
@@ -234,8 +238,8 @@ public class LocalRules {
     /**
      * Inheritance/Implication matches Similarity/Equivalence
      *
-     * @param asym A Inheritance/Implication sentence
-     * @param sym A Similarity/Equivalence sentence
+     * @param asym   A Inheritance/Implication sentence
+     * @param sym    A Similarity/Equivalence sentence
      * @param figure location of the shared term
      * @param memory Reference to the memory
      */
@@ -254,23 +258,23 @@ public class LocalRules {
      *
      * @param judgment1 The first premise
      * @param judgment2 The second premise
-     * @param memory Reference to the memory
+     * @param memory    Reference to the memory
      */
     private static void inferToSym(Sentence judgment1, Sentence judgment2, Memory memory) {
-        
+
         Statement s1 = (Statement) judgment1.getContent();
-        
+
         Term t1 = null;
         Term t2 = null;
-        
-        if(s1.getTemporalOrder() == TemporalRules.ORDER_FORWARD){
+
+        if (s1.getTemporalOrder() == TemporalRules.ORDER_FORWARD) {
             t1 = s1.getSubject();
             t2 = s1.getPredicate();
-        }else if(s1.getTemporalOrder() == TemporalRules.ORDER_BACKWARD){
+        } else if (s1.getTemporalOrder() == TemporalRules.ORDER_BACKWARD) {
             t1 = s1.getPredicate();
             t2 = s1.getSubject();
         }
-               
+
         Term content;
         if (s1 instanceof Inheritance) {
             content = Similarity.make(t1, t2, memory);
@@ -288,8 +292,8 @@ public class LocalRules {
      * {<S <-> P>, <P --> S>} |- <S --> P> Produce an Inheritance/Implication
      * from a Similarity/Equivalence and a reversed Inheritance/Implication
      *
-     * @param asym The asymmetric premise
-     * @param sym The symmetric premise
+     * @param asym   The asymmetric premise
+     * @param sym    The symmetric premise
      * @param memory Reference to the memory
      */
     private static void inferToAsym(Sentence asym, Sentence sym, Memory memory) {
@@ -338,7 +342,7 @@ public class LocalRules {
      * called in MatchingRules
      *
      * @param budget The budget value of the new task
-     * @param truth The truth value of the new task
+     * @param truth  The truth value of the new task
      * @param memory Reference to the memory
      */
     private static void convertedJudgment(TruthValue newTruth, BudgetValue newBudget, Memory memory) {
@@ -349,9 +353,9 @@ public class LocalRules {
         Term subjB = beliefContent.getSubject();
         Term predB = beliefContent.getPredicate();
         Term otherTerm;
-        
+
         int order = TemporalRules.reverseOrder(beliefContent.getTemporalOrder());
-        
+
         if (Variable.containVarQuery(subjT.getName())) {
             otherTerm = (predT.equals(subjB)) ? predB : subjB;
             content = Statement.make(content, otherTerm, predT, order, memory);

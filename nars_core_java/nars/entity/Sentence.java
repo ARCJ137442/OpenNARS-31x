@@ -59,17 +59,18 @@ public class Sentence implements Cloneable {
      * Whether the sentence can be revised
      */
     private boolean revisible;
-    
+
     private boolean observable;
 
     /**
      * Create a Sentence with the given fields
      *
-     * @param content The Term that forms the content of the sentence
+     * @param content     The Term that forms the content of the sentence
      * @param punctuation The punctuation indicating the type of the sentence
-     * @param truth The truth value of the sentence, null for question
-     * @param stamp The stamp of the sentence indicating its derivation time and
-     * base
+     * @param truth       The truth value of the sentence, null for question
+     * @param stamp       The stamp of the sentence indicating its derivation time
+     *                    and
+     *                    base
      */
     public Sentence(Term content, char punctuation, TruthValue truth, Stamp stamp) {
         this.content = content;
@@ -84,12 +85,13 @@ public class Sentence implements Cloneable {
     /**
      * Create a Sentence with the given fields
      *
-     * @param content The Term that forms the content of the sentence
+     * @param content     The Term that forms the content of the sentence
      * @param punctuation The punctuation indicating the type of the sentence
-     * @param truth The truth value of the sentence, null for question
-     * @param stamp The stamp of the sentence indicating its derivation time and
-     * base
-     * @param revisible Whether the sentence can be revised
+     * @param truth       The truth value of the sentence, null for question
+     * @param stamp       The stamp of the sentence indicating its derivation time
+     *                    and
+     *                    base
+     * @param revisible   Whether the sentence can be revised
      */
     public Sentence(Term content, char punctuation, TruthValue truth, Stamp stamp, boolean revisible) {
         this.content = content;
@@ -101,14 +103,14 @@ public class Sentence implements Cloneable {
         this.observable = false;
     }
 
-    public boolean getObservable(){
+    public boolean getObservable() {
         return observable;
     }
-    
-    public void setObservable(boolean observable){
+
+    public void setObservable(boolean observable) {
         this.observable = observable;
     }
-    
+
     /**
      * To check whether two sentences are equal
      *
@@ -119,27 +121,27 @@ public class Sentence implements Cloneable {
     public boolean equals(Object that) {
         if (that instanceof Sentence) {
             Sentence t = (Sentence) that;
-            return content.equals(t.getContent()) && 
-                   punctuation == t.getPunctuation() && 
-                   truth.equals(t.getTruth()) && 
-                   stamp.equals(t.getStamp());
+            return content.equals(t.getContent()) &&
+                    punctuation == t.getPunctuation() &&
+                    truth.equals(t.getTruth()) &&
+                    stamp.equals(t.getStamp());
         }
         return false;
     }
-    
-    public int getTemporalOrder(){
+
+    public int getTemporalOrder() {
         return content.getTemporalOrder();
     }
-    
-    public long getOccurrenceTime(){
+
+    public long getOccurrenceTime() {
         return stamp.getOccurrenceTime();
     }
-    
-    public boolean getTemporalInduction(){
+
+    public boolean getTemporalInduction() {
         return temporalInduction;
     }
-    
-    public void setTemporalInduction(boolean temporalIndution){
+
+    public void setTemporalInduction(boolean temporalIndution) {
         this.temporalInduction = temporalInduction;
     }
 
@@ -181,7 +183,8 @@ public class Sentence implements Cloneable {
         if (truth == null) {
             return new Sentence((Term) content.clone(), punctuation, null, (Stamp) stamp.clone());
         }
-        return new Sentence((Term) content.clone(), punctuation, new TruthValue(truth), (Stamp) stamp.clone(), revisible);
+        return new Sentence((Term) content.clone(), punctuation, new TruthValue(truth), (Stamp) stamp.clone(),
+                revisible);
     }
 
     /**
@@ -241,7 +244,7 @@ public class Sentence implements Cloneable {
     public void setStamp(Stamp s) {
         stamp = s;
     }
-    
+
     /**
      * Distinguish Judgment from Goal ("instanceof Judgment" doesn't work)
      *
@@ -259,12 +262,12 @@ public class Sentence implements Cloneable {
     public boolean isQuestion() {
         return (punctuation == Symbols.QUESTION_MARK);
     }
-    
-    public boolean isQuest(){
-        return (punctuation == Symbols.QUEST_MARK);                
+
+    public boolean isQuest() {
+        return (punctuation == Symbols.QUEST_MARK);
     }
-    
-    public boolean isGoal(){
+
+    public boolean isGoal() {
         return (punctuation == Symbols.GOAL_MARK);
     }
 
@@ -305,8 +308,8 @@ public class Sentence implements Cloneable {
     public String toStringBrief() {
         return toKey() + stamp.toString();
     }
-    
-    public String toStringBrief(String tense){
+
+    public String toStringBrief(String tense) {
         return toKey(tense) + stamp.toString();
     }
 
@@ -318,89 +321,94 @@ public class Sentence implements Cloneable {
     public String toKey() {
         StringBuilder s = new StringBuilder();
         s.append(content.toString());
-        s.append(punctuation).append(" ");       
-        
+        s.append(punctuation).append(" ");
+
         if (truth != null) {
             s.append(truth.toStringBrief());
         }
 
         return s.toString();
     }
-    
-    public String toKey(String tense){
-        
+
+    public String toKey(String tense) {
+
         StringBuilder s = new StringBuilder();
         s.append(content.toString());
-        s.append(punctuation).append(" ");       
+        s.append(punctuation).append(" ");
         s.append(tense).append(" ");
         if (truth != null) {
             s.append(truth.toStringBrief());
         }
 
         return s.toString();
-        
+
     }
-    
-    public boolean isEternal(){
+
+    public boolean isEternal() {
         return stamp.isEternal();
     }
-    
+
     /**
-     * Project a sentence to another target time, if the time to be projected is eternal
+     * Project a sentence to another target time, if the time to be projected is
+     * eternal
      * then the sentence will change from event to eternity
+     * 
      * @param targetTime
      * @param currentTime
      * @param memory
-     * @return 
+     * @return
      */
-    public Sentence projection(long targetTime, long currentTime, Memory memory){
+    public Sentence projection(long targetTime, long currentTime, Memory memory) {
         TruthValue newTruth = projectionTruth(targetTime, currentTime, memory);
         boolean eternalizing = newTruth.isEternal();
         Stamp newStamp = new Stamp(stamp);
-        if(eternalizing){
+        if (eternalizing) {
             newStamp.setOccurrenceTime(Stamp.ETERNAL);
-        }
-        else{
+        } else {
             newStamp.setOccurrenceTime(targetTime);
         }
         return new Sentence(content, punctuation, newTruth, newStamp, false);
     }
-    
+
     /**
      * Project truth value, project a truth value according to a given target event
+     * 
      * @param targetTime
      * @param currentTime
      * @param memory
-     * @return 
+     * @return
      */
-    public TruthValue projectionTruth(long targetTime, long currentTime, Memory memory){
+    public TruthValue projectionTruth(long targetTime, long currentTime, Memory memory) {
         TruthValue newTruth = null;
-        if(!stamp.isEternal()){ //If the current timestamp is not eternal
-            newTruth = TruthFunctions.eternalize(truth); //First eternalize the current truth value
-                if(targetTime != Stamp.ETERNAL){
-                    long occurrenceTime = stamp.getOccurrenceTime();
-                    // Calculate the parameters for updating beliefs according to the target time
-                    float factor = TruthFunctions.temporalProjection(occurrenceTime, targetTime, currentTime);
-                    // Update confidence
-                    float newConfidence = factor * truth.getConfidence();
-                    if(newConfidence > newTruth.getConfidence()) // create a true value based on newConfidence           
-                        newTruth = new TruthValue(truth.getFrequency(), newConfidence, truth.getAnalytic(), false);
-                }           
+        if (!stamp.isEternal()) { // If the current timestamp is not eternal
+            newTruth = TruthFunctions.eternalize(truth); // First eternalize the current truth value
+            if (targetTime != Stamp.ETERNAL) {
+                long occurrenceTime = stamp.getOccurrenceTime();
+                // Calculate the parameters for updating beliefs according to the target time
+                float factor = TruthFunctions.temporalProjection(occurrenceTime, targetTime, currentTime);
+                // Update confidence
+                float newConfidence = factor * truth.getConfidence();
+                if (newConfidence > newTruth.getConfidence()) // create a true value based on newConfidence
+                    newTruth = new TruthValue(truth.getFrequency(), newConfidence, truth.getAnalytic(), false);
+            }
         }
-        // If newTruth is null, it proves that the current sentence is eternal, 
-        //then the current truth value is directly returned, and eternity cannot be non-eternal
-        if(newTruth == null){
+        // If newTruth is null, it proves that the current sentence is eternal,
+        // then the current truth value is directly returned, and eternity cannot be
+        // non-eternal
+        if (newTruth == null) {
             newTruth = truth.clone();
         }
         return newTruth;
     }
 
     /**
-     * Returns projected confidence from creationTime to currentTime 
+     * Returns projected confidence from creationTime to currentTime
+     * 
      * @param currentTime
-     * @return 
+     * @return
      */
-    public double projectedConfidence(long currentTime){
-        return this.truth.getConfidence() * Math.pow((currentTime - this.stamp.getCreationTime()), Parameters.PROJECTION_DECAY);
+    public double projectedConfidence(long currentTime) {
+        return this.truth.getConfidence()
+                * Math.pow((currentTime - this.stamp.getCreationTime()), Parameters.PROJECTION_DECAY);
     }
 }

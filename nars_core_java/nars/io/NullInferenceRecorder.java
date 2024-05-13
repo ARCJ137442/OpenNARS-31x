@@ -6,9 +6,9 @@
 package nars.io;
 
 /**
- * @author Peter 
- * Empty class that does nothing. This was moved from memory.java
- * since it is more appropriate for it to be separate in IO package.
+ * @author Peter
+ *         Empty class that does nothing. This was moved from memory.java
+ *         since it is more appropriate for it to be separate in IO package.
  */
 public class NullInferenceRecorder implements IInferenceRecorder {
 

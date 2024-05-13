@@ -70,7 +70,7 @@ public class Memory {
     /**
      * New tasks with novel composed terms, for delayed and selective processing
      */
-    //private final NovelTaskBag novelTasks;
+    // private final NovelTaskBag novelTasks;
     /**
      * Inference record text to be written into a log file, currently not used
      */
@@ -81,7 +81,7 @@ public class Memory {
     /**
      * List of new tasks accumulated in one cycle, to be processed in the next cycle
      */
-    //private final LinkedList<Task> newTasks;
+    // private final LinkedList<Task> newTasks;
     /**
      * List of Strings or Tasks to be sent to the output channels
      */
@@ -114,7 +114,7 @@ public class Memory {
      * The new Stamp
      */
     public Stamp newStamp;
-    
+
     /**
      * The substitution that unify the common term in the Task and the Belief
      * TODO unused
@@ -122,11 +122,11 @@ public class Memory {
     protected HashMap<Term, Term> substitute;
 
     public static Random randomNumber = new Random(1);
-    
+
     private Map<String, Operator> operators;
-    
+
     private Emotion emotion;
-    
+
     /**
      * Creates a new main memory. Called in NAR only
      *
@@ -142,16 +142,16 @@ public class Memory {
         newStamp = null;
         emotion = new Emotion();
     }
-    
-    public void initOperators(){
-        
+
+    public void initOperators() {
+
         Operator anti = new Anticipate();
         Operator escape = new Escape();
         Operator left = new Left();
         Operator right = new Right();
         Operator deactive = new Deactive();
         Operator fire = new Fire();
-        
+
         operators.put("^anticipate", anti);
         operators.put("^escape", escape);
         operators.put("^left", left);
@@ -170,14 +170,17 @@ public class Memory {
 
     /**
      * Actually means that there are no new Tasks
-     * @return 
+     * 
+     * @return
      */
     public boolean noResult() {
         return reasoner.getGlobalBuffer().isEmpty();
     }
 
     /**
-     * Get an existing Concept for a given name <p> called from Term and
+     * Get an existing Concept for a given name
+     * <p>
+     * called from Term and
      * ConceptWindow.
      *
      * @param name the name of a concept
@@ -186,7 +189,7 @@ public class Memory {
     public Concept nameToConcept(String name) {
         return concepts.get(name);
     }
-    
+
     /**
      * Get an existing Concept for a given Term.
      * 
@@ -218,26 +221,28 @@ public class Memory {
         }
         return concept;
     }
-    
-    public Stamp getNewStamp(){        
-        if(newStamp == null){  
+
+    public Stamp getNewStamp() {
+        if (newStamp == null) {
             newStamp = new Stamp(getTime());
             resetOccurrenceTime();
         }
         return newStamp;
     }
-    
-    public Stamp setNewStamp(Stamp first, Stamp second, long time){
+
+    public Stamp setNewStamp(Stamp first, Stamp second, long time) {
         newStamp = new Stamp(first, second, time);
         return newStamp;
     }
-    
-    public void resetOccurrenceTime(){     
-        newStamp.setOccurrenceTime(Stamp.ETERNAL);     
+
+    public void resetOccurrenceTime() {
+        newStamp.setOccurrenceTime(Stamp.ETERNAL);
     }
-    
+
     /**
-     * Get a Term for a given name of a Concept or Operator <p> called in
+     * Get a Term for a given name of a Concept or Operator
+     * <p>
+     * called in
      * StringParser and the make methods of compound terms.
      *
      * @param name the name of a concept or operator
@@ -263,7 +268,9 @@ public class Memory {
     }
 
     /**
-     * Adjust the activation level of a Concept <p> called in
+     * Adjust the activation level of a Concept
+     * <p>
+     * called in
      * Concept.insertTaskLink only
      *
      * @param c the concept to be adjusted
@@ -279,20 +286,20 @@ public class Memory {
      * Activated task called in MatchingRules.trySolution and
      * Concept.processGoal
      *
-     * @param budget The budget value of the new Task
-     * @param sentence The content of the new Task
+     * @param budget          The budget value of the new Task
+     * @param sentence        The content of the new Task
      * @param candidateBelief The belief to be used in future inference, for
-     * forward/backward correspondence
+     *                        forward/backward correspondence
      */
     public void activatedTask(BudgetValue budget, Sentence sentence, Sentence candidateBelief) {
         Task task = new Task(sentence, budget, currentTask, sentence, candidateBelief);
         recorder.append("!!! Activated: " + task.toString() + "\n");
         if (sentence.isQuestion()) {
             float s = task.getBudget().totalBudget();
-//            float minSilent = reasoner.getMainWindow().silentW.value() / 100.0f;
+            // float minSilent = reasoner.getMainWindow().silentW.value() / 100.0f;
             float minSilent = reasoner.getSilenceValue().get() / 100.0f;
-            if (s > minSilent) {  // only report significant derived Tasks
-                //generalInfoReport("4");
+            if (s > minSilent) { // only report significant derived Tasks
+                // generalInfoReport("4");
                 report(task.getSentence(), false, false);
             }
         }
@@ -305,22 +312,22 @@ public class Memory {
      * @param task the derived task
      */
     public void derivedTask(Task task) {
-        
+
         if (task.getBudget().aboveThreshold()) {
             recorder.append(" OUT: " + task + "\n");
             float budget = task.getBudget().totalBudget();
             float minSilent = reasoner.getSilenceValue().get() / 100.0f;
-            
-            //System.out.println(task.getSentence().getContent().getName());
-            if (budget > minSilent) {  // only report significant derived Tasks
-                //generalInfoReport("5");
+
+            // System.out.println(task.getSentence().getContent().getName());
+            if (budget > minSilent) { // only report significant derived Tasks
+                // generalInfoReport("5");
                 report(task.getSentence(), false, false);
             }
-            
-            //generalInfoReport(task.getSentence().toString());
-            
+
+            // generalInfoReport(task.getSentence().toString());
+
             reasoner.getInternalBuffer().putInSequenceList(task, getTime());
-            
+
         } else {
             recorder.append("!!! Ignored: " + task + "\n");
         }
@@ -332,24 +339,25 @@ public class Memory {
      * rules except StructuralRules
      *
      * @param newContent The content of the sentence in task
-     * @param newTruth The truth value of the sentence in task
-     * @param newBudget The budget value in task
-     * @return 
+     * @param newTruth   The truth value of the sentence in task
+     * @param newBudget  The budget value in task
+     * @return
      */
     public Task doublePremiseTask(Term newContent, TruthValue newTruth, BudgetValue newBudget) {
         Stamp deriveStamp = newStamp.clone();
         resetOccurrenceTime();
-        
+
         Task newTask = null;
-        
+
         if (newContent != null) {
-            Sentence newSentence = new Sentence(newContent, currentTask.getSentence().getPunctuation(), newTruth, deriveStamp);
-            
-            //System.out.println("Sentence: " + newSentence.getContent().getName());
+            Sentence newSentence = new Sentence(newContent, currentTask.getSentence().getPunctuation(), newTruth,
+                    deriveStamp);
+
+            // System.out.println("Sentence: " + newSentence.getContent().getName());
             newTask = new Task(newSentence, newBudget, currentTask, currentBelief);
             derivedTask(newTask);
         }
-        
+
         return newTask;
     }
 
@@ -358,32 +366,33 @@ public class Memory {
      * rules except StructuralRules
      *
      * @param newContent The content of the sentence in task
-     * @param newTruth The truth value of the sentence in task
-     * @param newBudget The budget value in task
-     * @param revisible Whether the sentence is revisible
+     * @param newTruth   The truth value of the sentence in task
+     * @param newBudget  The budget value in task
+     * @param revisible  Whether the sentence is revisible
      */
     public void doublePremiseTask(Term newContent, TruthValue newTruth, BudgetValue newBudget, boolean revisible) {
-        
+
         Stamp deriveStamp = newStamp.clone();
         resetOccurrenceTime();
-        
+
         if (newContent != null) {
             Sentence taskSentence = currentTask.getSentence();
-            Sentence newSentence = new Sentence(newContent, taskSentence.getPunctuation(), newTruth, deriveStamp, revisible);
+            Sentence newSentence = new Sentence(newContent, taskSentence.getPunctuation(), newTruth, deriveStamp,
+                    revisible);
             Task newTask = new Task(newSentence, newBudget, currentTask, currentBelief);
-            //newTask.setElemOfSequenceBuffer(false);
-            //System.out.println("777");
+            // newTask.setElemOfSequenceBuffer(false);
+            // System.out.println("777");
             derivedTask(newTask);
         }
     }
-    
+
     /**
      * Shared final operations by all single-premise rules, called in
      * StructuralRules
      *
      * @param newContent The content of the sentence in task
-     * @param newTruth The truth value of the sentence in task
-     * @param newBudget The budget value in task
+     * @param newTruth   The truth value of the sentence in task
+     * @param newBudget  The budget value in task
      */
     public void singlePremiseTask(Term newContent, TruthValue newTruth, BudgetValue newBudget) {
         singlePremiseTask(newContent, currentTask.getSentence().getPunctuation(), newTruth, newBudget);
@@ -393,85 +402,89 @@ public class Memory {
      * Shared final operations by all single-premise rules, called in
      * StructuralRules
      *
-     * @param newContent The content of the sentence in task
+     * @param newContent  The content of the sentence in task
      * @param punctuation The punctuation of the sentence in task
-     * @param newTruth The truth value of the sentence in task
-     * @param newBudget The budget value in task
+     * @param newTruth    The truth value of the sentence in task
+     * @param newBudget   The budget value in task
      */
     public void singlePremiseTask(Term newContent, char punctuation, TruthValue newTruth, BudgetValue newBudget) {
         Task parentTask = currentTask.getParentTask();
         if (parentTask != null && newContent.equals(parentTask.getContent())) { // circular structural inference
             return;
         }
-        
-        //System.out.println("Single: " + newContent.getName());
-        
+
+        // System.out.println("Single: " + newContent.getName());
+
         Sentence taskSentence = currentTask.getSentence();
         if (taskSentence.isJudgment() || currentBelief == null) {
             newStamp = new Stamp(taskSentence.getStamp(), getTime());
-        } else {    // to answer a question with negation in NAL-5 --- move to activated task?
+        } else { // to answer a question with negation in NAL-5 --- move to activated task?
             newStamp = new Stamp(currentBelief.getStamp(), getTime());
         }
-        
+
         Stamp deriveStamp = newStamp.clone();
         resetOccurrenceTime();
-        
-        Sentence newSentence = new Sentence(newContent, punctuation, newTruth, deriveStamp, taskSentence.getRevisible());
+
+        Sentence newSentence = new Sentence(newContent, punctuation, newTruth, deriveStamp,
+                taskSentence.getRevisible());
         Task newTask = new Task(newSentence, newBudget, currentTask, null);
-        //System.out.println("888");
+        // System.out.println("888");
         derivedTask(newTask);
     }
 
     /* ---------- system working workCycle ---------- */
     /**
      * An atomic working cycle of the system: process new Tasks, then fire a
-     * concept <p> Called from Reasoner.cycle only
+     * concept
+     * <p>
+     * Called from Reasoner.cycle only
      *
      * @param clock The current time to be displayed
      */
     public void workCycle(long clock) {
-        recorder.append(" --- " + clock + " ---\n");      
+        recorder.append(" --- " + clock + " ---\n");
         processBuffer();
-        processConcept();    
-        //reasoner.getGlobalBuffer().refresh();
+        processConcept();
+        // reasoner.getGlobalBuffer().refresh();
     }
-    
-    /** 
-     * Select task from Internal Buffer and insert to Global Buffer 
+
+    /**
+     * Select task from Internal Buffer and insert to Global Buffer
      * Select task from Global Buffer and insert to Main Memory
      */
-    private void processBuffer(){  
-        //reasoner.getGlobalBuffer().print();
-        if(!reasoner.getInternalBuffer().isEmpty()){
+    private void processBuffer() {
+        // reasoner.getGlobalBuffer().print();
+        if (!reasoner.getInternalBuffer().isEmpty()) {
             Task task = reasoner.getInternalBuffer().observe(true, false);
-            //report(task.getSentence(), false, false);
-            if(task != null)
+            // report(task.getSentence(), false, false);
+            if (task != null)
                 reasoner.getGlobalBuffer().preProcessing(task, true);
         }
-        //reasoner.getGlobalBuffer().print();
-        Task task = reasoner.getGlobalBuffer().observe(true, true); //Args do not matter
-        //generalInfoReport("Take Out: " + task);
-        if(task != null){
-            //System.out.println("Task take out: " + task.getName() + " " + task.getSentence().getTruth().toString());
+        // reasoner.getGlobalBuffer().print();
+        Task task = reasoner.getGlobalBuffer().observe(true, true); // Args do not matter
+        // generalInfoReport("Take Out: " + task);
+        if (task != null) {
+            // System.out.println("Task take out: " + task.getName() + " " +
+            // task.getSentence().getTruth().toString());
             immediateProcess(task);
         }
     }
-    
+
     /**
      * Select a concept to fire.
      */
     private void processConcept() {
-        currentConcept = concepts.takeOut();  
-        
-        //System.out.println(" * Selected Concept: " + currentConcept.getTerm());
-           
+        currentConcept = concepts.takeOut();
+
+        // System.out.println(" * Selected Concept: " + currentConcept.getTerm());
+
         if (currentConcept != null) {
             currentTerm = currentConcept.getTerm();
             recorder.append(" * Selected Concept: " + currentTerm + "\n");
-            //System.out.println(" * Selected Concept: " + currentTerm + "\n");
-            concepts.putBack(currentConcept);   // current Concept remains in the bag all the time
-            //generalInfoReport("Concept selected: " + currentConcept.toStringBrief());
-            currentConcept.fire();              // a working workCycle
+            // System.out.println(" * Selected Concept: " + currentTerm + "\n");
+            concepts.putBack(currentConcept); // current Concept remains in the bag all the time
+            // generalInfoReport("Concept selected: " + currentConcept.toStringBrief());
+            currentConcept.fire(); // a working workCycle
         }
     }
 
@@ -484,7 +497,7 @@ public class Memory {
     public void immediateProcess(Task task) {
         currentTask = task; // one of the two places where this variable is set
         recorder.append("!!! Insert: " + task + "\n");
-        //System.out.println("!!! Insert: " + task + "\n");
+        // System.out.println("!!! Insert: " + task + "\n");
         currentTerm = task.getContent();
         currentConcept = getConcept(currentTerm);// Creates a new concept
         if (currentConcept != null) {
@@ -501,7 +514,7 @@ public class Memory {
      * {@link NAR#doTick()} - TODO fragile mechanism)
      *
      * @param sentence the sentence to be displayed
-     * @param input whether the task is input
+     * @param input    whether the task is input
      * @param answer
      */
     public void report(Sentence sentence, boolean input, boolean answer) {
@@ -519,94 +532,98 @@ public class Memory {
                 exportStrings.add(String.valueOf(timer));
             }
         }
-        
+
         long interval = 0;
-        if(sentence.getContent() instanceof Implication)
-            interval = ((Implication)(sentence.getContent())).getInterval();
+        if (sentence.getContent() instanceof Implication)
+            interval = ((Implication) (sentence.getContent())).getInterval();
         else if (sentence.getContent() instanceof Equivalence)
-            interval = ((Equivalence)(sentence.getContent())).getInterval();
-                     
+            interval = ((Equivalence) (sentence.getContent())).getInterval();
+
         boolean execution = sentence.getContent() instanceof Operation;
-        
+
         String s;
         if (input) {
             s = "  IN: ";
-        }else if(execution){
+        } else if (execution) {
             s = "EXE: ";
-        }else {
-            if(answer)
+        } else {
+            if (answer)
                 s = "Answer: ";
             else
                 s = " OUT: ";
         }
-        //System.out.println(sentence.toStringBrief());
-        //System.out.println("occurrence Time: " + sentence.getStamp().getOccurrenceTime());
-        if(!sentence.getStamp().isEternal()){
+        // System.out.println(sentence.toStringBrief());
+        // System.out.println("occurrence Time: " +
+        // sentence.getStamp().getOccurrenceTime());
+        if (!sentence.getStamp().isEternal()) {
             String tense = sentence.getStamp().getTense(getTime(), Parameters.DURATION);
-            if(tense == null){
+            if (tense == null) {
                 s += sentence.toStringBrief(tense) + " Eternal";
-            }
-            else{ 
-                
-                if(execution && !input)
-                    s += ((Operation)sentence.getContent()).getPredicate().getName();
+            } else {
+
+                if (execution && !input)
+                    s += ((Operation) sentence.getContent()).getPredicate().getName();
                 else
                     s += sentence.toStringBrief(tense);
-                
-                /*switch (tense) {
-                    case Symbols.TENSE_FUTURE:
-                        s += " Will happen at : " + sentence.getOccurrenceTime();
-                        break;
-                    case Symbols.TENSE_PAST:
-                        s+= " Happened at: " + sentence.getOccurrenceTime();
-                        break;
-                    default:
-                        s+= " Happening";
-                        break;
-                }*/
+
+                /*
+                 * switch (tense) {
+                 * case Symbols.TENSE_FUTURE:
+                 * s += " Will happen at : " + sentence.getOccurrenceTime();
+                 * break;
+                 * case Symbols.TENSE_PAST:
+                 * s+= " Happened at: " + sentence.getOccurrenceTime();
+                 * break;
+                 * default:
+                 * s+= " Happening";
+                 * break;
+                 * }
+                 */
             }
-        }else{
+        } else {
             s += sentence.toStringBrief();
         }
-        if(interval > 0)
+        if (interval > 0)
             s += " Interval is " + interval;
-        //System.out.println("s: " + s);
+        // System.out.println("s: " + s);
         exportStrings.add(s);
     }
-    
-    public void generalInfoReport(String s){
+
+    public void generalInfoReport(String s) {
         exportStrings.add(s);
     }
-    
+
     /**
      * Task execution called only from Operator.java
+     * 
      * @param time
      * @param operation
-     * @param truth 
+     * @param truth
      */
-    public void executeTask(long time, Operation operation, TruthValue truth){
-        
+    public void executeTask(long time, Operation operation, TruthValue truth) {
+
         Stamp stamp = new Stamp(Tense.Present, time);
         Sentence sentence = new Sentence(operation, Symbols.JUDGMENT_MARK, truth, stamp);
-        
-        BudgetValue budgetForNewTask = new BudgetValue(Parameters.DEFAULT_FEEDBACK_PRIORITY, Parameters.DEFAULT_FEEDBACK_DURABILITY,
-        BudgetFunctions.truthToQuality(truth));
-        
+
+        BudgetValue budgetForNewTask = new BudgetValue(Parameters.DEFAULT_FEEDBACK_PRIORITY,
+                Parameters.DEFAULT_FEEDBACK_DURABILITY,
+                BudgetFunctions.truthToQuality(truth));
+
         Task newTask = new Task(sentence, budgetForNewTask);
-        
+
         reasoner.getInternalBuffer().putInSequenceList(newTask, getTime());
     }
-    
-    public Operator getOperator(String op){
+
+    public Operator getOperator(String op) {
         return operators.get(op);
     }
-    
-    public Operator addOperator(Operator op){
+
+    public Operator addOperator(Operator op) {
         operators.put(op.getName(), op);
         return op;
     }
-    
-    public Operator removeOperator(Operator op){
+
+    public Operator removeOperator(Operator op) {
         return operators.remove(op.getName());
     }
 
@@ -621,52 +638,55 @@ public class Memory {
     public AtomicInteger getConceptForgettingRate() {
         return conceptForgettingRate;
     }
-    
-    public ConceptBag getConcepts(){
+
+    public ConceptBag getConcepts() {
         return concepts;
     }
-    
+
     /**
      * Returns priority of currently selected concept
+     * 
      * @param c type Concept
-     * @return 
+     * @return
      */
-    public float getConceptPriority(Concept c){
+    public float getConceptPriority(Concept c) {
         return c.getPriority();
     }
 
     /**
-     * Returns Truth Value (aka Desire Value) of highest priority desire task 
+     * Returns Truth Value (aka Desire Value) of highest priority desire task
      * from currently selected concept
+     * 
      * @param c type Concept
-     * @return 
+     * @return
      */
-    public TruthValue getConceptDesireTruth(Concept c){
+    public TruthValue getConceptDesireTruth(Concept c) {
         return c.getDesire();
     }
-    
+
     /**
-     * Returns Truth Value of highest CONFIDENCE belief sentence 
+     * Returns Truth Value of highest CONFIDENCE belief sentence
      * from currently selected concept
+     * 
      * @param c type Concept
-     * @return 
+     * @return
      */
-    public TruthValue getConceptBeliefTruth(Concept c){
+    public TruthValue getConceptBeliefTruth(Concept c) {
         return c.getBeliefs().get(0).getTruth();
     }
-    
-    public NAR getReasoner(){
+
+    public NAR getReasoner() {
         return reasoner;
     }
-    
-    public EventBuffer getOveralExperience(){
+
+    public EventBuffer getOveralExperience() {
         return reasoner.getGlobalBuffer();
     }
-    
-    public EventBuffer getInternalExperience(){
+
+    public EventBuffer getInternalExperience() {
         return reasoner.getInternalBuffer();
     }
-    
+
     public ArrayList<String> getExportStrings() {
         return exportStrings;
     }
@@ -683,11 +703,11 @@ public class Memory {
     public long getTime() {
         return reasoner.getTime();
     }
-    
-    public Emotion getEmotion(){
+
+    public Emotion getEmotion() {
         return emotion;
     }
-    
+
     @Override
     public String toString() {
         return toStringLongIfNotNull(concepts, "concepts")
@@ -697,17 +717,20 @@ public class Memory {
     }
 
     private String toStringLongIfNotNull(Bag<?> item, String title) {
-        return item == null ? "" : "\n " + title + ":\n"
-                + item.toStringLong();
+        return item == null ? ""
+                : "\n " + title + ":\n"
+                        + item.toStringLong();
     }
 
     private String toStringLongIfNotNull(Item item, String title) {
-        return item == null ? "" : "\n " + title + ":\n"
-                + item.toStringLong();
+        return item == null ? ""
+                : "\n " + title + ":\n"
+                        + item.toStringLong();
     }
 
     private String toStringIfNotNull(Object item, String title) {
-        return item == null ? "" : "\n " + title + ":\n"
-                + item.toString();
+        return item == null ? ""
+                : "\n " + title + ":\n"
+                        + item.toString();
     }
 }

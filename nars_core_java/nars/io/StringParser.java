@@ -82,7 +82,7 @@ public abstract class StringParser extends Symbols {
      *
      * @param buffer The line to be parsed
      * @param memory Reference to the memory
-     * @param time The current time
+     * @param time   The current time
      * @return An experienced task
      */
     public static Task parseExperience(StringBuffer buffer, Memory memory, long time) {
@@ -102,7 +102,7 @@ public abstract class StringParser extends Symbols {
             int j = buffer.lastIndexOf(STAMP_OPENER + "");
             buffer.delete(j - 1, buffer.length());
         }
-        //System.out.println(buffer.toString());
+        // System.out.println(buffer.toString());
         return parseTask(buffer.toString().trim(), memory, time);
     }
 
@@ -110,9 +110,9 @@ public abstract class StringParser extends Symbols {
      * Enter a new Task in String into the memory, called from InputWindow or
      * locally.
      *
-     * @param s the single-line input String
+     * @param s      the single-line input String
      * @param memory Reference to the memory
-     * @param time The current time
+     * @param time   The current time
      * @return An experienced task
      */
     public static Task parseTask(String s, Memory memory, long time) {
@@ -126,29 +126,29 @@ public abstract class StringParser extends Symbols {
 
             int last = str.length() - 1;
             char punc = str.charAt(last);
-            Stamp stamp = new Stamp(tense, time);   
-  
+            Stamp stamp = new Stamp(tense, time);
+
             TruthValue truth = parseTruth(truthString, punc);
 
-            if(tense != null && truth != null){
+            if (tense != null && truth != null) {
                 truth.setEternal(false);
             }
-                        
+
             Term content = parseTerm(str.substring(0, last), memory);
             Sentence sentence = new Sentence(content, punc, truth, stamp);
             if ((content instanceof Conjunction) && Variable.containVarDep(content.getName())) {
                 sentence.setRevisible(false);
             }
-            //System.out.println("sentence order: " + sentence.getTemporalOrder());
+            // System.out.println("sentence order: " + sentence.getTemporalOrder());
             boolean isEvent = (tense != null);
             BudgetValue budget = parseBudget(budgetString, punc, truth, isEvent);
             task = new Task(sentence, budget);
-            //System.out.println(task.getSentence().getContent().getName());
-            //System.out.println(task.getSentence().getTemporalOrder());
+            // System.out.println(task.getSentence().getContent().getName());
+            // System.out.println(task.getSentence().getTemporalOrder());
         } catch (InvalidInputException e) {
             String message = " !!! INVALID INPUT: parseTask: " + buffer + " --- " + e.getMessage();
             System.out.println(message);
-//            showWarning(message);
+            // showWarning(message);
         }
         return task;
     }
@@ -160,13 +160,13 @@ public abstract class StringParser extends Symbols {
      * @param s the input in a StringBuffer
      * @return a String containing a BudgetValue
      * @throws nars.io.StringParser.InvalidInputException if the input cannot be
-     * parsed into a BudgetValue
+     *                                                    parsed into a BudgetValue
      */
     private static String getBudgetString(StringBuffer s) throws InvalidInputException {
         if (s.charAt(0) != BUDGET_VALUE_MARK) {
             return null;
         }
-        int i = s.indexOf(BUDGET_VALUE_MARK + "", 1);    // looking for the end
+        int i = s.indexOf(BUDGET_VALUE_MARK + "", 1); // looking for the end
         if (i < 0) {
             throw new InvalidInputException("missing budget closer");
         }
@@ -184,22 +184,22 @@ public abstract class StringParser extends Symbols {
      * @return a String containing a TruthValue
      * @param s the input in a StringBuffer
      * @throws nars.io.StringParser.InvalidInputException if the input cannot be
-     * parsed into a TruthValue
+     *                                                    parsed into a TruthValue
      */
     private static String getTruthString(StringBuffer s) throws InvalidInputException {
         int last = s.length() - 1;
-        if (s.charAt(last) != TRUTH_VALUE_MARK) {       // use default
+        if (s.charAt(last) != TRUTH_VALUE_MARK) { // use default
             return null;
         }
-        int first = s.indexOf(TRUTH_VALUE_MARK + "");    // looking for the beginning
+        int first = s.indexOf(TRUTH_VALUE_MARK + ""); // looking for the beginning
         if (first == last) { // no matching closer
             throw new InvalidInputException("missing truth mark");
         }
         String truthString = s.substring(first + 1, last).trim();
-        if (truthString.length() == 0) {                // empty usage
+        if (truthString.length() == 0) { // empty usage
             throw new InvalidInputException("empty truth");
         }
-        s.delete(first, last + 1);                 // remaining input to be processed outside
+        s.delete(first, last + 1); // remaining input to be processed outside
         s.trimToSize();
         return truthString;
     }
@@ -207,7 +207,7 @@ public abstract class StringParser extends Symbols {
     /**
      * parse the input String into a TruthValue (or DesireValue)
      *
-     * @param s input String
+     * @param s    input String
      * @param type Task type
      * @return the input TruthValue
      */
@@ -232,22 +232,24 @@ public abstract class StringParser extends Symbols {
     /**
      * parse the input String into a BudgetValue
      *
-     * @param truth the TruthValue of the task
-     * @param s input String
+     * @param truth       the TruthValue of the task
+     * @param s           input String
      * @param punctuation Task punctuation
      * @return the input BudgetValue
      * @throws nars.io.StringParser.InvalidInputException If the String cannot
-     * be parsed into a BudgetValue
+     *                                                    be parsed into a
+     *                                                    BudgetValue
      */
-    private static BudgetValue parseBudget(String s, char punctuation, TruthValue truth, boolean isEvent) throws InvalidInputException {
+    private static BudgetValue parseBudget(String s, char punctuation, TruthValue truth, boolean isEvent)
+            throws InvalidInputException {
         float priority, durability;
         switch (punctuation) {
             case JUDGMENT_MARK:
-                
-                if(isEvent){
+
+                if (isEvent) {
                     priority = Parameters.DEFAULT_EVENT_PRIORITY;
                     durability = Parameters.DEFAULT_EVENT_DURABILITY;
-                }else{
+                } else {
                     priority = Parameters.DEFAULT_JUDGMENT_PRIORITY;
                     durability = Parameters.DEFAULT_JUDGMENT_DURABILITY;
                 }
@@ -269,7 +271,7 @@ public abstract class StringParser extends Symbols {
         }
         if (s != null) { // overrite default
             int i = s.indexOf(VALUE_SEPARATOR);
-            if (i < 0) {        // default durability
+            if (i < 0) { // default durability
                 priority = Float.parseFloat(s);
             } else {
                 priority = Float.parseFloat(s.substring(0, i));
@@ -290,26 +292,25 @@ public abstract class StringParser extends Symbols {
      * SetInt; 4. <T1 Re T2> is a Statement (including higher-order Statement);
      * 5. otherwise it is a simple term.
      *
-     * @param s0 the String to be parsed
+     * @param s0     the String to be parsed
      * @param memory Reference to the memory
      * @return the Term generated from the String
      */
     public static Term parseTerm(String s0, Memory memory) {
-        //System.out.println("test: " + s0);
+        // System.out.println("test: " + s0);
         String s = s0.trim();
         try {
             if (s.length() == 0) {
                 throw new InvalidInputException("missing content");
             }
-            Term t = memory.nameToListedTerm(s);    // existing constant or operator
+            Term t = memory.nameToListedTerm(s); // existing constant or operator
             if (t != null) {
                 return t;
-            }                           // existing Term
+            } // existing Term
             int index = s.length() - 1;
             char first = s.charAt(0);
             char last = s.charAt(index);
-            
-            
+
             switch (first) {
                 case COMPOUND_TERM_OPENER:
                     if (last == COMPOUND_TERM_CLOSER) {
@@ -341,15 +342,16 @@ public abstract class StringParser extends Symbols {
         } catch (InvalidInputException e) {
             String message = " !!! INVALID INPUT: parseTerm: " + s + " --- " + e.getMessage();
             System.out.println(message);
-//            showWarning(message);
+            // showWarning(message);
         }
         return null;
     }
 
-//    private static void showWarning(String message) {
-//		new TemporaryFrame( message + "\n( the faulty line has been kept in the input window )",
-//				40000, TemporaryFrame.WARNING );
-//    }
+    // private static void showWarning(String message) {
+    // new TemporaryFrame( message + "\n( the faulty line has been kept in the input
+    // window )",
+    // 40000, TemporaryFrame.WARNING );
+    // }
     /**
      * Parse a Term that has no internal structure.
      * <p>
@@ -357,7 +359,7 @@ public abstract class StringParser extends Symbols {
      *
      * @param s0 the String to be parsed
      * @throws nars.io.StringParser.InvalidInputException the String cannot be
-     * parsed into a Term
+     *                                                    parsed into a Term
      * @return the Term generated from the String
      */
     private static Term parseAtomicTerm(String s0) throws InvalidInputException {
@@ -369,7 +371,7 @@ public abstract class StringParser extends Symbols {
         {
             throw new InvalidInputException("invalid term");
         }
-        
+
         if (Variable.containVar(s)) {
             return new Variable(s);
         } else {
@@ -383,29 +385,31 @@ public abstract class StringParser extends Symbols {
      * @return the Statement generated from the String
      * @param s0 The input String to be parsed
      * @throws nars.io.StringParser.InvalidInputException the String cannot be
-     * parsed into a Term
+     *                                                    parsed into a Term
      */
     private static Statement parseStatement(String s0, Memory memory) throws InvalidInputException {
         String s = s0.trim();
-        //System.out.println("parseStatement: " + s0);
+        // System.out.println("parseStatement: " + s0);
         int i = topRelation(s);
-        //System.out.println(i);
+        // System.out.println(i);
         if (i < 0) {
             throw new InvalidInputException("invalid statement");
         }
-        //System.out.println("456: " + s);
+        // System.out.println("456: " + s);
         String relation = s.substring(i, i + 3);
-        //System.out.println(relation);
+        // System.out.println(relation);
         Term subject = parseTerm(s.substring(0, i), memory);
         Term predicate = parseTerm(s.substring(i + 3), memory);
-        //System.out.println("reation: " + relation);
+        // System.out.println("reation: " + relation);
         Statement t = Statement.make(relation, subject, predicate, memory);
-        //System.out.println(t.getName());
+        // System.out.println(t.getName());
         if (t == null) {
             throw new InvalidInputException("invalid statement");
         }
-        /*System.out.println("t: " + t.getName());
-        System.out.println("order: " + t.getTemporalOrder());*/
+        /*
+         * System.out.println("t: " + t.getName());
+         * System.out.println("order: " + t.getTemporalOrder());
+         */
         return t;
     }
 
@@ -415,21 +419,21 @@ public abstract class StringParser extends Symbols {
      * @return the Term generated from the String
      * @param s0 The String to be parsed
      * @throws nars.io.StringParser.InvalidInputException the String cannot be
-     * parsed into a Term
+     *                                                    parsed into a Term
      */
     private static Term parseCompoundTerm(String s0, Memory memory) throws InvalidInputException {
         String s = s0.trim();
         int firstSeparator = s.indexOf(ARGUMENT_SEPARATOR);
         String op = s.substring(0, firstSeparator).trim();
         if (!CompoundTerm.isOperator(op)) {
-            
+
             String operatorString = Operator.addPrefix(op);
             Operator operator = memory.getOperator(operatorString);
-            
-            if(operator != null){
+
+            if (operator != null) {
                 ArrayList<Term> args = parseArguments(s.substring(firstSeparator + 1) + ARGUMENT_SEPARATOR, memory);
                 Operation o = Operation.make(operator, args);
-                //System.out.println(o.getClass().toString());
+                // System.out.println(o.getClass().toString());
                 return o;
             }
             System.out.println("Invalid Compound or Operation");
@@ -449,7 +453,8 @@ public abstract class StringParser extends Symbols {
      * @return the arguments in an ArrayList
      * @param s0 The String to be parsed
      * @throws nars.io.StringParser.InvalidInputException the String cannot be
-     * parsed into an argument get
+     *                                                    parsed into an argument
+     *                                                    get
      */
     private static ArrayList<Term> parseArguments(String s0, Memory memory) throws InvalidInputException {
         String s = s0.trim();
@@ -459,7 +464,7 @@ public abstract class StringParser extends Symbols {
         Term t;
         while (end < s.length() - 1) {
             end = nextSeparator(s, start);
-            t = parseTerm(s.substring(start, end), memory);     // recursive call
+            t = parseTerm(s.substring(start, end), memory); // recursive call
             list.add(t);
             start = end + 1;
         }
@@ -474,7 +479,7 @@ public abstract class StringParser extends Symbols {
      * Locate the first top-level separator in a CompoundTerm
      *
      * @return the index of the next seperator in a String
-     * @param s The String to be parsed
+     * @param s     The String to be parsed
      * @param first The starting index
      */
     private static int nextSeparator(String s, int first) {
@@ -501,10 +506,10 @@ public abstract class StringParser extends Symbols {
      * @return the index of the top-level relation
      * @param s The String to be parsed
      */
-    private static int topRelation(String s) {      // need efficiency improvement
+    private static int topRelation(String s) { // need efficiency improvement
         int levelCounter = 0;
         int i = 0;
-        while (i < s.length() - 3) {    // don't need to check the last 3 characters
+        while (i < s.length() - 3) { // don't need to check the last 3 characters
             if ((levelCounter == 0) && (Statement.isRelation(s.substring(i, i + 3)))) {
                 return i;
             }
@@ -562,16 +567,16 @@ public abstract class StringParser extends Symbols {
         }
         return true;
     }
-    
-    public static Tense parseTense(StringBuffer s){
+
+    public static Tense parseTense(StringBuffer s) {
         final int i = s.indexOf(Symbols.TENSE_MARK);
         String t = "";
-        if(i > 0){
+        if (i > 0) {
             t = s.substring(i).trim();
             s.delete(i, s.length());
         }
-        //System.out.println("t: " + t);
+        // System.out.println("t: " + t);
         return Tense.tense(t);
-                
+
     }
 }

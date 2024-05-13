@@ -27,13 +27,14 @@ import nars.entity.*;
 import nars.main.Parameters;
 
 /**
- * All truth-value (and desire-value) functions used in inference rules 
+ * All truth-value (and desire-value) functions used in inference rules
  */
 public final class TruthFunctions extends UtilityFunctions {
 
     /* ----- Single argument functions, called in MatchingRules ----- */
     /**
      * {<A ==> B>} |- <B ==> A>
+     * 
      * @param v1 Truth value of the premise
      * @return Truth value of the conclusion
      */
@@ -48,6 +49,7 @@ public final class TruthFunctions extends UtilityFunctions {
     /* ----- Single argument functions, called in StructuralRules ----- */
     /**
      * {A} |- (--A)
+     * 
      * @param v1 Truth value of the premise
      * @return Truth value of the conclusion
      */
@@ -59,6 +61,7 @@ public final class TruthFunctions extends UtilityFunctions {
 
     /**
      * {<A ==> B>} |- <(--, B) ==> (--, A)>
+     * 
      * @param v1 Truth value of the premise
      * @return Truth value of the conclusion
      */
@@ -73,6 +76,7 @@ public final class TruthFunctions extends UtilityFunctions {
     /* ----- double argument functions, called in MatchingRules ----- */
     /**
      * {<S ==> P>, <S ==> P>} |- <S ==> P>
+     * 
      * @param v1 Truth value of the first premise
      * @param v2 Truth value of the second premise
      * @return Truth value of the conclusion
@@ -93,6 +97,7 @@ public final class TruthFunctions extends UtilityFunctions {
     /* ----- double argument functions, called in SyllogisticRules ----- */
     /**
      * {<S ==> M>, <M ==> P>} |- <S ==> P>
+     * 
      * @param v1 Truth value of the first premise
      * @param v2 Truth value of the second premise
      * @return Truth value of the conclusion
@@ -109,7 +114,8 @@ public final class TruthFunctions extends UtilityFunctions {
 
     /**
      * {M, <M ==> P>} |- P
-     * @param v1 Truth value of the first premise
+     * 
+     * @param v1       Truth value of the first premise
      * @param reliance Confidence of the second (analytical) premise
      * @return Truth value of the conclusion
      */
@@ -122,6 +128,7 @@ public final class TruthFunctions extends UtilityFunctions {
 
     /**
      * {<S ==> M>, <M <=> P>} |- <S ==> P>
+     * 
      * @param v1 Truth value of the first premise
      * @param v2 Truth value of the second premise
      * @return Truth value of the conclusion
@@ -138,6 +145,7 @@ public final class TruthFunctions extends UtilityFunctions {
 
     /**
      * {<S <=> M>, <M <=> P>} |- <S <=> P>
+     * 
      * @param v1 Truth value of the first premise
      * @param v2 Truth value of the second premise
      * @return Truth value of the conclusion
@@ -154,6 +162,7 @@ public final class TruthFunctions extends UtilityFunctions {
 
     /**
      * {<S ==> M>, <P ==> M>} |- <S ==> P>
+     * 
      * @param v1 Truth value of the first premise
      * @param v2 Truth value of the second premise
      * @return Truth value of the conclusion
@@ -167,13 +176,14 @@ public final class TruthFunctions extends UtilityFunctions {
         float c1 = v1.getConfidence();
         float c2 = v2.getConfidence();
         float w = and(f2, c1, c2);
-        float c = w2c(w);  
+        float c = w2c(w);
         return new TruthValue(f1, c);
     }
 
     /**
      * {M, <P ==> M>} |- P
-     * @param v1 Truth value of the first premise
+     * 
+     * @param v1       Truth value of the first premise
      * @param reliance Confidence of the second (analytical) premise
      * @return Truth value of the conclusion
      */
@@ -190,6 +200,7 @@ public final class TruthFunctions extends UtilityFunctions {
 
     /**
      * {<M ==> S>, <M ==> P>} |- <S ==> P>
+     * 
      * @param v1 Truth value of the first premise
      * @param v2 Truth value of the second premise
      * @return Truth value of the conclusion
@@ -200,6 +211,7 @@ public final class TruthFunctions extends UtilityFunctions {
 
     /**
      * {<M ==> S>, <P ==> M>} |- <S ==> P>
+     * 
      * @param v1 Truth value of the first premise
      * @param v2 Truth value of the second premise
      * @return Truth value of the conclusion
@@ -219,6 +231,7 @@ public final class TruthFunctions extends UtilityFunctions {
 
     /**
      * {<M ==> S>, <M ==> P>} |- <S <=> P>
+     * 
      * @param v1 Truth value of the first premise
      * @param v2 Truth value of the second premise
      * @return Truth value of the conclusion
@@ -238,6 +251,7 @@ public final class TruthFunctions extends UtilityFunctions {
     /* ----- desire-value functions, called in SyllogisticRules ----- */
     /**
      * A function specially designed for desire value [To be refined]
+     * 
      * @param v1 Truth value of the first premise
      * @param v2 Truth value of the second premise
      * @return Truth value of the conclusion
@@ -254,6 +268,7 @@ public final class TruthFunctions extends UtilityFunctions {
 
     /**
      * A function specially designed for desire value [To be refined]
+     * 
      * @param v1 Truth value of the first premise
      * @param v2 Truth value of the second premise
      * @return Truth value of the conclusion
@@ -270,6 +285,7 @@ public final class TruthFunctions extends UtilityFunctions {
 
     /**
      * A function specially designed for desire value [To be refined]
+     * 
      * @param v1 Truth value of the first premise
      * @param v2 Truth value of the second premise
      * @return Truth value of the conclusion
@@ -286,6 +302,7 @@ public final class TruthFunctions extends UtilityFunctions {
 
     /**
      * A function specially designed for desire value [To be refined]
+     * 
      * @param v1 Truth value of the first premise
      * @param v2 Truth value of the second premise
      * @return Truth value of the conclusion
@@ -303,6 +320,7 @@ public final class TruthFunctions extends UtilityFunctions {
     /* ----- double argument functions, called in CompositionalRules ----- */
     /**
      * {<M --> S>, <M <-> P>} |- <M --> (S|P)>
+     * 
      * @param v1 Truth value of the first premise
      * @param v2 Truth value of the second premise
      * @return Truth value of the conclusion
@@ -319,6 +337,7 @@ public final class TruthFunctions extends UtilityFunctions {
 
     /**
      * {<M --> S>, <M <-> P>} |- <M --> (S&P)>
+     * 
      * @param v1 Truth value of the first premise
      * @param v2 Truth value of the second premise
      * @return Truth value of the conclusion
@@ -335,6 +354,7 @@ public final class TruthFunctions extends UtilityFunctions {
 
     /**
      * {(||, A, B), (--, B)} |- A
+     * 
      * @param v1 Truth value of the first premise
      * @param v2 Truth value of the second premise
      * @return Truth value of the conclusion
@@ -346,6 +366,7 @@ public final class TruthFunctions extends UtilityFunctions {
 
     /**
      * {(--, (&&, A, B)), B} |- (--, A)
+     * 
      * @param v1 Truth value of the first premise
      * @param v2 Truth value of the second premise
      * @return Truth value of the conclusion
@@ -357,6 +378,7 @@ public final class TruthFunctions extends UtilityFunctions {
 
     /**
      * {(--, (&&, A, (--, B))), (--, B)} |- (--, A)
+     * 
      * @param v1 Truth value of the first premise
      * @param v2 Truth value of the second premise
      * @return Truth value of the conclusion
@@ -367,6 +389,7 @@ public final class TruthFunctions extends UtilityFunctions {
 
     /**
      * {(&&, <#x() ==> M>, <#x() ==> P>), S ==> M} |- <S ==> P>
+     * 
      * @param v1 Truth value of the first premise
      * @param v2 Truth value of the second premise
      * @return Truth value of the conclusion
@@ -377,25 +400,30 @@ public final class TruthFunctions extends UtilityFunctions {
         TruthValue v0 = new TruthValue(f1, w2c(c1));
         return analogy(v2, v0);
     }
-    
-    public static TruthValue eternalize(TruthValue truth){
-        
+
+    public static TruthValue eternalize(TruthValue truth) {
+
         float f1 = truth.getFrequency();
         float c1 = truth.getConfidence();
         float c = TruthFunctions.w2c(c1);
         return new TruthValue(f1, c, false, true);
     }
-    
-    public static final float temporalProjection(long sourceTime, long targetTime, long currentTime){
-        
-        /*System.out.println("sourceTime: " + sourceTime);
-        System.out.println("Target Time: " + targetTime);
-        System.out.println("Current Time: " + currentTime);*/
-        
-        //System.out.println(1.0f - Math.abs(sourceTime - targetTime) / (float)(Math.abs(sourceTime - currentTime) + Math.abs(targetTime - currentTime) + Parameters.PROJECTION_DECAY));
-        
-        return 1.0f - Math.abs(sourceTime - targetTime) / (float)(Math.abs(sourceTime - currentTime) + Math.abs(targetTime - currentTime) + Parameters.PROJECTION_DECAY);
-        
+
+    public static final float temporalProjection(long sourceTime, long targetTime, long currentTime) {
+
+        /*
+         * System.out.println("sourceTime: " + sourceTime);
+         * System.out.println("Target Time: " + targetTime);
+         * System.out.println("Current Time: " + currentTime);
+         */
+
+        // System.out.println(1.0f - Math.abs(sourceTime - targetTime) /
+        // (float)(Math.abs(sourceTime - currentTime) + Math.abs(targetTime -
+        // currentTime) + Parameters.PROJECTION_DECAY));
+
+        return 1.0f - Math.abs(sourceTime - targetTime) / (float) (Math.abs(sourceTime - currentTime)
+                + Math.abs(targetTime - currentTime) + Parameters.PROJECTION_DECAY);
+
     }
-    
+
 }

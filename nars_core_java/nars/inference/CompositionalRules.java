@@ -38,62 +38,64 @@ import nars.storage.Memory;
  */
 public final class CompositionalRules {
 
-    static void IntroVarSameSubjectOrPredicate(Sentence originalMainSentence, Sentence subSentence, Term component, Term content, int index,Memory memory) {
-        Sentence cloned=(Sentence) originalMainSentence.clone();
-        Term T1=cloned.getContent();
-        if(!(T1 instanceof CompoundTerm) || !(content instanceof CompoundTerm)) {
+    static void IntroVarSameSubjectOrPredicate(Sentence originalMainSentence, Sentence subSentence, Term component,
+            Term content, int index, Memory memory) {
+        Sentence cloned = (Sentence) originalMainSentence.clone();
+        Term T1 = cloned.getContent();
+        if (!(T1 instanceof CompoundTerm) || !(content instanceof CompoundTerm)) {
             return;
         }
-        CompoundTerm T=(CompoundTerm) T1;
-        CompoundTerm T2=(CompoundTerm) content.clone();
-        if((component instanceof Inheritance && content instanceof Inheritance) ||
-           (component instanceof Similarity && content instanceof Similarity)) {           
-            if(component.equals(content)) {
-                return; //wouldnt make sense to create a conjunction here, would contain a statement twice
+        CompoundTerm T = (CompoundTerm) T1;
+        CompoundTerm T2 = (CompoundTerm) content.clone();
+        if ((component instanceof Inheritance && content instanceof Inheritance) ||
+                (component instanceof Similarity && content instanceof Similarity)) {
+            if (component.equals(content)) {
+                return; // wouldnt make sense to create a conjunction here, would contain a statement
+                        // twice
             }
-            if(((Statement)component).getPredicate().equals(((Statement)content).getPredicate()) && !(((Statement)component).getPredicate() instanceof Variable)) {
-                Variable V=new Variable("#depIndVar1");
-                CompoundTerm zw=(CompoundTerm) T.getComponents().get(index).clone();
-                zw=(CompoundTerm) CompoundTerm.setComponent(zw,1,V,memory);
-                T2=(CompoundTerm) CompoundTerm.setComponent(T2,1,V,memory);
-                if(zw == null || T2 == null || zw.equals(T2)) {
+            if (((Statement) component).getPredicate().equals(((Statement) content).getPredicate())
+                    && !(((Statement) component).getPredicate() instanceof Variable)) {
+                Variable V = new Variable("#depIndVar1");
+                CompoundTerm zw = (CompoundTerm) T.getComponents().get(index).clone();
+                zw = (CompoundTerm) CompoundTerm.setComponent(zw, 1, V, memory);
+                T2 = (CompoundTerm) CompoundTerm.setComponent(T2, 1, V, memory);
+                if (zw == null || T2 == null || zw.equals(T2)) {
                     return;
                 }
-                Conjunction res=(Conjunction) Conjunction.make(zw, T2, TemporalRules.ORDER_NONE, memory);
-                T=(CompoundTerm) CompoundTerm.setComponent(T, index, res, memory);
-            }
-            else 
-            if(((Statement)component).getSubject().equals(((Statement)content).getSubject()) && !(((Statement)component).getSubject() instanceof Variable)) {
-                Variable V=new Variable("#depIndVar2");
-                CompoundTerm zw=(CompoundTerm) T.getComponents().get(index).clone();
-                zw=(CompoundTerm) CompoundTerm.setComponent(zw,0,V,memory);
-                T2=(CompoundTerm) CompoundTerm.setComponent(T2,0,V,memory);
-                if(zw == null || T2 == null || zw.equals(T2)) {
+                Conjunction res = (Conjunction) Conjunction.make(zw, T2, TemporalRules.ORDER_NONE, memory);
+                T = (CompoundTerm) CompoundTerm.setComponent(T, index, res, memory);
+            } else if (((Statement) component).getSubject().equals(((Statement) content).getSubject())
+                    && !(((Statement) component).getSubject() instanceof Variable)) {
+                Variable V = new Variable("#depIndVar2");
+                CompoundTerm zw = (CompoundTerm) T.getComponents().get(index).clone();
+                zw = (CompoundTerm) CompoundTerm.setComponent(zw, 0, V, memory);
+                T2 = (CompoundTerm) CompoundTerm.setComponent(T2, 0, V, memory);
+                if (zw == null || T2 == null || zw.equals(T2)) {
                     return;
                 }
-                Conjunction res=(Conjunction) Conjunction.make(zw, T2, TemporalRules.ORDER_NONE, memory);
-                T=(CompoundTerm) CompoundTerm.setComponent(T, index, res, memory);
+                Conjunction res = (Conjunction) Conjunction.make(zw, T2, TemporalRules.ORDER_NONE, memory);
+                T = (CompoundTerm) CompoundTerm.setComponent(T, index, res, memory);
             }
             TruthValue truth = TruthFunctions.induction(originalMainSentence.getTruth(), subSentence.getTruth());
             BudgetValue budget = BudgetFunctions.compoundForward(truth, T, memory);
             memory.doublePremiseTask(T, truth, budget);
         }
     }
-    
+
     /* -------------------- intersections and differences -------------------- */
     /**
      * {<S ==> M>, <P ==> M>} |- {<(S|P) ==> M>, <(S&P) ==> M>, <(S-P) ==> M>,
      * <(P-S) ==> M>}
      *
      * @param taskSentence The first premise
-     * @param belief The second premise
-     * @param index The location of the shared term
-     * @param memory Reference to the memory
+     * @param belief       The second premise
+     * @param index        The location of the shared term
+     * @param memory       Reference to the memory
      */
     static void composeCompound(Statement taskContent, Statement beliefContent, int index, Memory memory) {
-        
+
         // 如果当前任务的语句不是judgment 或者 任务与信念不是同一种语句类型，则返回
-        if(!memory.currentTask.getSentence().isJudgment() || taskContent.getClass() != beliefContent.getClass())
+        if (!memory.currentTask.getSentence().isJudgment() || taskContent.getClass() != beliefContent.getClass())
             return;
         // 任务时序
         int taskOrder = taskContent.getTemporalOrder();
@@ -102,30 +104,32 @@ public final class CompositionalRules {
         // 根据信念时序与任务时序得到
         int order = TemporalRules.composeOrder(taskOrder, beliefOrder);
         // 如果结果时序不合法，则直接返回
-        if(order == TemporalRules.ORDER_INVALID)
+        if (order == TemporalRules.ORDER_INVALID)
             return;
         int timeDiff = 0;
-        
-        if(order != TemporalRules.ORDER_NONE)
-            timeDiff = Math.abs((int)(memory.currentTask.getSentence().getOccurrenceTime() - memory.currentBelief.getOccurrenceTime()));
-        
+
+        if (order != TemporalRules.ORDER_NONE)
+            timeDiff = Math.abs((int) (memory.currentTask.getSentence().getOccurrenceTime()
+                    - memory.currentBelief.getOccurrenceTime()));
+
         // index为公共项的位置，0就是都在谓语，1就是都在主语
         // 1 - index 就是非公共项的位置
         Term componentT = taskContent.componentAt(1 - index);
         Term componentB = beliefContent.componentAt(1 - index);
         Term componentCommon = taskContent.componentAt(index);
-        
+
         // 如果任务是一个复合词项，并且任务包含信念中所有的词项
         // 先将符合词项中包含信念的词项给删除掉，做decompose
         if ((componentT instanceof CompoundTerm) && ((CompoundTerm) componentT).containAllComponents(componentB)) {
             decomposeCompound((CompoundTerm) componentT, componentB, componentCommon, index, true, order, memory);
             return;
-        // 信念同理
-        } else if ((componentB instanceof CompoundTerm) && ((CompoundTerm) componentB).containAllComponents(componentT)) {
+            // 信念同理
+        } else if ((componentB instanceof CompoundTerm)
+                && ((CompoundTerm) componentB).containAllComponents(componentT)) {
             decomposeCompound((CompoundTerm) componentB, componentT, componentCommon, index, false, order, memory);
             return;
         }
-        
+
         TruthValue truthT = memory.currentTask.getSentence().getTruth();
         TruthValue truthB = memory.currentBelief.getTruth();
         TruthValue truthOr = TruthFunctions.union(truthT, truthB);
@@ -149,24 +153,25 @@ public final class CompositionalRules {
                 }
             } else if (taskContent instanceof Implication) {
                 termOr = Disjunction.make(componentT, componentB, memory);
-                
-                if(order != TemporalRules.ORDER_NONE){
-                    if(memory.currentTask.getSentence().getOccurrenceTime() > memory.currentBelief.getOccurrenceTime())
+
+                if (order != TemporalRules.ORDER_NONE) {
+                    if (memory.currentTask.getSentence().getOccurrenceTime() > memory.currentBelief.getOccurrenceTime())
                         termAnd = Conjunction.make(componentB, componentT, TemporalRules.ORDER_FORWARD, memory);
-                    else if(memory.currentTask.getSentence().getOccurrenceTime() < memory.currentBelief.getOccurrenceTime())
+                    else if (memory.currentTask.getSentence().getOccurrenceTime() < memory.currentBelief
+                            .getOccurrenceTime())
                         termAnd = Conjunction.make(componentT, componentB, TemporalRules.ORDER_FORWARD, memory);
-                }else{
+                } else {
                     termAnd = Conjunction.make(componentT, componentB, order, memory);
                 }
-                    
+
             }
-            
-            if(!(componentT.equals(componentB))){
+
+            if (!(componentT.equals(componentB))) {
                 processComposed(taskContent, (Term) componentCommon.clone(), termOr, truthOr, order, memory);
                 processComposed(taskContent, (Term) componentCommon.clone(), termAnd, truthAnd, order, memory);
             }
             processComposed(taskContent, (Term) componentCommon.clone(), termDif, truthDif, order, memory);
-        } else {    // index == 1
+        } else { // index == 1
             if (taskContent instanceof Inheritance) {
                 termOr = IntersectionExt.make(componentT, componentB, memory);
                 termAnd = IntersectionInt.make(componentT, componentB, memory);
@@ -180,38 +185,43 @@ public final class CompositionalRules {
                     truthDif = TruthFunctions.intersection(truthB, TruthFunctions.negation(truthT));
                 }
             } else if (taskContent instanceof Implication) {
-                if(order != TemporalRules.ORDER_NONE){
-                    if(memory.currentTask.getSentence().getOccurrenceTime() > memory.currentBelief.getOccurrenceTime())
+                if (order != TemporalRules.ORDER_NONE) {
+                    if (memory.currentTask.getSentence().getOccurrenceTime() > memory.currentBelief.getOccurrenceTime())
                         termOr = Conjunction.make(componentB, componentT, TemporalRules.ORDER_FORWARD, memory);
-                    else if(memory.currentTask.getSentence().getOccurrenceTime() < memory.currentBelief.getOccurrenceTime())
+                    else if (memory.currentTask.getSentence().getOccurrenceTime() < memory.currentBelief
+                            .getOccurrenceTime())
                         termOr = Conjunction.make(componentT, componentB, TemporalRules.ORDER_FORWARD, memory);
-                }else{
+                } else {
                     termOr = Conjunction.make(componentT, componentB, order, memory);
                 }
                 termAnd = Disjunction.make(componentT, componentB, memory);
             }
-            
-            if(!(componentT.equals(componentB))){
+
+            if (!(componentT.equals(componentB))) {
                 processComposed(taskContent, termOr, (Term) componentCommon.clone(), truthOr, order, memory);
                 processComposed(taskContent, termAnd, (Term) componentCommon.clone(), truthAnd, order, memory);
             }
             processComposed(taskContent, termDif, (Term) componentCommon.clone(), truthDif, order, memory);
         }
-        /*if (taskContent instanceof Inheritance) {
-            introVarOuter(taskContent, beliefContent, index, order, memory);//            introVarImage(taskContent, beliefContent, index, memory);
-        }*/
+        /*
+         * if (taskContent instanceof Inheritance) {
+         * introVarOuter(taskContent, beliefContent, index, order, memory);//
+         * introVarImage(taskContent, beliefContent, index, memory);
+         * }
+         */
     }
 
     /**
      * Finish composing implication term
      *
-     * @param premise1 Type of the contentInd
-     * @param subject Subject of contentInd
+     * @param premise1  Type of the contentInd
+     * @param subject   Subject of contentInd
      * @param predicate Predicate of contentInd
-     * @param truth TruthValue of the contentInd
-     * @param memory Reference to the memory
+     * @param truth     TruthValue of the contentInd
+     * @param memory    Reference to the memory
      */
-    private static void processComposed(Statement statement, Term subject, Term predicate, TruthValue truth, int temporalOrder, Memory memory) {
+    private static void processComposed(Statement statement, Term subject, Term predicate, TruthValue truth,
+            int temporalOrder, Memory memory) {
         if ((subject == null) || (predicate == null)) {
             return;
         }
@@ -227,15 +237,16 @@ public final class CompositionalRules {
      * {<(S|P) ==> M>, <P ==> M>} |- <S ==> M>
      * 拆解复合词项
      * 
-     * @param implication The implication term to be decomposed
+     * @param implication     The implication term to be decomposed
      * @param componentCommon The part of the implication to be removed
-     * @param term1 The other term in the contentInd
-     * @param index The location of the shared term: 0 for subject, 1 for
-     * predicate
-     * @param compoundTask Whether the implication comes from the task
-     * @param memory Reference to the memory
+     * @param term1           The other term in the contentInd
+     * @param index           The location of the shared term: 0 for subject, 1 for
+     *                        predicate
+     * @param compoundTask    Whether the implication comes from the task
+     * @param memory          Reference to the memory
      */
-    private static void decomposeCompound(CompoundTerm compound, Term component, Term term1, int index, boolean compoundTask, int temporalOrder, Memory memory) {
+    private static void decomposeCompound(CompoundTerm compound, Term component, Term term1, int index,
+            boolean compoundTask, int temporalOrder, Memory memory) {
         // 如果复合词项是一个statement，或者复合词项为一个ImageExt，或者是一个ImageInt，则返回
         if ((compound instanceof Statement) || (compound instanceof ImageExt) || (compound instanceof ImageInt)) {
             return;
@@ -245,10 +256,10 @@ public final class CompositionalRules {
         if (term2 == null) {
             return;
         }
-        
+
         // 假如compound带有时间间隔，并且早发生的事件被消除
         // 将余下的复合词项中的时间间隔删除，并且提取出时间间隔
-         
+
         // 当前任务
         Task task = memory.currentTask;
         // 任务语句
@@ -257,10 +268,10 @@ public final class CompositionalRules {
         Sentence belief = memory.currentBelief;
         // 任务的词项
         Statement oldContent = (Statement) task.getContent();
-        
+
         // 如果compound是任务，v1就等于任务的真值，v2为信念真值
         // 反之就换顺序
-        TruthValue v1,v2;
+        TruthValue v1, v2;
         if (compoundTask) {
             v1 = sentence.getTruth();
             v2 = belief.getTruth();
@@ -270,7 +281,7 @@ public final class CompositionalRules {
         }
         TruthValue truth = null;
         Term content;
-        
+
         if (index == 0) {
             content = Statement.make(oldContent, term1, term2, temporalOrder, memory);
             if (content == null) {
@@ -301,7 +312,7 @@ public final class CompositionalRules {
             }
         } else {
             content = Statement.make(oldContent, term2, term1, temporalOrder, memory);
-            
+
             if (content == null) {
                 return;
             }
@@ -330,28 +341,29 @@ public final class CompositionalRules {
             }
         }
         if (truth != null) {
-            BudgetValue budget = BudgetFunctions.compoundForward(truth, content, memory);            
+            BudgetValue budget = BudgetFunctions.compoundForward(truth, content, memory);
             memory.doublePremiseTask(content, truth, budget);
         }
     }
-    
+
     /**
      * {(||, S, P), P} |- S {(&&, S, P), P} |- S
      *
-     * @param implication The implication term to be decomposed
+     * @param implication     The implication term to be decomposed
      * @param componentCommon The part of the implication to be removed
-     * @param compoundTask Whether the implication comes from the task
-     * @param memory Reference to the memory
+     * @param compoundTask    Whether the implication comes from the task
+     * @param memory          Reference to the memory
      */
-    static void decomposeStatement(CompoundTerm compound, Term component, boolean compoundTask, int index, Memory memory) {
-        
-        if(compound instanceof Conjunction && compound.getTemporalOrder() == TemporalRules.ORDER_FORWARD){
-            //System.out.println("???");
+    static void decomposeStatement(CompoundTerm compound, Term component, boolean compoundTask, int index,
+            Memory memory) {
+
+        if (compound instanceof Conjunction && compound.getTemporalOrder() == TemporalRules.ORDER_FORWARD) {
+            // System.out.println("???");
             return;
         }
-        
+
         long occurrenceTime = memory.currentTask.getStamp().getOccurrenceTime();
-        
+
         Task task = memory.currentTask;
         Sentence sentence = task.getSentence();
         Sentence belief = memory.currentBelief;
@@ -380,7 +392,7 @@ public final class CompositionalRules {
                 Term conj = Conjunction.make(component, content, TemporalRules.ORDER_NONE, memory);
                 truth = TruthFunctions.intersection(contentBelief.getTruth(), belief.getTruth());
                 budget = BudgetFunctions.compoundForward(truth, conj, memory);
-                //memory.getNewStamp().setOccurrenceTime(occurrenceTime);
+                // memory.getNewStamp().setOccurrenceTime(occurrenceTime);
                 memory.doublePremiseTask(conj, truth, budget);
             }
         } else {
@@ -392,30 +404,30 @@ public final class CompositionalRules {
                 v1 = belief.getTruth();
                 v2 = sentence.getTruth();
             }
-            
-            if(compound instanceof Conjunction || compound instanceof Disjunction){
-                if(sentence.isGoal() && !compoundTask)
+
+            if (compound instanceof Conjunction || compound instanceof Disjunction) {
+                if (sentence.isGoal() && !compoundTask)
                     return;
-            }else{
+            } else {
                 return;
             }
-            
+
             if (compound instanceof Conjunction) {
-                if(sentence.isGoal())
+                if (sentence.isGoal())
                     truth = TruthFunctions.intersection(v1, v2);
                 else
                     truth = TruthFunctions.reduceConjunction(v1, v2);
             } else if (compound instanceof Disjunction) {
-                if(sentence.isGoal())
+                if (sentence.isGoal())
                     truth = TruthFunctions.reduceConjunction(v2, v1);
                 else
                     truth = TruthFunctions.reduceDisjunction(v1, v2);
             } else {
                 return;
-            }        
-            
+            }
+
             budget = BudgetFunctions.compoundForward(truth, content, memory);
-            //memory.getNewStamp().setOccurrenceTime(occurrenceTime);
+            // memory.getNewStamp().setOccurrenceTime(occurrenceTime);
             memory.doublePremiseTask(content, truth, budget);
         }
     }
@@ -424,13 +436,14 @@ public final class CompositionalRules {
     /**
      * Introduce a dependent variable in an outer-layer conjunction
      *
-     * @param taskContent The first premise <M --> S>
+     * @param taskContent   The first premise <M --> S>
      * @param beliefContent The second premise <M --> P>
-     * @param index The location of the shared term: 0 for subject, 1 for
-     * predicate
-     * @param memory Reference to the memory
+     * @param index         The location of the shared term: 0 for subject, 1 for
+     *                      predicate
+     * @param memory        Reference to the memory
      */
-    private static void introVarOuter(Statement taskContent, Statement beliefContent, int index, int temporalOrder, Memory memory) {
+    private static void introVarOuter(Statement taskContent, Statement beliefContent, int index, int temporalOrder,
+            Memory memory) {
         TruthValue truthT = memory.currentTask.getSentence().getTruth();
         TruthValue truthB = memory.currentBelief.getTruth();
         Variable varInd = new Variable("$varInd1");
@@ -479,18 +492,18 @@ public final class CompositionalRules {
         Statement state1 = Inheritance.make(term11, term12, memory);
         Statement state2 = Inheritance.make(term21, term22, memory);
         Term content = null;
-        if(temporalOrder == TemporalRules.ORDER_FORWARD || temporalOrder == TemporalRules.ORDER_BACKWARD)
+        if (temporalOrder == TemporalRules.ORDER_FORWARD || temporalOrder == TemporalRules.ORDER_BACKWARD)
             content = Implication.make(state1, state2, temporalOrder, Parameters.DEFAULT_TIME_INTERVAL, memory);
         else
             content = Implication.make(state1, state2, temporalOrder, Parameters.DEFAULT_TIME_INTERVAL, memory);
-        
+
         if (content == null) {
             return;
         }
         TruthValue truth = TruthFunctions.induction(truthT, truthB);
         BudgetValue budget = BudgetFunctions.compoundForward(truth, content, memory);
         memory.doublePremiseTask(content, truth, budget);
-        if(temporalOrder == TemporalRules.ORDER_FORWARD || temporalOrder == TemporalRules.ORDER_BACKWARD)
+        if (temporalOrder == TemporalRules.ORDER_FORWARD || temporalOrder == TemporalRules.ORDER_BACKWARD)
             content = Implication.make(state1, state2, temporalOrder, Parameters.DEFAULT_TIME_INTERVAL, memory);
         else
             content = Implication.make(state1, state2, temporalOrder, Parameters.DEFAULT_TIME_INTERVAL, memory);
@@ -519,23 +532,23 @@ public final class CompositionalRules {
      * {<M --> S>, <C ==> <M --> P>>} |- <(&&, <#x --> S>, C) ==> <#x --> P>>
      * {<M --> S>, (&&, C, <M --> P>)} |- (&&, C, <<#x --> S> ==> <#x --> P>>)
      *
-     * @param taskContent The first premise directly used in internal induction,
-     * <M --> S>
+     * @param taskContent   The first premise directly used in internal induction,
+     *                      <M --> S>
      * @param beliefContent The componentCommon to be used as a premise in
-     * internal induction, <M --> P>
-     * @param oldCompound The whole contentInd of the first premise, Implication
-     * or Conjunction
-     * @param memory Reference to the memory
+     *                      internal induction, <M --> P>
+     * @param oldCompound   The whole contentInd of the first premise, Implication
+     *                      or Conjunction
+     * @param memory        Reference to the memory
      */
     static void introVarInner(Statement premise1, Statement premise2, CompoundTerm oldCompound, Memory memory) {
-        
-        if(oldCompound instanceof Conjunction && ((Conjunction)oldCompound).getTemporalOrder() != 2)
+
+        if (oldCompound instanceof Conjunction && ((Conjunction) oldCompound).getTemporalOrder() != 2)
             return;
-           
-        
+
         Task task = memory.currentTask;
         Sentence taskSentence = task.getSentence();
-        if (!taskSentence.isJudgment() || (premise1.getClass() != premise2.getClass()) || oldCompound.containComponent(premise1)) {
+        if (!taskSentence.isJudgment() || (premise1.getClass() != premise2.getClass())
+                || oldCompound.containComponent(premise1)) {
             return;
         }
         Term subject1 = premise1.getSubject();

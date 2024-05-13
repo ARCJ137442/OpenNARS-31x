@@ -34,8 +34,8 @@ import nars.storage.Memory;
  */
 public class Conjunction extends CompoundTerm {
 
-
     private int temporalOrder;
+
     /**
      * Constructor with partial values, called by make
      *
@@ -44,9 +44,9 @@ public class Conjunction extends CompoundTerm {
     protected Conjunction(ArrayList<Term> arg) {
         super(arg);
     }
-    
-    protected Conjunction(String name, ArrayList<Term> arg, int temporalOrder){
-        
+
+    protected Conjunction(String name, ArrayList<Term> arg, int temporalOrder) {
+
         super(name, arg);
         this.temporalOrder = temporalOrder;
     }
@@ -54,10 +54,10 @@ public class Conjunction extends CompoundTerm {
     /**
      * Constructor with full values, called by clone
      *
-     * @param n The name of the term
-     * @param cs Component list
+     * @param n   The name of the term
+     * @param cs  Component list
      * @param con Whether the term is a constant
-     * @param i Syntactic complexity of the compound
+     * @param i   Syntactic complexity of the compound
      */
     private Conjunction(String n, ArrayList<Term> cs, boolean con, short i) {
         super(n, cs, con, i);
@@ -80,15 +80,15 @@ public class Conjunction extends CompoundTerm {
      */
     @Override
     public String operator() {
-        
-        switch(temporalOrder){        
+
+        switch (temporalOrder) {
             case TemporalRules.ORDER_FORWARD:
                 return Symbols.CONJUNCTION_SEQUENCE;
             case TemporalRules.ORDER_CONCURRENT:
                 return Symbols.CONJUNCTION_PARALLEL;
             default:
-                return Symbols.CONJUNCTION_OPERATOR;  
-        }      
+                return Symbols.CONJUNCTION_OPERATOR;
+        }
     }
 
     /**
@@ -107,38 +107,41 @@ public class Conjunction extends CompoundTerm {
      *
      * @return the Term generated from the arguments
      * @param argList the list of arguments
-     * @param memory Reference to the memory
+     * @param memory  Reference to the memory
      */
-    /*public static Term make(ArrayList<Term> argList, int temporalOrder, Memory memory) {
-        //TreeSet<Term> set = new TreeSet(argList); // sort/merge arguments
-        return make(argList, temporalOrder, memory);
-    }*/
+    /*
+     * public static Term make(ArrayList<Term> argList, int temporalOrder, Memory
+     * memory) {
+     * //TreeSet<Term> set = new TreeSet(argList); // sort/merge arguments
+     * return make(argList, temporalOrder, memory);
+     * }
+     */
 
     /**
      * Try to make a new Disjunction from a set of components.Called by the
- public make methods.
+     * public make methods.
      *
      * @param list
      * @param temporalOrder
-     * @param set a set of Term as components
-     * @param memory Reference to the memory
+     * @param set           a set of Term as components
+     * @param memory        Reference to the memory
      * @return the Term generated from the arguments
      */
     public static Term make(ArrayList<Term> list, int temporalOrder, Memory memory) {
         if (list.isEmpty()) {
             return null;
-        }                         // special case: single component
+        } // special case: single component
         if (list.size() == 1) {
             return list.get(0);
-        }                         // special case: single component
-        
-       // System.out.println(list.toString());
-        
+        } // special case: single component
+
+        // System.out.println(list.toString());
+
         String name = "";
-        
+
         switch (temporalOrder) {
             case TemporalRules.ORDER_FORWARD:
-                //System.out.println(list);
+                // System.out.println(list);
                 name = makeCompoundName(Symbols.CONJUNCTION_SEQUENCE, list);
                 break;
             case TemporalRules.ORDER_CONCURRENT:
@@ -148,7 +151,7 @@ public class Conjunction extends CompoundTerm {
                 name = makeCompoundName(Symbols.CONJUNCTION_OPERATOR, list);
                 break;
         }
-        
+
         Term t = memory.nameToListedTerm(name);
         return (t != null) ? t : new Conjunction(name, list, temporalOrder);
     }
@@ -156,64 +159,63 @@ public class Conjunction extends CompoundTerm {
     // overload this method by term type?
     /**
      * Try to make a new compound from two components.Called by the inference
- rules.
+     * rules.
      *
-     * @param term1 The first component
-     * @param term2 The second component
+     * @param term1         The first component
+     * @param term2         The second component
      * @param temporalOrder
-     * @param memory Reference to the memory
+     * @param memory        Reference to the memory
      * @return A compound generated or a term it reduced to
      */
     public static Term make(Term term1, Term term2, int temporalOrder, Memory memory) {
-        
-        //System.out.println(temporalOrder);
+
+        // System.out.println(temporalOrder);
         LinkedHashSet<Term> set;
-        if (term1 instanceof Conjunction && term1.getTemporalOrder() == temporalOrder) {         
-            
+        if (term1 instanceof Conjunction && term1.getTemporalOrder() == temporalOrder) {
+
             set = new LinkedHashSet(((CompoundTerm) term1).cloneComponents());
             if (term2 instanceof Conjunction && term2.getTemporalOrder() == temporalOrder) {
                 set.addAll(((CompoundTerm) term2).cloneComponents());
             } // (&,(&,P,Q),(&,R,S)) = (&,P,Q,R,S)
             else {
                 set.add((Term) term2.clone());
-            }                          // (&,(&,P,Q),R) = (&,P,Q,R)
+            } // (&,(&,P,Q),R) = (&,P,Q,R)
         } else if (term2 instanceof Conjunction && term2.getTemporalOrder() == temporalOrder) {
             set = new LinkedHashSet(((CompoundTerm) term2).cloneComponents());
-            set.add((Term) term1.clone());                              // (&,R,(&,P,Q)) = (&,P,Q,R)
+            set.add((Term) term1.clone()); // (&,R,(&,P,Q)) = (&,P,Q,R)
         } else {
             set = new LinkedHashSet();
-            
+
             set.add((Term) term1.clone());
             set.add((Term) term2.clone());
         }
-        
-        
-        ArrayList<Term> list = new ArrayList(set) ;
+
+        ArrayList<Term> list = new ArrayList(set);
         return make(list, temporalOrder, memory);
     }
-    
+
     /**
      * 如果词项t为一个conjucntion，判断t是否与给定的order为同一个时序
+     * 
      * @param t
      * @param order
-     * @return 
+     * @return
      */
-    public static boolean sameOrder(Term t, int order){
-        
-        if(t instanceof Conjunction){         
+    public static boolean sameOrder(Term t, int order) {
+
+        if (t instanceof Conjunction) {
             Conjunction c = (Conjunction) t;
-            return c.getTemporalOrder() == order;           
-        }  
+            return c.getTemporalOrder() == order;
+        }
         return false;
-        
-    }
-     
-    @Override
-    public int getTemporalOrder(){
-        
-        return temporalOrder;
-        
+
     }
 
-    
+    @Override
+    public int getTemporalOrder() {
+
+        return temporalOrder;
+
+    }
+
 }

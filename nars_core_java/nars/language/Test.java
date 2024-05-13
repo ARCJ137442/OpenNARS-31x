@@ -13,10 +13,9 @@ import nars.storage.Memory;
  * @author Xiang
  */
 public class Test {
-    
+
     public static void main(String[] args) {
-       
-        
+
     }
-    
+
 }

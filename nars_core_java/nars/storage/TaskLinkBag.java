@@ -31,24 +31,28 @@ import nars.main.Parameters;
  */
 public class TaskLinkBag extends Bag<TaskLink> {
 
-    /** Constructor
+    /**
+     * Constructor
+     * 
      * @param memory The reference of memory
      */
-    public TaskLinkBag (Memory memory) {
+    public TaskLinkBag(Memory memory) {
         super(memory);
     }
 
     /**
      * Get the (constant) capacity of TaskLinkBag
+     * 
      * @return The capacity of TaskLinkBag
      */
     @Override
     protected int capacity() {
         return Parameters.TASK_LINK_BAG_SIZE;
     }
-    
+
     /**
      * Get the (adjustable) forget rate of TaskLinkBag
+     * 
      * @return The forget rate of TaskLinkBag
      */
     @Override
@@ -56,4 +60,3 @@ public class TaskLinkBag extends Bag<TaskLink> {
         return memory.getTaskForgettingRate().get();
     }
 }
-

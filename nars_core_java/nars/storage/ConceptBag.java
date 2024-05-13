@@ -31,35 +31,44 @@ import nars.main.Parameters;
  */
 public class ConceptBag extends Bag<Concept> {
     /**
-     * Flag makes forgetting rate proportional to average priority of the bag 
+     * Flag makes forgetting rate proportional to average priority of the bag
      */
     private boolean averagePriorityForgetting = false;
-    
-    /** Constructor
+
+    /**
+     * Constructor
+     * 
      * @param memory The reference of memory
      */
-    public ConceptBag (Memory memory) {
+    public ConceptBag(Memory memory) {
         super(memory);
     }
-    /** Constructor that allows forgetting rate be proportional to average priority of the bag
+
+    /**
+     * Constructor that allows forgetting rate be proportional to average priority
+     * of the bag
+     * 
      * @param memory The reference of memory
      */
-    public ConceptBag (Memory memory, boolean averagePriorityForgetting) {
+    public ConceptBag(Memory memory, boolean averagePriorityForgetting) {
         super(memory);
         this.averagePriorityForgetting = averagePriorityForgetting;
     }
+
     /**
      *
      * Get the (constant) capacity of ConceptBag
+     * 
      * @return The capacity of ConceptBag
      */
     @Override
     protected int capacity() {
         return Parameters.CONCEPT_BAG_SIZE;
     }
-    
+
     /**
      * Get the (adjustable) forget rate of ConceptBag
+     * 
      * @return The forget rate of ConceptBag
      */
     @Override
@@ -69,6 +78,6 @@ public class ConceptBag extends Bag<Concept> {
             averagePriority = this.averagePriority();
         }
         float forgetRate = averagePriority * memory.getConceptForgettingRate().get();
-    	return forgetRate;
+        return forgetRate;
     }
 }

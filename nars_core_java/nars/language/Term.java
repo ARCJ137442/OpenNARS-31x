@@ -45,7 +45,7 @@ public class Term implements Cloneable, Comparable<Term> {
      * given alphabet (ASCII or Unicode)
      */
     protected String name;
-    
+
     public static Term SELF = new SetExt(new ArrayList<Term>(Arrays.asList(new Term("SELF"))));
 
     /**
@@ -62,12 +62,11 @@ public class Term implements Cloneable, Comparable<Term> {
     public Term(String name) {
         this.name = name;
     }
-    
-    
-    public boolean isExecutable(Memory mem){
+
+    public boolean isExecutable(Memory mem) {
         return this instanceof Operation;
     }
-    
+
     /**
      * Reporting the name of the current Term.
      *
@@ -76,8 +75,8 @@ public class Term implements Cloneable, Comparable<Term> {
     public String getName() {
         return name;
     }
-    
-    public void setName(String name){
+
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -87,7 +86,7 @@ public class Term implements Cloneable, Comparable<Term> {
      * @return The new Term
      */
     @Override
-    public Term clone() /*throws CloneNotSupportedException*/ {
+    public Term clone() /* throws CloneNotSupportedException */ {
         return new Term(name);
     }
 
@@ -128,14 +127,14 @@ public class Term implements Cloneable, Comparable<Term> {
     public void renameVariables() {
     }
 
-    public int getTemporalOrder(){
+    public int getTemporalOrder() {
         return TemporalRules.ORDER_NONE;
     }
-    
-    public int containedTemporalRelations(){
+
+    public int containedTemporalRelations() {
         return 0;
     }
-    
+
     /**
      * The syntactic complexity, for constant atomic Term, is 1.
      *
@@ -144,19 +143,21 @@ public class Term implements Cloneable, Comparable<Term> {
     public int getComplexity() {
         return 1;
     }
-    
+
     /**
      * Gets simplicity of the term based on the number of atomic components
      * Single atomic term has max simplicity of 1. Power was chosen as -0.5 and
      * subject for research
-     * @return 
+     * 
+     * @return
      */
-    public double getSimplicity(){
+    public double getSimplicity() {
         return Math.pow(this.getComplexity(), -0.5);
     }
 
     /**
      * Orders among terms: variable < atomic < compound
+     * 
      * @param that The Term to be compared with the current Term
      * @return The same as compareTo as defined on Strings
      */
@@ -180,7 +181,7 @@ public class Term implements Cloneable, Comparable<Term> {
     public boolean containTerm(Term target) {
         return equals(target);
     }
-    
+
     /**
      * The same as getName by default, used in display only.
      *
@@ -190,64 +191,73 @@ public class Term implements Cloneable, Comparable<Term> {
     public final String toString() {
         return name;
     }
-    
-    public boolean hasVarQuery(){
+
+    public boolean hasVarQuery() {
         return false;
     }
-    
-    public boolean hasVarIndep(){
+
+    public boolean hasVarIndep() {
         return false;
     }
-    
-    public boolean hasVarDep(){
+
+    public boolean hasVarDep() {
         return false;
     }
-    
-    public boolean hasInterval(){
+
+    public boolean hasInterval() {
         return false;
     }
-    
-    public boolean hasVar(char type){
-        
-        switch (type){
-            case Symbols.VAR_DEPENDENT: return hasVarDep();
-            case Symbols.VAR_INDEPENDENT: return hasVarIndep();
-            case Symbols.VAR_QUERY: return hasVarQuery();
+
+    public boolean hasVar(char type) {
+
+        switch (type) {
+            case Symbols.VAR_DEPENDENT:
+                return hasVarDep();
+            case Symbols.VAR_INDEPENDENT:
+                return hasVarIndep();
+            case Symbols.VAR_QUERY:
+                return hasVarQuery();
         }
         throw new IllegalStateException("Invalid variable type: " + type);
     }
-    
-    public boolean hasVar(){
+
+    public boolean hasVar() {
         return false;
     }
-    
-    public Map<Term, Integer> countTerm(Map<Term, Integer> map){
-        
-        if(map == null)
+
+    public Map<Term, Integer> countTerm(Map<Term, Integer> map) {
+
+        if (map == null)
             map = new LinkedHashMap<Term, Integer>();
-        
+
         map.put(this, map.getOrDefault(this, 0) + 1);
-        
+
         return map;
-        
+
     }
-    
-    public static ArrayList<Term> toSortedSetArray(ArrayList<Term> arg){
-        
-        switch(arg.size()){
-            
-            case 0: return new ArrayList();
-            case 1: return new ArrayList(Arrays.asList(arg.get(0)));
-            case 2: Term a = arg.get(0);
-                    Term b = arg.get(1);
-                    int c  = a.compareTo(b);
-                    
-                    if(c < 0) return new ArrayList(Arrays.asList(a, b));
-                    else if(c > 0) return new ArrayList(Arrays.asList(b, a));
-                    else return new ArrayList(Arrays.asList(a));
+
+    public static ArrayList<Term> toSortedSetArray(ArrayList<Term> arg) {
+
+        switch (arg.size()) {
+
+            case 0:
+                return new ArrayList();
+            case 1:
+                return new ArrayList(Arrays.asList(arg.get(0)));
+            case 2:
+                Term a = arg.get(0);
+                Term b = arg.get(1);
+                int c = a.compareTo(b);
+
+                if (c < 0)
+                    return new ArrayList(Arrays.asList(a, b));
+                else if (c > 0)
+                    return new ArrayList(Arrays.asList(b, a));
+                else
+                    return new ArrayList(Arrays.asList(a));
         }
-            
+
         return arg;
     }
-    
+
 }

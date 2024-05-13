@@ -14,55 +14,55 @@ import nars.io.Symbols;
  *
  * @author Xiang
  */
-public class Operation extends Inheritance{
-    
+public class Operation extends Inheritance {
+
     private Task task;
     public final static ArrayList<Term> SELF = new ArrayList(Arrays.asList(Term.SELF));
-    
+
     public Operation(ArrayList<Term> arg) {
         super(arg);
     }
-    
-    protected Operation(Term argProduct, Term operator){
+
+    protected Operation(Term argProduct, Term operator) {
         super(new ArrayList(Arrays.asList(argProduct, operator)));
     }
-    
+
     @Override
-    public Operation clone(){
+    public Operation clone() {
         return new Operation(this.getComponents());
     }
-    
-    public static Operation make(Operator operator, ArrayList<Term> arg){
+
+    public static Operation make(Operator operator, ArrayList<Term> arg) {
         return new Operation(new Product(arg), operator);
     }
-    
-    public Operator getOperator(){
-        return (Operator)getPredicate();
+
+    public Operator getOperator() {
+        return (Operator) getPredicate();
     }
-    
-    public String makeName(String op, ArrayList<Term> arg){
-        
+
+    public String makeName(String op, ArrayList<Term> arg) {
+
         StringBuilder nameBuilder = new StringBuilder();
         nameBuilder.append(Symbols.COMPOUND_TERM_OPENER);
         nameBuilder.append(op);
-        
-        for(Term t : arg){    
+
+        for (Term t : arg) {
             nameBuilder.append(Symbols.ARGUMENT_SEPARATOR);
-            nameBuilder.append(t.getName());       
+            nameBuilder.append(t.getName());
         }
         nameBuilder.append(Symbols.COMPOUND_TERM_CLOSER);
         return nameBuilder.toString();
     }
-    
-    public void setTask(Task task){
+
+    public void setTask(Task task) {
         this.task = task;
     }
-    
-    public Task getTask(){
+
+    public Task getTask() {
         return task;
     }
-    
-    public Product getArguments(){
-        return (Product)this.getSubject();
+
+    public Product getArguments() {
+        return (Product) this.getSubject();
     }
 }

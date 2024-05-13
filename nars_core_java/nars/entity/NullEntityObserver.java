@@ -28,7 +28,8 @@ import nars.storage.BagObserver;
 import nars.storage.NullBagObserver;
 
 /**
- * Class was moved from Concept.java to be a standalone class for future implementation
+ * Class was moved from Concept.java to be a standalone class for future
+ * implementation
  * 
  * @author Peter
  */
@@ -53,6 +54,6 @@ public class NullEntityObserver implements EntityObserver {
 
     @Override
     public void refresh(String message) {
-        //System.out.println(message);
+        // System.out.println(message);
     }
 }

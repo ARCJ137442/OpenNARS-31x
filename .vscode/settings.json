@@ -6,6 +6,7 @@
         "nogui",
         "rawtypes",
         "rrite",
-        "subcomponents"
+        "subcomponents",
+        "Vanel"
     ]
 }

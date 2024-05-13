@@ -33,32 +33,36 @@ import nars.storage.ConceptBag;
  *
  * @author Peter
  * 
- * This class is a collection of methods moved from Concept.java, Memory.java and
- * Bag.java. These methods are needed for proper GUI functionality. 
- * Idea is to completely separate GUI from reasoner and remove any dependability 
- * from one another
+ *         This class is a collection of methods moved from Concept.java,
+ *         Memory.java and
+ *         Bag.java. These methods are needed for proper GUI functionality.
+ *         Idea is to completely separate GUI from reasoner and remove any
+ *         dependability
+ *         from one another
  * 
- * Note: taskBuffersStartPlay method was commented out previously !!!
+ *         Note: taskBuffersStartPlay method was commented out previously !!!
  * 
  */
 final class StartPlay {
-    
-    private StartPlay(){}
-    
+
+    private StartPlay() {
+    }
+
     /**
      * Start display active concepts on given bagObserver, called from MainWindow.
      *
      * we don't want to expose fields concepts and novelTasks, AND we want to
-     * separate GUI and inference, so this method takes as argument a 
-     * {@link BagObserver} and calls {@link ConceptBag#addBagObserver(BagObserver, String)} ;
+     * separate GUI and inference, so this method takes as argument a
+     * {@link BagObserver} and calls
+     * {@link ConceptBag#addBagObserver(BagObserver, String)} ;
      * 
      * see design for {@link Bag} and {@link nars.gui.BagWindow}
      * in {@link Bag#addBagObserver(BagObserver, String)}
      *
      * @param bagObserver bag Observer that will receive notifications
-     * @param title the window title
+     * @param title       the window title
      */
-    public static void conceptsStartPlay(BagObserver<Concept> bagObserver, ConceptBag concepts, String title ){
+    public static void conceptsStartPlay(BagObserver<Concept> bagObserver, ConceptBag concepts, String title) {
         bagObserver.setBag(concepts);
         concepts.addBagObserver(bagObserver, title);
     }
@@ -68,13 +72,13 @@ final class StartPlay {
      * {@link #conceptsStartPlay(BagObserver, String)}
      *
      * @param bagObserver
-     * @param s the window title
+     * @param s           the window title
      */
-    public static void taskBuffersStartPlay(BagObserver<Task> bagObserver, ConceptBag concepts, String s ){
-        //bagObserver.setBag(concepts);
-        //reasoner.getInternalBuffer().addBagObserver(bagObserver, s);
+    public static void taskBuffersStartPlay(BagObserver<Task> bagObserver, ConceptBag concepts, String s) {
+        // bagObserver.setBag(concepts);
+        // reasoner.getInternalBuffer().addBagObserver(bagObserver, s);
     }
-    
+
     /**
      * Start displaying contents and links, called from ConceptWindow or TermWindow
      *
@@ -83,18 +87,20 @@ final class StartPlay {
      * {@link nars.storage.Bag#addBagObserver(BagObserver, String)}
      *
      * @param entityObserver {@link EntityObserver} to set; TODO make it a real
-     * observer pattern (i.e. with a plurality of observers)
-     * @param showLinks Whether to display the task links
+     *                       observer pattern (i.e. with a plurality of observers)
+     * @param showLinks      Whether to display the task links
      */
     @SuppressWarnings("unchecked")
-    public static void startPlayConcept(Concept concept,EntityObserver entityObserver, boolean showLinks) {
+    public static void startPlayConcept(Concept concept, EntityObserver entityObserver, boolean showLinks) {
         concept.setEntityObserver(entityObserver);
         entityObserver.startPlay(concept, showLinks);
         System.out.println(concept.toStringConceptContent());
         entityObserver.post(concept.toStringConceptContent());
         if (showLinks) {
-            concept.getTaskLinkBag().addBagObserver(entityObserver.createBagObserver(), "Task Links in " + concept.getTerm());
-            concept.getTermLinkBag().addBagObserver(entityObserver.createBagObserver(), "Term Links in " + concept.getTerm());
+            concept.getTaskLinkBag().addBagObserver(entityObserver.createBagObserver(),
+                    "Task Links in " + concept.getTerm());
+            concept.getTermLinkBag().addBagObserver(entityObserver.createBagObserver(),
+                    "Term Links in " + concept.getTerm());
         }
     }
 

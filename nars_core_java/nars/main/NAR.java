@@ -24,13 +24,18 @@ public class NAR {
     protected ArrayList<InputChannel> inputChannels;
     /** The output channels of the reasoner */
     protected ArrayList<OutputChannel> outputChannels;
-    /** System clock, relatively defined to guarantee the repeatability of behaviors */
+    /**
+     * System clock, relatively defined to guarantee the repeatability of behaviors
+     */
     private long clock;
     /** Flag for running continuously */
     private boolean running;
     /** The remaining number of steps to be carried out (walk mode) */
     private int walkingSteps;
-    /** Determines the end of {@link NARSBatch} program (set but not accessed in this class) */
+    /**
+     * Determines the end of {@link NARSBatch} program (set but not accessed in this
+     * class)
+     */
     private boolean finishedInputs;
     /** System clock - number of cycles since last output */
     private long timer;
@@ -40,21 +45,22 @@ public class NAR {
     private final InternalExperience internalBuffer;
     /** Overall Experience Buffer for input and tasks from internalBuffer */
     private final OveralExperience globalBuffer;
-    //private final Experience_From_Narsese narsese_Channel;
-    
-    private final int internal_Duration = Parameters.MAX_BUFFER_DURATION_FACTOR * Parameters.DURATION_FOR_INTERNAL_BUFFER;
+    // private final Experience_From_Narsese narsese_Channel;
+
+    private final int internal_Duration = Parameters.MAX_BUFFER_DURATION_FACTOR
+            * Parameters.DURATION_FOR_INTERNAL_BUFFER;
     private final int global_Duration = Parameters.MAX_BUFFER_DURATION_FACTOR * Parameters.DURATION_FOR_GLOBAL_BUFFER;
 
     public NAR() {
         memory = new Memory(this);
-        //System.out.println(memory.newStamp.getOccurrenceTime());
+        // System.out.println(memory.newStamp.getOccurrenceTime());
         inputChannels = new ArrayList();
         outputChannels = new ArrayList();
         internalBuffer = new InternalExperience(memory, internal_Duration, "Internal");
         globalBuffer = new OveralExperience(memory, global_Duration, "Global");
-       // narsese_Channel = new Experience_From_Narsese(memory, global_Duration);
+        // narsese_Channel = new Experience_From_Narsese(memory, global_Duration);
     }
-    
+
     public void addInputChannel(InputChannel channel) {
         inputChannels.add(channel);
     }
@@ -73,13 +79,13 @@ public class NAR {
 
     /** Reset the system with an empty memory and reset clock. */
     public void reset() {
-        //CompositionalRules.rand = new Random(1);
+        // CompositionalRules.rand = new Random(1);
         running = false;
         walkingSteps = 0;
         clock = 0;
         memory.init();
         Stamp.init();
-        //timer = 0;
+        // timer = 0;
     }
 
     /** Start the inference process */
@@ -104,7 +110,7 @@ public class NAR {
     }
 
     /**
-     * A system cycle. Run one working workCycle or read input. 
+     * A system cycle. Run one working workCycle or read input.
      * Called from Shell.java and NARS.java
      * only.
      */
@@ -132,12 +138,12 @@ public class NAR {
             for (OutputChannel channelOut : outputChannels) {
                 channelOut.nextOutput(output);
             }
-            output.clear();	// this will trigger display the current value of timer in Memory.report()
+            output.clear(); // this will trigger display the current value of timer in Memory.report()
         }
         if (running || walkingSteps > 0) {
             clock++;
             tickTimer();
-            
+
             memory.workCycle(clock);
 
             if (walkingSteps > 0) {
@@ -145,14 +151,16 @@ public class NAR {
             }
         }
     }
-    
+
     /**
      * To process a line of input text
      *
      * @param text
      */
     public void textInputLine(String text) {
-        if (text.isEmpty()) {return;}
+        if (text.isEmpty()) {
+            return;
+        }
         char c = text.charAt(0);
         if (c == Symbols.RESET_MARK) {
             reset();
@@ -163,7 +171,7 @@ public class NAR {
                 int i = Integer.parseInt(text);
                 walk(i);
             } catch (NumberFormatException e) {
-                Task task = StringParser.parseExperience(new StringBuffer(text), memory, clock);              
+                Task task = StringParser.parseExperience(new StringBuffer(text), memory, clock);
                 if (task != null) {
                     inputNarseseTask(task);
                 }
@@ -171,25 +179,27 @@ public class NAR {
         }
     }
 
-    /** Adds task to main memory 
-     *  @param task
+    /**
+     * Adds task to main memory
+     * 
+     * @param task
      */
-    private void inputNarseseTask(Task task){
-        if(task.getBudget().aboveThreshold()){
+    private void inputNarseseTask(Task task) {
+        if (task.getBudget().aboveThreshold()) {
             memory.getRecorder().append("!!! Perceived: " + task + "\n");
             memory.report(task.getSentence(), true, false);
-            task.getBudget().incPriority((float)0.1);
+            task.getBudget().incPriority((float) 0.1);
             globalBuffer.preProcessing(task, true);
-            //globalBuffer.putInSequenceList(task, memory.getTime());
-        }else{
+            // globalBuffer.putInSequenceList(task, memory.getTime());
+        } else {
             memory.getRecorder().append("!!! Neglected: " + task + "\n");
         }
     }
-    
+
     public Memory getMemory() {
         return memory;
     }
-    
+
     /**
      * Get the current time from the clock Called in {@link nars.entity.Stamp}
      *
@@ -198,19 +208,19 @@ public class NAR {
     public long getTime() {
         return clock;
     }
-    
-    public int getWalkingSteps(){
+
+    public int getWalkingSteps() {
         return walkingSteps;
     }
-    
-    public InternalExperience getInternalBuffer(){
-        return internalBuffer;        
+
+    public InternalExperience getInternalBuffer() {
+        return internalBuffer;
     }
-    
-    public OveralExperience getGlobalBuffer(){
+
+    public OveralExperience getGlobalBuffer() {
         return globalBuffer;
     }
-    
+
     /** Report Silence Level */
     public AtomicInteger getSilenceValue() {
         return silenceValue;
@@ -218,7 +228,8 @@ public class NAR {
 
     /**
      * determines the end of {@link NARSBatch} program
-     * @return 
+     * 
+     * @return
      */
     public boolean isFinishedInputs() {
         return finishedInputs;
@@ -255,7 +266,7 @@ public class NAR {
     private void setTimer(long timer) {
         this.timer = timer;
     }
-    
+
     @Override
     public String toString() {
         return memory.toString();

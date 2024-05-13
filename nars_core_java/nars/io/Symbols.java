@@ -39,7 +39,7 @@ public class Symbols {
     public static final String TENSE_PAST = ":\\:";
     public static final String TENSE_PRESENT = ":|:";
     public static final String TENSE_FUTURE = ":/:";
-    
+
     /* variable type */
     public static final char VAR_INDEPENDENT = '$';
     public static final char VAR_DEPENDENT = '#';
@@ -59,7 +59,7 @@ public class Symbols {
     public static final char SET_EXT_CLOSER = '}';
     public static final char SET_INT_OPENER = '[';
     public static final char SET_INT_CLOSER = ']';
-    
+
     /* special characors in argument list */
     public static final char ARGUMENT_SEPARATOR = ',';
     public static final char IMAGE_PLACE_HOLDER = '_';
@@ -76,11 +76,11 @@ public class Symbols {
     /* CompoundStatement operators, length = 2 */
     public static final String NEGATION_OPERATOR = "--";
     public static final String DISJUNCTION_OPERATOR = "||";
-    
+
     public static final String CONJUNCTION_OPERATOR = "&&";
     public static final String CONJUNCTION_SEQUENCE = "&/";
     public static final String CONJUNCTION_PARALLEL = "&|";
-    
+
     /* built-in relations, length = 3 */
     public static final String INHERITANCE_RELATION = "-->";
     public static final String SIMILARITY_RELATION = "<->";
@@ -92,7 +92,7 @@ public class Symbols {
     public static final String EQUIVALENCE_AFTER = "</>";
     public static final String EQUIVALENCE_WHEN = "<|>";
     public static final String EQUIVALENCE_BEFORE = "<\\>";
-    
+
     public static final String IMPLICATION_RELATION = "==>";
     public static final String IMPLICATION_BEFORE = "=\\>";
     public static final String IMPLICATION_WHEN = "=|>";
@@ -110,12 +110,12 @@ public class Symbols {
     public static final char STAMP_CLOSER = '}';
     public static final char STAMP_SEPARATOR = ';';
     public static final char STAMP_STARTER = ':';
-    
+
     /* TermLink type, display only */
     public static final String TO_COMPONENT_1 = " @(";
     public static final String TO_COMPONENT_2 = ")_ ";
     public static final String TO_COMPOUND_1 = " _@(";
     public static final String TO_COMPOUND_2 = ") ";
-    
+
     public static final char INTERVAL_PREFIX = '+';
 }

@@ -22,6 +22,7 @@
  * THE SOFTWARE.
  */
 package nars.io;
+
 import java.util.ArrayList;
 
 /**

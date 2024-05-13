@@ -14,17 +14,20 @@ import nars.storage.Memory;
  * @author Xiang
  */
 public class ComplexEmotion {
-    
-    public static void fear(Memory memory, Task task){
-        
+
+    public static void fear(Memory memory, Task task) {
+
         Concept c = memory.termToConcept(task.getContent());
-        
-        /*if(c != null && !c.getDesires().isEmpty()){
-            
-            if(task.getSentence().getTruth().getExpectation() >= 0.5 && c.getDesires().get(0).getSentence().getTruth().getExpectation() < 0.5)
-            
-        }*/
-        
+
+        /*
+         * if(c != null && !c.getDesires().isEmpty()){
+         * 
+         * if(task.getSentence().getTruth().getExpectation() >= 0.5 &&
+         * c.getDesires().get(0).getSentence().getTruth().getExpectation() < 0.5)
+         * 
+         * }
+         */
+
     }
-    
+
 }

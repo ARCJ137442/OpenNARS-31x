@@ -17,16 +17,23 @@ public class Debug {
      * ========================================================
      */
 
-    /** Show errors in reasoning cycle, they are not fatal but ideally should not be hidden, recommended. */
+    /**
+     * Show errors in reasoning cycle, they are not fatal but ideally should not be
+     * hidden, recommended.
+     */
     public static boolean SHOW_REASONING_ERRORS = true;
-    /** Show execution errors in operators, they ideally should not be hidden, recommended. */
+    /**
+     * Show execution errors in operators, they ideally should not be hidden,
+     * recommended.
+     */
     public static boolean SHOW_EXECUTION_ERRORS = true;
-    /** Show input errors, not recommended as the program that uses NARS should handle them by itself */
+    /**
+     * Show input errors, not recommended as the program that uses NARS should
+     * handle them by itself
+     */
     public static boolean SHOW_INPUT_ERRORS = false;
     /** Show premises (parents) of statements */
     public static boolean PARENTS = false;
-
-
 
     /**
      * =======================================================
@@ -35,13 +42,24 @@ public class Debug {
      * =======================================================
      */
 
-    /** Whether the system tries to continue after occurrence of a reasoning error, recommended as not all cases may be tested */
+    /**
+     * Whether the system tries to continue after occurrence of a reasoning error,
+     * recommended as not all cases may be tested
+     */
     public static boolean REASONING_ERRORS_CONTINUE = true;
-    /** Whether the system tries to continue after occurrence of an execution error, recommended as these are not always avoidable */
+    /**
+     * Whether the system tries to continue after occurrence of an execution error,
+     * recommended as these are not always avoidable
+     */
     public static boolean EXECUTION_ERRORS_CONTINUE = true;
-    /** Whether the system should continue after an input error, not recommended as it should be handled externally */
+    /**
+     * Whether the system should continue after an input error, not recommended as
+     * it should be handled externally
+     */
     public static boolean INPUT_ERRORS_CONTINUE = false;
-    /** Use this for advanced error checking, at the expense of lower performance. */
+    /**
+     * Use this for advanced error checking, at the expense of lower performance.
+     */
     public static boolean DETAILED = false;
     /** For thorough sentence debugging (slow), requires DETAILED=true */
     public static final boolean DETAILED_SENTENCES = false;
