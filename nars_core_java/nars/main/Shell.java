@@ -70,8 +70,9 @@ public class Shell {
         }
     }
 
+    private static NAR reasoner = new NAR();
+
     public static void main(String[] args) {
-        NAR reasoner = new NAR();
         reasoner.addOutputChannel(new ShellOutput());
         InputThread t = new InputThread(System.in, reasoner);
         t.start();
@@ -82,56 +83,61 @@ public class Shell {
         reasoner.getSilenceValue().set(0);
         while (true) {
             synchronized (inputString) {
-                if (!"".equals(inputString)) {
-                    try {
-                        // 退出程序
-                        // * 🎯【2024-05-09 13:35:47】在其它语言中通过`java -jar`启动OpenNARS时，主动退出不容易——总是有残余进程
-                        if (inputString.startsWith("*exit") || inputString.startsWith("*quit")) {
-                            System.out.println("TERMINATED: OpenNARS exited by command \"" + inputString + "\".");
-                            System.exit(0);
-                        }
-                        // 推理步进（手动）
-                        else if (inputString.matches("[0-9]+")) {
-                            System.out.println("INFO: running " + inputString + " cycles.");
-                            int val = Integer.parseInt(inputString);
-                            for (int i = 0; i < val; i++)
-                                reasoner.cycle();
-                        }
-                        // 音量相关
-                        else if (inputString.startsWith("*volume")) { // volume to be consistent with OpenNARS
-                            String[] splits = inputString.split("=");
-                            // 查看音量
-                            if (splits.length <= 1) {
-                                System.out.println("INFO: *volume = " + (100 - reasoner.getSilenceValue().get()));
-                            }
-                            // 设置音量
-                            else {
-                                int val = Integer.parseInt(splits[1]);
-                                if (val >= 0 && val <= 100) {
-                                    reasoner.getSilenceValue().set(100 - val);
-                                } else {
-                                    System.out.println("INFO: Volume ignored, not in range");
-                                }
-                            }
-                        }
-                        // 开启debug模式
-                        else if (inputString.startsWith("*debug=")) {
-                            String param = inputString.split("\\*debug=")[1];
-                            NAR.DEBUG = !param.isEmpty();
-                        }
-                        // 输入Narsese
-                        else {
-                            reasoner.textInputLine(inputString);
-                            reasoner.cycle(); // 输入之后至少尝试输出一次「IN」
-                        }
-                        inputString = "";
-                    } catch (Exception ex) {
-                        inputString = "";
-                    }
-                }
+                inputLine();
             }
             if (reasoner.getWalkingSteps() > 0)
                 reasoner.cycle();
+        }
+    }
+
+    public static void inputLine() {
+        if (!"".equals(inputString)) {
+            try {
+                // 退出程序
+                // * 🎯【2024-05-09 13:35:47】在其它语言中通过`java -jar`启动OpenNARS时，主动退出不容易——总是有残余进程
+                if (inputString.startsWith("*exit") || inputString.startsWith("*quit")) {
+                    System.out.println("TERMINATED: OpenNARS exited by command \"" + inputString + "\".");
+                    System.exit(0);
+                }
+                // 推理步进（手动）
+                else if (inputString.matches("[0-9]+")) {
+                    System.out.println("INFO: running " + inputString + " cycles.");
+                    int val = Integer.parseInt(inputString);
+                    for (int i = 0; i < val; i++)
+                        reasoner.cycle();
+                }
+                // 音量相关
+                else if (inputString.startsWith("*volume")) { // volume to be consistent with OpenNARS
+                    String[] splits = inputString.split("=");
+                    // 查看音量
+                    if (splits.length <= 1) {
+                        System.out.println("INFO: *volume = " + (100 - reasoner.getSilenceValue().get()));
+                    }
+                    // 设置音量
+                    else {
+                        int val = Integer.parseInt(splits[1]);
+                        if (val >= 0 && val <= 100) {
+                            reasoner.getSilenceValue().set(100 - val);
+                        } else {
+                            System.out.println("INFO: Volume ignored, not in range");
+                        }
+                    }
+                }
+                // 开启debug模式
+                else if (inputString.startsWith("*debug=")) {
+                    String param = inputString.split("\\*debug=")[1];
+                    NAR.DEBUG = !param.isEmpty();
+                }
+                // 输入Narsese
+                else {
+                    reasoner.textInputLine(inputString);
+                    reasoner.cycle(); // 输入之后至少尝试输出一次「IN」
+                }
+                inputString = "";
+            } catch (Exception ex) {
+                inputString = "";
+                System.out.println("ERROR: " + ex.getMessage());
+            }
         }
     }
 }
