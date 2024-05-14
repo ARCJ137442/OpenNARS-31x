@@ -122,7 +122,7 @@ public class Shell {
                         // 输入Narsese
                         else {
                             reasoner.textInputLine(inputString);
-                            reasoner.cycle(); // 输入之后至少推理步进一步
+                            reasoner.cycle(); // 输入之后至少尝试输出一次「IN」
                         }
                         inputString = "";
                     } catch (Exception ex) {
