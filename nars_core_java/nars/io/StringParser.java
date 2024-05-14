@@ -29,27 +29,6 @@ import java.util.*;
 
 import nars.entity.*;
 import nars.inference.*;
-import static nars.io.Symbols.ARGUMENT_SEPARATOR;
-import static nars.io.Symbols.BUDGET_VALUE_MARK;
-import static nars.io.Symbols.COMPOUND_TERM_CLOSER;
-import static nars.io.Symbols.COMPOUND_TERM_OPENER;
-import static nars.io.Symbols.GOAL_MARK;
-import static nars.io.Symbols.INPUT_LINE;
-import static nars.io.Symbols.JUDGMENT_MARK;
-import static nars.io.Symbols.OUTPUT_LINE;
-import static nars.io.Symbols.PREFIX_MARK;
-import static nars.io.Symbols.QUESTION_MARK;
-import static nars.io.Symbols.QUEST_MARK;
-import static nars.io.Symbols.SET_EXT_CLOSER;
-import static nars.io.Symbols.SET_EXT_OPENER;
-import static nars.io.Symbols.SET_INT_CLOSER;
-import static nars.io.Symbols.SET_INT_OPENER;
-import static nars.io.Symbols.STAMP_CLOSER;
-import static nars.io.Symbols.STAMP_OPENER;
-import static nars.io.Symbols.STATEMENT_CLOSER;
-import static nars.io.Symbols.STATEMENT_OPENER;
-import static nars.io.Symbols.TRUTH_VALUE_MARK;
-import static nars.io.Symbols.VALUE_SEPARATOR;
 import nars.language.*;
 import nars.main.Parameters;
 import nars.storage.Memory;
@@ -242,10 +221,9 @@ public abstract class StringParser extends Symbols {
      */
     private static BudgetValue parseBudget(String s, char punctuation, TruthValue truth, boolean isEvent)
             throws InvalidInputException {
-        float priority, durability;
+        float priority, durability, quality;
         switch (punctuation) {
             case JUDGMENT_MARK:
-
                 if (isEvent) {
                     priority = Parameters.DEFAULT_EVENT_PRIORITY;
                     durability = Parameters.DEFAULT_EVENT_DURABILITY;
@@ -269,16 +247,20 @@ public abstract class StringParser extends Symbols {
             default:
                 throw new InvalidInputException("unknown punctuation: '" + punctuation + "'");
         }
-        if (s != null) { // overrite default
-            int i = s.indexOf(VALUE_SEPARATOR);
-            if (i < 0) { // default durability
-                priority = Float.parseFloat(s);
-            } else {
-                priority = Float.parseFloat(s.substring(0, i));
-                durability = Float.parseFloat(s.substring(i + 1));
+        quality = (truth == null) ? 1 : BudgetFunctions.truthToQuality(truth);
+        // * 🚩覆盖性默认值（从字符串）
+        if (s != null) { // override default
+            // * 🚩【2024-05-13 11:32:19】使用`String.split`多次拆分
+            String[] floatStrings = s.split(String.valueOf(VALUE_SEPARATOR));
+            switch (floatStrings.length) {
+                case 3: // full budget-value
+                    quality = Float.parseFloat(floatStrings[2]);
+                case 2: // default quality
+                    durability = Float.parseFloat(floatStrings[1]);
+                case 1: // default durability
+                    priority = Float.parseFloat(floatStrings[0]);
             }
         }
-        float quality = (truth == null) ? 1 : BudgetFunctions.truthToQuality(truth);
         return new BudgetValue(priority, durability, quality);
     }
 
