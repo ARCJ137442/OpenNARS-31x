@@ -189,7 +189,8 @@ public class NAR {
         if (task.getBudget().aboveThreshold()) {
             memory.getRecorder().append("!!! Perceived: " + task + "\n");
             memory.report(task.getSentence(), ReportType.IN);
-            task.getBudget().incPriority((float) 0.1);
+            // task.getBudget().incPriority((float) 0.1);
+            // ! 🚩【2024-05-14 20:36:59】↑禁用，意义不明（添加者：Xiang from NAL 7~9）
             globalBuffer.preProcessing(task, true);
             // globalBuffer.putInSequenceList(task, memory.getTime());
         } else {

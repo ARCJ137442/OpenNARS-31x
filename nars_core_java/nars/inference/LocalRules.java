@@ -143,6 +143,7 @@ public class LocalRules {
                 Task newTask = new Task(newSentence, budget, memory.currentTask, memory.currentBelief);
                 c.addToTable(newTask, c.getDesires(), Parameters.MAXIMUM_GOAL_LENGTH);
             }
+            memory.doublePremiseTask(content, truth, budget);
         }
     }
 

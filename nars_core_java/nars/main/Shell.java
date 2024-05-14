@@ -39,6 +39,9 @@ public class Shell {
                             // if("".equals(line)) {
                             // inputString = "1";
                             // }
+                            if (inputString != "") {
+                                inputLine(reasoner, inputString);
+                            }
                         }
                     }
 
@@ -49,7 +52,7 @@ public class Shell {
                 try {
                     Thread.sleep(1);
                 } catch (final InterruptedException e) {
-                    throw new IllegalStateException("Unexpectadly interrupted while sleeping.", e);
+                    throw new IllegalStateException("Unexpectedly interrupted while sleeping.", e);
                 }
             }
         }
@@ -61,6 +64,7 @@ public class Shell {
             for (String s : arg0) {
                 if (!s.strip().matches("[0-9]+")) {
                     System.out.println(s);
+                    System.out.flush();
                 }
             }
         }
@@ -83,14 +87,14 @@ public class Shell {
         reasoner.getSilenceValue().set(0);
         while (true) {
             synchronized (inputString) {
-                inputLine();
+                // 此处的代码交给inputThread
             }
             if (reasoner.getWalkingSteps() > 0)
                 reasoner.cycle();
         }
     }
 
-    public static void inputLine() {
+    public static void inputLine(NAR reasoner, String inputString) {
         if (!"".equals(inputString)) {
             try {
                 // 退出程序
@@ -102,6 +106,7 @@ public class Shell {
                 // 推理步进（手动）
                 else if (inputString.matches("[0-9]+")) {
                     System.out.println("INFO: running " + inputString + " cycles.");
+                    System.out.flush();
                     int val = Integer.parseInt(inputString);
                     for (int i = 0; i < val; i++)
                         reasoner.cycle();
@@ -112,6 +117,7 @@ public class Shell {
                     // 查看音量
                     if (splits.length <= 1) {
                         System.out.println("INFO: *volume = " + (100 - reasoner.getSilenceValue().get()));
+                        System.out.flush();
                     }
                     // 设置音量
                     else {
@@ -120,6 +126,7 @@ public class Shell {
                             reasoner.getSilenceValue().set(100 - val);
                         } else {
                             System.out.println("INFO: Volume ignored, not in range");
+                            System.out.flush();
                         }
                     }
                 }
@@ -137,6 +144,7 @@ public class Shell {
             } catch (Exception ex) {
                 inputString = "";
                 System.out.println("ERROR: " + ex.getMessage());
+                System.out.flush();
             }
         }
     }
